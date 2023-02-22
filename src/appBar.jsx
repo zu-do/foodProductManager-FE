@@ -1,8 +1,13 @@
 import React from "react";
 import { Button } from "primereact/button";
 import "./styleAppBar.css";
+import { useNavigate } from "react-router-dom";
 
-function appBar() {
+function AppBar() {
+  const navigator = useNavigate();
+  const navigateToMain = () => {
+    navigator("/main");
+  };
   return (
     <div className="container">
       <h2 style={{ margin: "40px" }}>Tavo šaldytuvas</h2>
@@ -21,6 +26,9 @@ function appBar() {
         raised
       />
       <Button
+        onClick={() => {
+          navigateToMain();
+        }}
         style={{ margin: "20px" }}
         label="Prisijungti"
         severity="info"
@@ -31,6 +39,6 @@ function appBar() {
   );
 }
 
-export default appBar;
+export default AppBar;
 {
 }
