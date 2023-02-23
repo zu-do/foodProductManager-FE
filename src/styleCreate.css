@@ -1,0 +1,18 @@
+#outer{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4rem;
+
+}
+#inner{
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 0 9px black;
+    border-radius: 4px;
+    padding:4rem;
+
+}
+label{
+    font-family: "Roboto", sans-serif;
+}
