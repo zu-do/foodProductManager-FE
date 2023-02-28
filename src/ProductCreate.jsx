@@ -8,55 +8,45 @@ import "./styleCreate.css";
 
         
 export default function ProductCreate() {
-  const [name, setName] = useState('');
+  const [productName, setName] = useState('');
   const [category, setCategory] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState(null);
-  const [products, setProducts] = useState([
-    {
-      id: "4",
-      name: "Product 1",
-      category: "Category 1",
-      description: "smth",
-      expiration: 1,
-    },
-    {
-      id: "5",
-      name: "Product 2",
-      category: "Category 2",
-      description: "smth",
-      expiration: 2,
-    },
-    {
-      id: "6",
-      name: "Product 3",
-      category: "Category 3",
-      description: "smth",
-      expiration: 3,
-    },
-    {
-      id: "7",
-      name: "Product 5",
-      category: "Category 5",
-      description: "smth",
-      expiration: 3,
-    },
-  ]);
-
- /* useEffect(() => {
-    fetch("https://localhost:7258/Product/products")
-    .then(resp => resp.json())
-    .then(resp => setProducts(resp))
-    .catch(err => console.log(err))
-  }, [])
-*/
-
-    //const calculateExpiration = () => {
-        var dateNow=new Date();
-        const diffInMs = date - dateNow;
-        const diffInDays = parseInt( diffInMs / (1000 * 60 * 60 * 24));
-        console.log(diffInDays)
-  //};
+  const [productDescription, setDescription] = useState('');
+  const [expirationTime, setDate] = useState(null);
+  
+  const onSubmit = async (event) => {
+    event.preventDefault(); // prevent default form submit behavior
+    const productCategory = {
+      categoryName : category
+    }; 
+    const product = {
+      productName,
+      productCategory,
+      productDescription,
+      expirationTime,
+    };
+  
+    try {
+      const response = await fetch("https://localhost:7258/Product/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to submit the form");
+      }
+  
+      const result = await response.json();
+      console.log(result); // handle the response
+    } catch (error) {
+      console.error(error);
+      // handle the error
+    }
+  };
+  
+  
   
 
   return (
@@ -66,25 +56,25 @@ export default function ProductCreate() {
       <div id="inner">
         <label>Įveskite produkto pavadinimą:</label>
         <br/>
-        <InputText placeholder="Pvz.: Pienas"value={name} onChange={(e) => setName(e.target.value)} />
+        <InputText placeholder="Pvz.: Pienas"value={productName} onChange={(e) => setName(e.target.value)} />
         <br/>
         <br/>
-        <label> Pasirinkite kategoriją:</label>
+        <label> Įrašykite kategoriją:</label>
         <br/>
-        <Dropdown placeholder="Pasirinkti kategoriją" value={category} onChange={(e) => setCategory(e.target)} />
+        <InputText placeholder="Pasirinkti kategoriją" value={category} onChange={(e) => setCategory(e.target.value)} />
         <br/>
         <br/>
         <label>Įveskite produkto aprašymą:</label>
         <br/>
-        <InputTextarea placeholder="Pvz.: Naujas, nepradėtas" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <InputTextarea placeholder="Pvz.: Naujas, nepradėtas" value={productDescription} onChange={(e) => setDescription(e.target.value)} />
         <br/>
         <br/>
         <label>Pasirinkite iki kada galioja produktas:</label>
         <br/>
-        <Calendar placeholder="Pvz.: 02/26/2023" value={date} onChange={(e) => setDate(e.value)} showIcon />
+        <Calendar placeholder="Pvz.: 02/26/2023" value={expirationTime} onChange={(e) => setDate(2)} showIcon />
         <br/>
         <br/>
-        <Button label="Įkelti" icon="pi pi-check"/>
+        <Button onClick = {onSubmit} label="Įkelti" icon="pi pi-check"/>
         </div>
         </div>
   );

@@ -18,38 +18,11 @@ export default function Main() {
     
   const navigator = useNavigate();
   const [products, setProducts] = useState([
-    {
-      id: "4",
-      name: "Product 1",
-      category: "Category 1",
-      description: "smth",
-      expiration: 1,
-    },
-    {
-      id: "5",
-      name: "Product 2",
-      category: "Category 2",
-      description: "smth",
-      expiration: 2,
-    },
-    {
-      id: "6",
-      name: "Product 3",
-      category: "Category 3",
-      description: "smth",
-      expiration: 3,
-    },
-    {
-      id: "7",
-      name: "Product 5",
-      category: "Category 5",
-      description: "smth",
-      expiration: 3,
-    },
+   
   ]);
 
    useEffect(() => {
-    fetch("https://localhost:7258/Product/products")
+    fetch("https://localhost:7258/Product/getAll")
     .then(resp => resp.json())
     .then(resp => setProducts(resp))
     .catch(err => console.log(err))
@@ -87,7 +60,9 @@ export default function Main() {
 };
 const handleDeleteProduct = async (id) => {
   try {
-    const response = await fetch("https://localhost:7258/Product/delete?id=" +id,{method:"DELETE"});
+    const response = await fetch("https://localhost:7258/Product/delete" ,{method:"DELETE", headers: {
+      "Content-Type": "application/json"
+    }, body: JSON.stringify(id)});
     if (!response.ok) {
       throw new Error('Nepavyko ištrinti produkto.');
     }
@@ -147,10 +122,10 @@ const reject = () => {
           <div id="handle"></div>
         </div>
         <DataTable rowClassName="custom-row" value={products} tableStyle={{ width: "100%", marginBottom:'20px', borderRadius:'25px' }}>
-          <Column field="name" header="Produktas"></Column>
-          <Column field="category" header="Kategorija"></Column>
-          <Column field="description" header="Aprašymas"></Column>
-          <Column field="expiration" header="Liko galioti dienų"></Column>
+          <Column field="productName" header="Produktas"></Column>
+          <Column field="productCategory" header="Kategorija"></Column>
+          <Column field="productDescription" header="Aprašymas"></Column>
+          <Column field="expirationTime" header="Liko galioti dienų"></Column>
           <Column body={bodyTemplate}></Column>
           <Column body={tableButton}></Column>
         </DataTable>
