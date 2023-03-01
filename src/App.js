@@ -10,6 +10,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 //icons
 import "primeicons/primeicons.css";
+import ProductCreate from "./ProductCreate";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/main" element={<Main />}></Route>
+        <Route path="/product/create" element={<ProductCreate />}></Route>
       </Routes>
     </BrowserRouter>
   );
