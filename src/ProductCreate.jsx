@@ -5,6 +5,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import "./styleCreate.css";
+import { useNavigate } from "react-router-dom";
 
         
 export default function ProductCreate() {
@@ -12,6 +13,7 @@ export default function ProductCreate() {
   const [category, setCategory] = useState('');
   const [productDescription, setDescription] = useState('');
   const [expirationTime, setDate] = useState(null);
+  const navigator = useNavigate();
   
   const onSubmit = async (event) => {
     event.preventDefault(); // prevent default form submit behavior
@@ -37,7 +39,7 @@ export default function ProductCreate() {
       if (!response.ok) {
         throw new Error("Failed to submit the form");
       }
-  
+      navigator("/main");
       const result = await response.json();
       console.log(result); // handle the response
     } catch (error) {
