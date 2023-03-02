@@ -8,6 +8,9 @@ function AppBar() {
   const navigateToMain = () => {
     navigator("/main");
   };
+  const navigateToRegister = () => {
+    navigator("/register");
+  };
   return (
     <div className="container">
       <h2 style={{ margin: "40px" }}>Tavo šaldytuvas</h2>
@@ -19,6 +22,9 @@ function AppBar() {
         raised
       />
       <Button
+        onClick={() => {
+          navigateToRegister();
+       }}
         style={{ margin: "20px" }}
         label="Registruotis"
         severity="info"

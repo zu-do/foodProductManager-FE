@@ -11,6 +11,7 @@ import "primereact/resources/primereact.min.css";
 //icons
 import "primeicons/primeicons.css";
 import ProductCreate from "./ProductCreate";
+import Register from "./Pages/Register"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/main" element={<Main />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route path="/product/create" element={<ProductCreate />}></Route>
       </Routes>
     </BrowserRouter>
