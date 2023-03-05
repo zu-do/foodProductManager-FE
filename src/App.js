@@ -12,8 +12,10 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import ProductCreate from "./ProductCreate";
 import Register from "./Pages/Register"
+import Login from "./Pages/Login";
 
 function App() {
+  console.log(sessionStorage.getItem("user"))
   return (
     <BrowserRouter>
       <AppBar />
@@ -21,6 +23,7 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/main" element={<Main />}></Route>
         <Route path="/register" element={<Register />}></Route>
+        <Route path="/login" element={<Login />}></Route>
         <Route path="/product/create" element={<ProductCreate />}></Route>
       </Routes>
     </BrowserRouter>
