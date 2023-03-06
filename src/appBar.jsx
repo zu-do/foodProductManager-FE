@@ -21,9 +21,9 @@ function AppBar() {
     <div className="container">
       <h2 style={{ margin: "40px" }}>Tavo šaldytuvas</h2>
       <Button
-       onClick={() => {
-        navigateToLandingPage();
-      }}
+        onClick={() => {
+          navigateToLandingPage();
+        }}
         style={{ margin: "20px" }}
         label="Pagrindinis"
         severity="info"
@@ -36,56 +36,54 @@ function AppBar() {
         severity="info"
         text
         raised
-      />{sessionStorage.getItem("user") !== null
-      ?
+      />
+      {sessionStorage.getItem("user") !== null ? (
         <Button
-      onClick={() => {
-        navigateToMain();
-      }}
-      style={{ margin: "20px" }}
-      label="Šaldytuvas"
-      severity="info"
-      text
-      raised
-    />
-      : 
+          onClick={() => {
+            navigateToMain();
+          }}
+          style={{ margin: "20px" }}
+          label="Šaldytuvas"
+          severity="info"
+          text
+          raised
+        />
+      ) : (
         <Button
-      onClick={() => {
-        navigateToLogin();
-      }}
-      style={{ margin: "20px" }}
-      label="Prisijungti"
-      severity="info"
-      text
-      raised
-    />
-    }
-    {   sessionStorage.getItem("user") !== null ?
-    <Button
-      onClick={() => {
-       sessionStorage.clear()
-       navigateToLandingPage()
-    
-      }}
-      style={{ margin: "20px" }}
-      label="Atsijungti"
-      severity="info"
-      text
-      raised
-    />
-    :
-     <Button
-    onClick={() => {
-      navigateToRegister();
-    }}
-    style={{ margin: "20px" }}
-    label="Registruotis"
-    severity="info"
-    text
-    raised
-  />
-    }
-           
+          onClick={() => {
+            navigateToLogin();
+          }}
+          style={{ margin: "20px" }}
+          label="Prisijungti"
+          severity="info"
+          text
+          raised
+        />
+      )}
+      {sessionStorage.getItem("user") !== null ? (
+        <Button
+          onClick={() => {
+            sessionStorage.clear();
+            navigateToLandingPage();
+          }}
+          style={{ margin: "20px" }}
+          label="Atsijungti"
+          severity="info"
+          text
+          raised
+        />
+      ) : (
+        <Button
+          onClick={() => {
+            navigateToRegister();
+          }}
+          style={{ margin: "20px" }}
+          label="Registruotis"
+          severity="info"
+          text
+          raised
+        />
+      )}
     </div>
   );
 }
