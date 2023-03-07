@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "primereact/button";
-import "./styleAppBar.css";
+import "./Styles/styleAppBar.css";
 import { useNavigate } from "react-router-dom";
 
 function AppBar() {
@@ -20,17 +20,18 @@ function AppBar() {
   return (
     <div className="container">
       <h2 style={{ margin: "40px" }}>Tavo šaldytuvas</h2>
-      <Button
+      
+      <Button class="button-1"
        onClick={() => {
         navigateToLandingPage();
       }}
-        style={{ margin: "20px" }}
+        style={{ margin: "25px" }}
         label="Pagrindinis"
         severity="info"
         text
         raised
       />
-      <Button
+      <Button class="button-1"
         style={{ margin: "20px" }}
         label="Apie mus"
         severity="info"
@@ -38,7 +39,7 @@ function AppBar() {
         raised
       />{sessionStorage.getItem("user") !== null
       ?
-        <Button
+        <Button class="button-1"
       onClick={() => {
         navigateToMain();
       }}
@@ -85,7 +86,7 @@ function AppBar() {
     raised
   />
     }
-           
+    
     </div>
   );
 }
