@@ -19,72 +19,48 @@ function AppBar() {
   };
   return (
     <div className="container">
-      <h2 style={{ margin: "40px" }}>Tavo šaldytuvas</h2>
-      
-      <Button class="button-1"
-       onClick={() => {
+      <h2 className="header ">Tavo šaldytuvas</h2>
+     
+
+      <button className="NavButton" 
+      onClick={() => {
         navigateToLandingPage();
-      }}
-        style={{ margin: "25px" }}
-        label="Pagrindinis"
-        severity="info"
-        text
-        raised
-      />
-      <Button class="button-1"
-        style={{ margin: "20px" }}
-        label="Apie mus"
-        severity="info"
-        text
-        raised
-      />{sessionStorage.getItem("user") !== null
+      }}> Pagrindinis</button>
+
+      <button className="NavButton" 
+      onClick={() => {
+        navigateToLandingPage();
+      }}> Apie mus</button>
+      
+      {sessionStorage.getItem("user") !== null
       ?
-        <Button class="button-1"
+      <button className="NavButton" 
       onClick={() => {
         navigateToMain();
-      }}
-      style={{ margin: "20px" }}
-      label="Šaldytuvas"
-      severity="info"
-      text
-      raised
-    />
+      }}> Šaldytuvas</button>
+
       : 
-        <Button
+      <button className="NavButton" 
       onClick={() => {
         navigateToLogin();
-      }}
-      style={{ margin: "20px" }}
-      label="Prisijungti"
-      severity="info"
-      text
-      raised
-    />
+      }}> Prisijungti</button>
+       
     }
     {   sessionStorage.getItem("user") !== null ?
-    <Button
+
+      <button className="NavButton" 
       onClick={() => {
-       sessionStorage.clear()
-       navigateToLandingPage()
+        sessionStorage.clear()
+        navigateToLandingPage()
+      }}> Atsijungti</button>
+
     
-      }}
-      style={{ margin: "20px" }}
-      label="Atsijungti"
-      severity="info"
-      text
-      raised
-    />
     :
-     <Button
-    onClick={() => {
-      navigateToRegister();
-    }}
-    style={{ margin: "20px" }}
-    label="Registruotis"
-    severity="info"
-    text
-    raised
-  />
+    <button className="NavButton" 
+      onClick={() => {
+        navigateToRegister();
+      }}> Registruotis</button>
+     
     }
     
     </div>

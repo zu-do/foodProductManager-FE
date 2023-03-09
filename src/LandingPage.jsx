@@ -1,5 +1,5 @@
 import React from "react";
-import "./Styles/LandingPage.css"; // import the CSS file for styling
+import "./Styles/LandingPage.css"; 
 import photo1 from'./Pictures/sushi.jpg';
 import photo2 from'./Pictures/tomato6x6.jpg';
 import photo3 from'./Pictures/vysnios6x6.jpg';
@@ -57,7 +57,7 @@ function LandingPage() {
           src={photo6}
           alt="orange"
         />
-        <p className="columnText">Tvarumas2</p>
+        <p className="columnText">Atiduotuvė</p>
       </div>
     </div>
   );
