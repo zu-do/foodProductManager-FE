@@ -2,6 +2,7 @@ import "./App.css";
 import Home from "./LandingPage";
 import AppBar from "./AppBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import EditProduct from "./Views/EditProduct";
 import Main from "./Main";
 ////prime react imports
 //theme
@@ -10,7 +11,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 //icons
 import "primeicons/primeicons.css";
-import ProductCreate from "./ProductCreate";
+import ProductCreate from "./Views/ProductCreate";
 import Register from "./Pages/Register"
 import Login from "./Pages/Login";
 
