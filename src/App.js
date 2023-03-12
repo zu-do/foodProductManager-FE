@@ -2,7 +2,6 @@ import "./App.css";
 import Home from "./LandingPage";
 import AppBar from "./AppBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import EditProduct from "./Views/EditProduct";
 import Main from "./Main";
 ////prime react imports
 //theme
