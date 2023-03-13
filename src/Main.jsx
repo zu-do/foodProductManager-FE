@@ -19,16 +19,6 @@ export default function Main() {
   const toast = useRef(null);
   const [products, setProducts] = useState([]);
   const [flag, setFlag] = useState(false);
-  const [shelves, setShelves] = useState([
-    {
-      id:1,
-      name:'Pieno lentyna',
-    },
-    {
-      id:2,
-      name:'Darzoviu lentyna',
-    }
-  ]);
   const [visible, setVisible] = useState(false);
   const navigator = useNavigate();
   const toggleDialog = () => {
