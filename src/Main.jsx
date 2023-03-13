@@ -12,10 +12,23 @@ import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import EditProduct from "./Views/EditProduct";
 import { getProducts } from "./Utils/product-axios-utils";
+import { getShelves } from "./Utils/shelf-axios-utils";
+
 
 export default function Main() {
   const toast = useRef(null);
   const [products, setProducts] = useState([]);
+  const [flag, setFlag] = useState(false);
+  const [shelves, setShelves] = useState([
+    {
+      id:1,
+      name:'Pieno lentyna',
+    },
+    {
+      id:2,
+      name:'Darzoviu lentyna',
+    }
+  ]);
   const [visible, setVisible] = useState(false);
   const navigator = useNavigate();
   const toggleDialog = () => {
@@ -25,6 +38,9 @@ export default function Main() {
   useEffect(() => {
     getProducts().then((data) => {
       setProducts(data);
+    });
+    getShelves().then((data) =>{
+      setShelves(data);
     });
   }, []);
 
@@ -118,6 +134,10 @@ export default function Main() {
 
   const reject = () => {};
 
+  const openList = () => {
+    setFlag(!flag);
+  }
+
   return (
     <div style={{ textAlign: "center" }}>
       <ConfirmPopup />
@@ -160,6 +180,28 @@ export default function Main() {
           style={{ marginRight: "20px" }}
         />
       </div>
+      <div id="shelf-box">
+        <Button 
+        style={{width:'12rem'}}
+        onClick={openList} 
+        label="Lentynos" 
+        icon={flag ? "pi pi-angle-up" : "pi pi-angle-down"} 
+        /> 
+        <br/> <br/>
+        {flag && shelves.map((sh) => (
+        <>
+        <Button 
+        id="shelf-list-button"
+        key={sh.id}
+        icon="pi pi-folder" 
+        label={sh.name} 
+        rounded
+        />
+        <br/><br/>
+        </>
+     ) )}
+     </div>
+    
       <div id="fridge">
         <div id="upper-section">
           <div id="handle"></div>

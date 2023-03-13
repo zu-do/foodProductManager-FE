@@ -29,3 +29,23 @@
   border-radius: 25px;
   border: 1px solid gray;
 }
+
+#shelf-box{
+  float: right;
+  margin-right: 2rem;
+}
+
+#shelf-list-button{
+  background-color:#4b00e9;
+  border:none;
+  white-space:normal;
+  overflow-wrap:break-word;
+  width:12rem;
+  word-break:break-all;
+}
+
+@media (max-width: 1200px) {
+  #shelf-box{
+  float: none;
+  }
+}
