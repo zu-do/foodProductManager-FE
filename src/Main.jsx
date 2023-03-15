@@ -179,13 +179,13 @@ export default function Main() {
         icon={flag ? "pi pi-angle-up" : "pi pi-angle-down"} 
         /> 
         <br/> <br/>
-        {flag && shelves.map((sh) => (
+        {flag && shelves.map((shelf) => (
         <>
         <Button 
         id="shelf-list-button"
-        key={sh.id}
+        key={shelf.id}
         icon="pi pi-folder" 
-        label={sh.name} 
+        label={shelf.name} 
         rounded
         />
         <br/><br/>
