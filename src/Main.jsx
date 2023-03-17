@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import "./styleMain.css";
+import "./Styles/styleMain.css";
 import { useNavigate } from "react-router-dom";
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
@@ -12,10 +12,14 @@ import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import EditProduct from "./Views/EditProduct";
 import { getProducts } from "./Utils/product-axios-utils";
+import { getShelves } from "./Utils/shelf-axios-utils";
+
 
 export default function Main() {
   const toast = useRef(null);
   const [products, setProducts] = useState([]);
+  const [flag, setFlag] = useState(false);
+  const[shelves, setShelves] = useState([]);
   const [visible, setVisible] = useState(false);
   const navigator = useNavigate();
   const toggleDialog = () => {
@@ -25,6 +29,9 @@ export default function Main() {
   useEffect(() => {
     getProducts().then((data) => {
       setProducts(data);
+    });
+    getShelves().then((data) =>{
+      setShelves(data);
     });
   }, []);
 
@@ -118,10 +125,15 @@ export default function Main() {
 
   const reject = () => {};
 
+  const openList = () => {
+    setFlag(!flag);
+  }
+
   return (
     <div style={{ textAlign: "center" }}>
       <ConfirmPopup />
       <Toast ref={toast} />
+      <div id="button-container">
       <div className="buttons">
         <Button
           onClick={navigateToProductCreate}
@@ -129,37 +141,61 @@ export default function Main() {
           icon="pi pi-plus"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Siūlomi receptai"
           icon="pi pi-book"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Prenumerata"
           icon="pi pi-bell"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Konkursas"
           icon="pi pi-star"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Įvertink naudotoją"
           icon="pi pi-comment"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
       </div>
+      </div>
+      <div id="shelf-box">
+        <Button 
+        severity="info"
+        style={{width:'12rem'}}
+        onClick={openList} 
+        label="Lentynos" 
+        icon={flag ? "pi pi-angle-up" : "pi pi-angle-down"} 
+        /> 
+        <br/> <br/>
+        {flag && shelves.map((shelf) => (
+        <>
+        <Button 
+        id="shelf-list-button"
+        key={shelf.id}
+        icon="pi pi-folder" 
+        label={shelf.name} 
+        rounded
+        />
+        <br/><br/>
+        </>
+     ) )}
+     </div>
+    
       <div id="fridge">
         <div id="upper-section">
           <div id="handle"></div>
