@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import "./styleMain.css";
+import "./Styles/styleMain.css";
 import { useNavigate } from "react-router-dom";
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
@@ -133,6 +133,7 @@ export default function Main() {
     <div style={{ textAlign: "center" }}>
       <ConfirmPopup />
       <Toast ref={toast} />
+      <div id="button-container">
       <div className="buttons">
         <Button
           onClick={navigateToProductCreate}
@@ -140,39 +141,41 @@ export default function Main() {
           icon="pi pi-plus"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Siūlomi receptai"
           icon="pi pi-book"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Prenumerata"
           icon="pi pi-bell"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Konkursas"
           icon="pi pi-star"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
         <Button
           label="Įvertink naudotoją"
           icon="pi pi-comment"
           severity="info"
           rounded
-          style={{ marginRight: "20px" }}
+          style={{  width:'100%', marginBottom:'1rem' }}
         />
+      </div>
       </div>
       <div id="shelf-box">
         <Button 
+        severity="info"
         style={{width:'12rem'}}
         onClick={openList} 
         label="Lentynos" 
