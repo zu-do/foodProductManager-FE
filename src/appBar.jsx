@@ -17,9 +17,7 @@ function AppBar() {
   const navigateToLogin = () => {
     navigator("/login");
   };
-  const navigateToStatistics = () => {
-    navigator("/statistics");
-  };
+
   return (
     <div className="container">
       <h2 className="header ">Tavo šaldytuvas</h2>
@@ -87,15 +85,6 @@ function AppBar() {
           Registruotis
         </button>
       )}
-      <button
-        className="NavButton"
-        onClick={() => {
-          navigateToStatistics();
-        }}
-      >
-        {" "}
-        Statistika
-      </button>
     </div>
   );
 }
