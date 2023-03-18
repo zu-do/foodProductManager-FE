@@ -11,11 +11,12 @@ import "primereact/resources/primereact.min.css";
 //icons
 import "primeicons/primeicons.css";
 import ProductCreate from "./Views/ProductCreate";
-import Register from "./Pages/Register"
+import Statistics from "./Pages/Statistics";
+import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 
 function App() {
-  console.log(sessionStorage.getItem("user"))
+  console.log(sessionStorage.getItem("user"));
   return (
     <BrowserRouter>
       <AppBar />
@@ -25,6 +26,7 @@ function App() {
         <Route path="/register" element={<Register />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/product/create" element={<ProductCreate />}></Route>
+        <Route path="/statistics" element={<Statistics />}></Route>
       </Routes>
     </BrowserRouter>
   );
