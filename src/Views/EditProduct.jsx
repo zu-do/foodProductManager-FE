@@ -7,15 +7,15 @@ import { Calendar } from "primereact/calendar";
 import { editProduct } from "../Utils/product-axios-utils";
 
 const EditProduct = ({ visible, onHide, rowData }) => {
-  const [formValues, setFormValues] = useState(initialFormValues);
   const [productId, setProductId] = useState(rowData?.id);
-
   const initialFormValues = {
     productName: rowData?.productName,
     categoryName: rowData?.categoryName,
     productDescription: rowData?.productDescription,
     expirationTime: new Date(rowData?.expirationTime),
   };
+
+  const [formValues, setFormValues] = useState(initialFormValues);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
