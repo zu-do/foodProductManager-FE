@@ -30,10 +30,12 @@ export default function ProductCreate() {
 
   const onSubmit = (event) => {
     event.preventDefault(); // prevent default form submit behavior
+    var expirationtime  = new Date(expirationTime.getTime() - expirationTime.getTimezoneOffset() * 60 *1000);
+
     const product = {
       productName,
       productDescription,
-      expirationTime,
+      expirationtime,
     };
 
     const response = addProduct(product, productCategory.categoryName);

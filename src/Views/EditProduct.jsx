@@ -25,6 +25,14 @@ const EditProduct = ({ visible, onHide, rowData }) => {
     }));
   };
 
+  const handleDateInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: new Date(value.getTime() - value.getTimezoneOffset() * 60 * 1000),
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -93,7 +101,7 @@ const EditProduct = ({ visible, onHide, rowData }) => {
                     id="expirationTime"
                     name="expirationTime"
                     value={formValues.expirationTime}
-                    onChange={handleInputChange}
+                    onChange={handleDateInputChange}
                   />
                 </span>
               </div>
