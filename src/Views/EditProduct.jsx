@@ -31,6 +31,14 @@ export default function EditProduct(props) {
     }));
   };
 
+  const handleDateInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: new Date(value.getTime() - value.getTimezoneOffset() * 60 * 1000),
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -105,7 +113,7 @@ export default function EditProduct(props) {
                     id="expirationTime"
                     name="expirationTime"
                     value={formValues.expirationTime}
-                    onChange={handleInputChange}
+                    onChange={handleDateInputChange}
                   />
                 </span>
               </div>
