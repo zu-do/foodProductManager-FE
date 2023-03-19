@@ -4,6 +4,8 @@ import "../Styles/Register.css"
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {registerUser} from "../Utils/user-axios-utils"
+import { User } from "../User/User";
+
 
 
 function Register() {
@@ -12,7 +14,7 @@ function Register() {
     const navigateToMain = () => {
       navigator("/main");
     };
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(User);
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
     const [name, setName] = useState("");
@@ -31,7 +33,7 @@ function Register() {
         const response = registerUser(user);
         response.then((result) => {
             if (result !== null){
-                sessionStorage.setItem("user", email);
+                sessionStorage.setItem(User.userEmail, email);
                 navigateToMain();
             }
             else{
