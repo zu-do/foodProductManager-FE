@@ -4,11 +4,12 @@ import { InputText } from 'primereact/inputtext';
 import "../Styles/Register.css"
 import { useNavigate } from "react-router-dom";
 import {loginUser} from "../Utils/user-axios-utils"
+import { User } from "../User/User";
 
 
 function Login() {
 
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(User);
     const [password, setPassword] = useState("");
     const navigator = useNavigate();
     const navigateToMain = () => {
@@ -21,7 +22,7 @@ function Login() {
         const response = loginUser(email, password);
         response.then((result) => {
             if (result !== null){
-                sessionStorage.setItem("user", email);
+                sessionStorage.setItem(User.userEmail, email);
                 navigateToMain();
             }
             else{

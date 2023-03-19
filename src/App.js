@@ -14,9 +14,14 @@ import ProductCreate from "./Views/ProductCreate";
 import Statistics from "./Pages/Statistics";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
+import Categories from "./Pages/Categories";
+import {User} from "./User/User"
+import { ProtectedRouteAdmin } from "./Utils/ProtectedRoute";
+
 
 function App() {
-  console.log(sessionStorage.getItem("user"));
+  
+  console.log(sessionStorage.getItem(User.userEmail));
   return (
     <BrowserRouter>
       <AppBar />
@@ -27,6 +32,9 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/product/create" element={<ProductCreate />}></Route>
         <Route path="/statistics" element={<Statistics />}></Route>
+        <Route path="/admin/categories" element={
+          <ProtectedRouteAdmin> <Categories/></ProtectedRouteAdmin>
+        }></Route>
       </Routes>
     </BrowserRouter>
   );
