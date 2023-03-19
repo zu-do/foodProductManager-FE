@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "primereact/button";
 import "./Styles/styleAppBar.css";
 import { useNavigate } from "react-router-dom";
+import {User} from "./User/User"
 
 function AppBar() {
   const navigator = useNavigate();
@@ -16,6 +16,9 @@ function AppBar() {
   };
   const navigateToLogin = () => {
     navigator("/login");
+  };
+  const navigateToCategories = () => {
+    navigator("admin/categories");
   };
 
   return (
@@ -42,7 +45,7 @@ function AppBar() {
         Apie mus
       </button>
 
-      {sessionStorage.getItem("user") !== null ? (
+      {sessionStorage.getItem(User.userEmail) !== null ? (
         <button
           className="NavButton"
           onClick={() => {
@@ -63,7 +66,7 @@ function AppBar() {
           Prisijungti
         </button>
       )}
-      {sessionStorage.getItem("user") !== null ? (
+      {sessionStorage.getItem(User.userEmail) !== null ? (
         <button
           className="NavButton"
           onClick={() => {
@@ -85,6 +88,17 @@ function AppBar() {
           Registruotis
         </button>
       )}
+
+        <button
+          className="NavButton"
+          onClick={() => {
+            navigateToCategories();
+          }}
+        >
+          {" "}
+          Kategorijos
+        </button>
+
     </div>
   );
 }
