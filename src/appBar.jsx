@@ -17,52 +17,74 @@ function AppBar() {
   const navigateToLogin = () => {
     navigator("/login");
   };
+
   return (
     <div className="container">
       <h2 className="header ">Tavo šaldytuvas</h2>
-     
 
-      <button className="NavButton" 
-      onClick={() => {
-        navigateToLandingPage();
-      }}> Pagrindinis</button>
+      <button
+        className="NavButton"
+        onClick={() => {
+          navigateToLandingPage();
+        }}
+      >
+        {" "}
+        Pagrindinis
+      </button>
 
-      <button className="NavButton" 
-      onClick={() => {
-        navigateToLandingPage();
-      }}> Apie mus</button>
-      
-      {sessionStorage.getItem("user") !== null
-      ?
-      <button className="NavButton" 
-      onClick={() => {
-        navigateToMain();
-      }}> Šaldytuvas</button>
+      <button
+        className="NavButton"
+        onClick={() => {
+          navigateToLandingPage();
+        }}
+      >
+        {" "}
+        Apie mus
+      </button>
 
-      : 
-      <button className="NavButton" 
-      onClick={() => {
-        navigateToLogin();
-      }}> Prisijungti</button>
-       
-    }
-    {   sessionStorage.getItem("user") !== null ?
-
-      <button className="NavButton" 
-      onClick={() => {
-        sessionStorage.clear()
-        navigateToLandingPage()
-      }}> Atsijungti</button>
-
-    
-    :
-    <button className="NavButton" 
-      onClick={() => {
-        navigateToRegister();
-      }}> Registruotis</button>
-     
-    }
-    
+      {sessionStorage.getItem("user") !== null ? (
+        <button
+          className="NavButton"
+          onClick={() => {
+            navigateToMain();
+          }}
+        >
+          {" "}
+          Šaldytuvas
+        </button>
+      ) : (
+        <button
+          className="NavButton"
+          onClick={() => {
+            navigateToLogin();
+          }}
+        >
+          {" "}
+          Prisijungti
+        </button>
+      )}
+      {sessionStorage.getItem("user") !== null ? (
+        <button
+          className="NavButton"
+          onClick={() => {
+            sessionStorage.clear();
+            navigateToLandingPage();
+          }}
+        >
+          {" "}
+          Atsijungti
+        </button>
+      ) : (
+        <button
+          className="NavButton"
+          onClick={() => {
+            navigateToRegister();
+          }}
+        >
+          {" "}
+          Registruotis
+        </button>
+      )}
     </div>
   );
 }
