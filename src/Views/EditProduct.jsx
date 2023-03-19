@@ -6,22 +6,16 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
 import { editProduct } from "../Utils/product-axios-utils";
 
-export default function EditProduct(props) {
-  const { product } = props;
-  const [visible, setVisible] = useState(false);
-
-  const toggleDialog = () => {
-    setVisible(!visible);
-  };
-
+const EditProduct = ({ visible, onHide, rowData }) => {
+  const [productId, setProductId] = useState(rowData?.id);
   const initialFormValues = {
-    productName: product.productName,
-    categoryName: product.categoryName,
-    productDescription: product.productDescription,
-    expirationTime: new Date(product.expirationTime),
+    productName: rowData?.productName,
+    categoryName: rowData?.categoryName,
+    productDescription: rowData?.productDescription,
+    expirationTime: new Date(rowData?.expirationTime),
   };
+
   const [formValues, setFormValues] = useState(initialFormValues);
-  const [productId, setProductId] = useState(product.id);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,13 +25,21 @@ export default function EditProduct(props) {
     }));
   };
 
+  const handleDateInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: new Date(value.getTime() - value.getTimezoneOffset() * 60 * 1000),
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     editProduct(formValues, productId)
       .then((response) => {
         if (response === true) {
-          setVisible(false);
+          onHide();
           window.location.reload();
         }
       })
@@ -48,17 +50,11 @@ export default function EditProduct(props) {
 
   return (
     <div className="card flex justify-content-center">
-      <Button
-        label="Redaguoti"
-        style={{ background: "#3B82F6" }}
-        icon="pi pi-external-link"
-        onClick={() => setVisible(true)}
-      />
       <Dialog
         header="Redaguoti produkto informaciją"
         visible={visible}
         style={{ width: "30%" }}
-        onHide={() => setVisible(false)}
+        onHide={onHide}
       >
         <div className="flex justify-content-center">
           <div className="card">
@@ -105,7 +101,7 @@ export default function EditProduct(props) {
                     id="expirationTime"
                     name="expirationTime"
                     value={formValues.expirationTime}
-                    onChange={handleInputChange}
+                    onChange={handleDateInputChange}
                   />
                 </span>
               </div>
@@ -127,7 +123,7 @@ export default function EditProduct(props) {
                     label="Atšaukti"
                     icon="pi pi-times"
                     style={{ width: "30%", float: "right" }}
-                    onClick={() => setVisible(false)}
+                    onClick={onHide}
                     className="p-button-text"
                   />
                 </span>
@@ -138,4 +134,6 @@ export default function EditProduct(props) {
       </Dialog>
     </div>
   );
-}
+};
+
+export default EditProduct;
