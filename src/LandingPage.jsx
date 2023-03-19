@@ -1,45 +1,35 @@
 import React from "react";
 import "./Styles/LandingPage.css";
-import photo1 from "./Pictures/sushi.jpg";
-import photo2 from "./Pictures/tomato6x6.jpg";
-import photo3 from "./Pictures/vysnios6x6.jpg";
-import photo4 from "./Pictures/avocad.jpg";
-import photo5 from "./Pictures/apple.jpg";
-import photo6 from "./Pictures/banana.jpg";
+import photo1 from "./Pictures/a.jpg";
+import photo2 from "./Pictures/av.jpg";
+import photo3 from "./Pictures/b.jpg";
+import photo4 from "./Pictures/c.jpg";
+import photo5 from'./Pictures/p.jpg';
+import photo6 from "./Pictures/s.jpg";
+import { Card } from "primereact/card";
 import { useNavigate } from "react-router-dom";
+import "primereact/resources/themes/lara-light-purple/theme.css";
 
 function LandingPage() {
   const navigator = useNavigate();
   const navigateToStatistics = () => {
     navigator("/statistics");
   };
+  const header = <img className="image" alt="apple" src={photo1} />;
+  const header1 = <img className="image" alt="avocado" src={photo2} />;
+  const header2 = <img className="image" alt="banana" src={photo3} />;
+  const header3 = <img className="image" alt="cherry" src={photo4} />;
+  const header4 = <img className="image" alt="tomato" src={photo5} />;
+  const header5 = <img className="image" alt="suchi" src={photo6} />;
   return (
-    <div className="grid-container">
-      <div className="column">
-        <img className="image" src={photo1} alt="avocado" />
-        <p className="columnText">Produktų prenumerata</p>
-      </div>
-      <div className="column">
-        <img className="image" src={photo2} alt="banana" />
-        <p className="columnText">Receptų pasiūlymai</p>
-      </div>
-      <div className="column">
-        <img className="image" src={photo3} alt="strawberry" />
-        <p className="columnText">Produktų galiojimo priminimai</p>
-      </div>
-      <div className="column">
-        <img className="image" src={photo4} alt="orange" />
-        <p className="columnText">Tvarumas</p>
-      </div>
-
-      <div onClick={navigateToStatistics} className="column">
-        <img className="image" src={photo5} alt="orange" />
-        <p className="columnText">Statistika</p>
-      </div>
-      <div className="column">
-        <img className="image" src={photo6} alt="orange" />
-        <p className="columnText">Atiduotuvė</p>
-      </div>
+    <div className="grid-container1">
+      <Card title="Produktų prenumerata" header={header} className="md:w-25rem"></Card>
+      <Card title="Receptų pasiūlymai" header={header5} className="md:w-25rem"></Card>
+      <Card title="Produktų galiojimo priminimai" header={header3} className="md:w-25rem"></Card>
+      <Card title="Tvarumas" header={header2} className="md:w-25rem"></Card>
+      <Card title="Atiduotuvė" header={header4} className="md:w-25rem"></Card>
+      <Card title="Statistika" header={header1} className="md:w-25rem" onClick={navigateToStatistics}></Card>
+      
     </div>
   );
 }

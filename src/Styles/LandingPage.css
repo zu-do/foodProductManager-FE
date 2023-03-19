@@ -1,12 +1,22 @@
-body {
-  background-color: #ffffe0;
-}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, minmax(300px, 1fr));
   grid-gap: -10px;
   overflow: hidden;
   flex-wrap: wrap;
+}
+.grid-container1 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  grid-gap: 40px;
+  padding: 3rem 8rem;
+}
+
+@media (min-width: 0px) and (max-width: 850px) {
+  .grid-container1  {
+    grid-template-columns: repeat(1, minmax(300px, 1fr));
+  }
 }
 .column {
   background-position: center;
@@ -22,12 +32,30 @@ body {
   scale: 1.0;
   box-shadow: 0 0 9px black;
 }
+.card-flex-justify-content-center :hover{
+  opacity: 1 !important; 
+  scale: 1.0;
+  box-shadow: 0 0 9px black;
+}
+.p-card-header :hover{
+  cursor: pointer;
+  opacity: 1 ; 
+  scale: 1.0;
+  box-shadow: 0 0 9px black;
+}
 .image {
   width: 100%;
   height: 204px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   opacity: 0.5;
   object-fit:cover;
+}
+.img1 {
+  width: 50%;
+  height: 50% !important;
+  object-fit:cover;
+
+  
 }
 .columnText {
   font-family: 'Josefin Sans', sans-serif;
@@ -47,30 +75,12 @@ body {
   word-wrap: break-word; 
   overflow-wrap:break-word; 
 }
-@media (max-width: 768px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 0px;
-  }
-}
-@media (min-width: 0px) and (max-width: 400px) {
-  .columnText {
-    font-size:medium;
-    scale: 1.00;
-  }
-}
-@media (min-width: 401px) and (max-width: 800px) {
-  .columnText {
-    font-size: medium;
-    text-overflow: ellipsis;
-  }
-  .column:hover{
-    scale: 1.00;
-  }
-}
 
-@media (min-width: 801px) and (max-width: 1400px) {
-  .columnText {
-    font-size: x-large;
+
+
+@media (min-width:850px) and ( max-width: 1150px)  {
+  .grid-container1 {
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+   
   }
 }
