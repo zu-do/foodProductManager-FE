@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
 import { Toast } from "primereact/toast";
-
+import ProductCreate from "./Views/ProductCreate";
 import { Tag } from "primereact/tag";
 import EditProduct from "./Views/EditProduct";
 import { getProducts } from "./Utils/product-axios-utils";
@@ -21,6 +21,7 @@ export default function Main() {
   const [shelves, setShelves] = useState([]);
   const navigator = useNavigate();
 
+  const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
 
@@ -32,6 +33,13 @@ export default function Main() {
   const hideDialog = () => {
     setSelectedRowData(null);
     setDialogVisible(false);
+  };
+  const showCreateDialog = (rowData) => {
+    setCreateDialogVisible(true);
+  };
+
+  const hideCreateDialog = () => {
+    setCreateDialogVisible(false);
   };
 
   useEffect(() => {
@@ -145,7 +153,7 @@ export default function Main() {
       <div id="button-container">
         <div className="buttons">
           <Button
-            onClick={navigateToProductCreate}
+            onClick={showCreateDialog}
             label="Pridėti produktą"
             icon="pi pi-plus"
             severity="info"
@@ -228,6 +236,10 @@ export default function Main() {
           <Column body={renderEditComponent}></Column>
           <Column body={tableButton}></Column>
         </DataTable>
+        <ProductCreate
+        visible={dialogCreateVisible}
+        onHide={hideCreateDialog}
+         />
         {selectedRowData && (
           <EditProduct
             visible={dialogVisible}
