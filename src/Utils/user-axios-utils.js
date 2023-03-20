@@ -23,3 +23,14 @@ const client = axios.create({
       return null;
     }
   };
+
+
+  export const getUsers = async () => {
+    try {
+      const response = await client.get(`users`);
+      return response.data;
+    } catch (err) {
+      console.error(err.message);
+      return null;
+    }
+  };

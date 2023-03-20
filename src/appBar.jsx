@@ -30,24 +30,50 @@ function AppBar() {
   const navigateToCategories = () => {
     navigator("admin/categories");
   };
-  const navigateToStatistics = () => {
-    navigator("statistics");
+
+  const navigateToUsers = () => {
+    navigator("admin/users");
   };
-  const items = [
-    sessionStorage.getItem(User.userType) === Types.Admin ?
-    {
-      label: "Kategorijos",
-      icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
-      command: navigateToCategories,
-    }
-    : 
+
+  const adminItems =
+  [
     {
       
       label: "Pagrindinis",
       icon: <FontAwesomeIcon icon={faCheese} style={{ padding: "10px" }} />,
       command: navigateToLandingPage,
     },
-    sessionStorage.getItem(User.userEmail) !== null && sessionStorage.getItem(User.userType) !== Types.Admin
+   
+    {
+      label: "Kategorijos",
+      icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
+      command: navigateToCategories,
+    },
+        {
+          label: "Vartotojai",
+          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
+          command: navigateToUsers,
+        },
+        {
+          label: "Atsijungti",
+          icon: (
+            <FontAwesomeIcon icon={faPepperHot} style={{ padding: "10px" }} />
+          ),
+          command: () => {
+            sessionStorage.clear();
+            navigateToLandingPage();
+          },
+        }
+  ]
+  const items = [
+   
+    {
+      
+      label: "Pagrindinis",
+      icon: <FontAwesomeIcon icon={faCheese} style={{ padding: "10px" }} />,
+      command: navigateToLandingPage,
+    },
+    sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Lentyna",
           icon: (
@@ -56,39 +82,14 @@ function AppBar() {
           command: navigateToMain,
         }
       :  
-      {
-        label: "Apie mus",
-        icon: <FontAwesomeIcon icon={faCarrot} style={{ padding: "10px" }} />,
-        command: navigateToLandingPage,
-      },
-        sessionStorage.getItem(User.userType) === Types.Admin ?
-        {
-          label: "Vartotojai",
-          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
-          command: navigateToCategories,
-        }
-        : 
-        {
-          label: "Statistika",
-          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
-          command: navigateToStatistics,
-        }
-        ,
-        sessionStorage.getItem(User.userEmail) === null
-        ?
         {
             label: "Prisijungti",
             icon: (
               <FontAwesomeIcon icon={faBreadSlice} style={{ padding: "10px" }} />
             ),
             command: navigateToLogin,
-          }
-          :
-          {
-            label: "Atiduotuve",
-            icon: <FontAwesomeIcon icon={faCarrot} style={{ padding: "10px" }} />,
-            command: navigateToMain,
           },
+         
     sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Atsijungti",
@@ -109,7 +110,7 @@ function AppBar() {
   const start = <h2 className="header">Tavo lentyna</h2>;
   return (
     <div className="navbar">
-      <Menubar model={items} start={start} />
+      <Menubar model={sessionStorage.getItem(User.userType) === Types.Admin ? adminItems : items} start={start} />
     </div>
   );
 }

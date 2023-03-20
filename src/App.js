@@ -16,6 +16,7 @@ import Statistics from "./Pages/Statistics";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 import Categories from "./Pages/Categories";
+import UserOverview from "./Pages/UserOverview";
 import AdminLogin from "./Pages/AdminLogin";
 
 import {User} from "./User/User"
@@ -38,6 +39,9 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin/>}></Route>
         <Route path="/admin/categories" element={
           <ProtectedRouteAdmin> <Categories/></ProtectedRouteAdmin>
+        }></Route>
+         <Route path="/admin/users" element={
+          <ProtectedRouteAdmin> <UserOverview/></ProtectedRouteAdmin>
         }></Route>
       </Routes>
     </BrowserRouter>
