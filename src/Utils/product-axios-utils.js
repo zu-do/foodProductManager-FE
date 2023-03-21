@@ -4,9 +4,9 @@ const client = axios.create({
     baseURL: 'https://localhost:7258/Product',
   });
 
-  export const getProducts = async () => {
+  export const getProducts = async (email, shelfId) => {
     try {
-      const response = await client.get(`/getAll`);
+      const response = await client.post(`user-products`, {email:email});
       return response.data;
     } catch (err) {
       console.error(err.message);
@@ -34,9 +34,9 @@ const client = axios.create({
     }
   };
   
-  export const addProduct = async (body, categoryName) => {
+  export const addProduct = async (body, categoryName, shelfId) => {
     try {
-      await client.post(`/create`, {...body, categoryName: categoryName});
+      await client.post(`/create`, {...body, categoryName: categoryName, shelfId: shelfId});
       return true;
     } catch (err) {
       console.log(err.response);
