@@ -8,8 +8,9 @@ import "../Styles/styleCreate.css";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../Utils/category-axios-utils";
 import { addProduct } from "../Utils/product-axios-utils";
+import { Dialog } from "primereact/dialog";
 
-export default function ProductCreate() {
+export default function ProductCreate({ visible, onHide}) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [productName, setName] = useState("");
   const [productCategory, setCategory] = useState("");
@@ -41,59 +42,57 @@ export default function ProductCreate() {
     const response = addProduct(product, productCategory.categoryName);
     response.then((result) => {
       if (result === true) {
-        navigator("/main");
+        window.location.reload();
       } else {
       }
     });
   };
 
-  return (
+  return (<Dialog
+    header="Pridėti naują produktą"
+    visible={visible}
+    style={{ width: "30%" }}
+    onHide={onHide}
+  >
     <div id="outer">
+
       <div id="inner">
-        <label>Įveskite produkto pavadinimą:</label>
-        <br />
+      <h5 className="text-center">Įveskite produkto pavadinimą</h5>
         <InputText
           placeholder="Pvz.: Pienas"
           value={productName}
           onChange={(e) => setName(e.target.value)}
+          style={{width:"100%"}}
           className="w-full md:w-14rem"
         />
-        <br />
-        <br />
-        <label> Pasirinkite kategoriją:</label>
-        <br />
+        <h5> Pasirinkite kategoriją:</h5>
         <Dropdown
           value={productCategory}
           onChange={(e) => setCategory(e.value)}
           options={categoriesOptions}
+          style={{width:"100%"}}
           editable
           placeholder="Select a Category"
-          className="w-full md:w-14rem"
         />
-        <br />
-        <br />
-        <label>Įveskite produkto aprašymą:</label>
-        <br />
+        <h5>Įveskite produkto aprašymą:</h5>
         <InputTextarea
           placeholder="Pvz.: Naujas, nepradėtas"
           value={productDescription}
+          style={{width:"100%"}}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full md:w-14rem"
         />
-        <br />
-        <br />
-        <label>Pasirinkite iki kada galioja produktas:</label>
-        <br />
+        <h5>Pasirinkite iki kada galioja produktas:</h5>
         <Calendar
           placeholder="Pvz.: 02/26/2023"
           value={expirationTime}
+          style={{width:"100%"}}
           onChange={(e) => setDate(e.target.value)}
           showIcon
         />
-        <br />
-        <br />
-        <Button onClick={onSubmit} label="Įkelti" icon="pi pi-check" />
+        <br/><br/>
+        <Button onClick={onSubmit} severity="info" label="Įkelti" icon="pi pi-check" />
       </div>
     </div>
+    </Dialog>
   );
 }
