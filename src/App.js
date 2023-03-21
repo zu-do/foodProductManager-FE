@@ -11,27 +11,31 @@ import "primereact/resources/primereact.min.css";
 //icons
 import "primeicons/primeicons.css";
 import ProductCreate from "./Views/ProductCreate";
+// pages
 import Statistics from "./Pages/Statistics";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 import Categories from "./Pages/Categories";
+import AdminLogin from "./Pages/AdminLogin";
+
 import {User} from "./User/User"
-import { ProtectedRouteAdmin } from "./Utils/ProtectedRoute";
+import { ProtectedRouteAdmin, ProtectedRoute, ProtectedFromAdmin } from "./Utils/ProtectedRoute";
 
 
 function App() {
   
-  console.log(sessionStorage.getItem(User.userEmail));
+  console.log(sessionStorage.getItem(User.userType));
   return (
     <BrowserRouter>
       <AppBar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/main" element={<Main />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/product/create" element={<ProductCreate />}></Route>
+        <Route path="/main" element={<ProtectedRoute> <Main /> </ProtectedRoute>}></Route>
+        <Route path="/register" element={<ProtectedFromAdmin> <Register /> </ProtectedFromAdmin>}></Route>
+        <Route path="/login" element={<ProtectedFromAdmin> <Login /> </ProtectedFromAdmin>}></Route>
+        <Route path="/product/create" element={<ProtectedRoute> <ProductCreate /> </ProtectedRoute>}></Route>
         <Route path="/statistics" element={<Statistics />}></Route>
+        <Route path="/admin/login" element={<AdminLogin/>}></Route>
         <Route path="/admin/categories" element={
           <ProtectedRouteAdmin> <Categories/></ProtectedRouteAdmin>
         }></Route>

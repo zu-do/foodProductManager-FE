@@ -61,11 +61,11 @@ function Register() {
                     
                         <div className="formComponent">
                             <label htmlFor="name" className="block text-900 font-medium mb-2 label">Vardas</label>
-                            <InputText id="name" type="text" className="w-full mb-3" onChange={(e) => setName(e.target.value)} />
+                            <InputText id="name" type="text" placeholder="Vardas" className="w-full mb-3" onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="formComponent"> 
                             <label htmlFor="lastname" className="block text-900 font-medium mb-2 label">Pavardė</label>
-                            <InputText type="text" className="w-full mb-3"onChange={(e) => setLastName(e.target.value)}  />
+                            <InputText type="text" placeholder="Pavardė" className="w-full mb-3"onChange={(e) => setLastName(e.target.value)}  />
                         </div>
 
                         <div className="formComponent"> 

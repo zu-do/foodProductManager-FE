@@ -11,6 +11,7 @@ import { faBreadSlice } from "@fortawesome/free-solid-svg-icons";
 import { faPepperHot } from "@fortawesome/free-solid-svg-icons";
 import { faBurger } from "@fortawesome/free-solid-svg-icons";
 import {User} from "./User/User"
+import {Types} from "./Types/Types"
 
 function AppBar() {
   const navigator = useNavigate();
@@ -29,18 +30,24 @@ function AppBar() {
   const navigateToCategories = () => {
     navigator("admin/categories");
   };
+  const navigateToStatistics = () => {
+    navigator("statistics");
+  };
   const items = [
+    sessionStorage.getItem(User.userType) === Types.Admin ?
     {
+      label: "Kategorijos",
+      icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
+      command: navigateToCategories,
+    }
+    : 
+    {
+      
       label: "Pagrindinis",
       icon: <FontAwesomeIcon icon={faCheese} style={{ padding: "10px" }} />,
       command: navigateToLandingPage,
     },
-    {
-      label: "Apie mus",
-      icon: <FontAwesomeIcon icon={faCarrot} style={{ padding: "10px" }} />,
-      command: navigateToLandingPage,
-    },
-    sessionStorage.getItem("user") !== null
+    sessionStorage.getItem(User.userEmail) !== null && sessionStorage.getItem(User.userType) !== Types.Admin
       ? {
           label: "Lentyna",
           icon: (
@@ -48,14 +55,41 @@ function AppBar() {
           ),
           command: navigateToMain,
         }
-      : {
-          label: "Prisijungti",
-          icon: (
-            <FontAwesomeIcon icon={faBreadSlice} style={{ padding: "10px" }} />
-          ),
-          command: navigateToLogin,
-        },
-    sessionStorage.getItem("user") !== null
+      :  
+      {
+        label: "Apie mus",
+        icon: <FontAwesomeIcon icon={faCarrot} style={{ padding: "10px" }} />,
+        command: navigateToLandingPage,
+      },
+        sessionStorage.getItem(User.userType) === Types.Admin ?
+        {
+          label: "Vartotojai",
+          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
+          command: navigateToCategories,
+        }
+        : 
+        {
+          label: "Statistika",
+          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
+          command: navigateToStatistics,
+        }
+        ,
+        sessionStorage.getItem(User.userEmail) === null
+        ?
+        {
+            label: "Prisijungti",
+            icon: (
+              <FontAwesomeIcon icon={faBreadSlice} style={{ padding: "10px" }} />
+            ),
+            command: navigateToLogin,
+          }
+          :
+          {
+            label: "Atiduotuve",
+            icon: <FontAwesomeIcon icon={faCarrot} style={{ padding: "10px" }} />,
+            command: navigateToMain,
+          },
+    sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Atsijungti",
           icon: (
@@ -70,11 +104,6 @@ function AppBar() {
           label: "Registruotis",
           icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
           command: navigateToRegister,
-        },
-        {
-          label: "Kategorijos",
-          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
-          command: navigateToCategories,
         },
   ];
   const start = <h2 className="header">Tavo lentyna</h2>;
