@@ -47,7 +47,17 @@
   word-break:break-all;
 }
 
-@media (max-width: 1400px) {
+.product-card{
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  column-gap: 10rem;
+}
+
+.p-card div, p{
+text-align: left;
+}
+
+@media (max-width: 1500px) {
   #shelf-box{
   float: none;
   margin: 0;
@@ -62,5 +72,23 @@
   }
   #fridge{
     margin: 0 auto;
+  }
+}
+
+@media (max-width:1800px){
+  .product-card{
+    grid-template-columns: auto auto auto;
+  }
+}
+
+@media (max-width:1000px){
+  .product-card{
+    grid-template-columns: auto auto;
+  }
+}
+
+@media (max-width:600px){
+  .product-card{
+    grid-template-columns: auto;
   }
 }

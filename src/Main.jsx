@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import "./Styles/styleMain.css";
-import { useNavigate } from "react-router-dom";
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
 import { Toast } from "primereact/toast";
@@ -14,6 +11,8 @@ import { getProducts } from "./Utils/product-axios-utils";
 import { getUserShelves } from "./Utils/shelf-axios-utils";
 import { User } from "./User/User";
 
+import { Card } from 'primereact/card';
+        
 export default function Main() {
 
   const UserEmail = sessionStorage.getItem(User.userEmail)
@@ -22,7 +21,6 @@ export default function Main() {
   const [products, setProducts] = useState([]);
   const [flag, setFlag] = useState(false);
   const [shelves, setShelves] = useState([]);
-  const navigator = useNavigate();
 
   const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -55,14 +53,10 @@ export default function Main() {
     });
   }, []);
 
-  const navigateToProductCreate = () => {
-    navigator("/product/create");
-  };
-
   const bodyTemplate = (rowData) => {
     if (daysLeft(rowData) < 3)
-      return <Tag severity="danger" value="Skubu"></Tag>;
-    else return <Tag severity="success" value="Neskubu"></Tag>;
+      return <Tag style={{fontSize:'1rem'}} severity="danger" value="Skubu"></Tag>;
+    else return <Tag style={{fontSize:'1rem'}} severity="success" value="Neskubu"></Tag>;
   };
 
   const daysLeft = (rowData) => {
@@ -70,11 +64,6 @@ export default function Main() {
     var endDate = new Date(rowData.expirationTime);
     var timeDiff = endDate.getTime() - date.getTime();
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
-  };
-
-  const getId = (rowData) => {
-    var id = rowData.id;
-    return id;
   };
 
   const tableButton = (rowData) => {
@@ -137,8 +126,9 @@ export default function Main() {
     return (
       <Button
         label="Redaguoti"
-        style={{ background: "#3B82F6" }}
+        severity="info"
         icon="pi pi-external-link"
+        style={{padding:'0.6rem'}}
         onClick={() => showDialog(rowData)}
       />
     );
@@ -151,7 +141,18 @@ export default function Main() {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", marginTop:'2rem' }}>
+              <ProductCreate
+        visible={dialogCreateVisible}
+        onHide={hideCreateDialog}
+         /> 
+        {selectedRowData && (
+          <EditProduct
+            visible={dialogVisible}
+            onHide={hideDialog}
+            rowData={selectedRowData}
+          />
+        )}
       <ConfirmPopup />
       <Toast ref={toast} />
       <div id="button-container">
@@ -218,39 +219,16 @@ export default function Main() {
             </>
           ))}
       </div>
-
-      <div id="fridge">
-        <div id="upper-section">
-          <div id="handle"></div>
-        </div>
-        <DataTable
-          rowClassName="custom-row"
-          value={products}
-          tableStyle={{
-            width: "100%",
-            marginBottom: "20px",
-            borderRadius: "25px",
-          }}
-        >
-          <Column field="productName" header="Produktas"></Column>
-          <Column field="categoryName" header="Kategorija"></Column>
-          <Column field="productDescription" header="Aprašymas"></Column>
-          <Column field={daysLeft} header="Liko galioti dienų"></Column>
-          <Column body={bodyTemplate}></Column>
-          <Column body={renderEditComponent}></Column>
-          <Column body={tableButton}></Column>
-        </DataTable>
-        <ProductCreate
-        visible={dialogCreateVisible}
-        onHide={hideCreateDialog}
-         />
-        {selectedRowData && (
-          <EditProduct
-            visible={dialogVisible}
-            onHide={hideDialog}
-            rowData={selectedRowData}
-          />
-        )}
+      <div className="product-card">
+      {products.map((product) => (
+        <Card style={{marginBottom:'2rem'}} title={product.productName}>
+          <div >{bodyTemplate(product)}</div>
+          <p><b>Kategorija:</b> {product.categoryName}</p>
+          <p><b>Aprašymas:</b> {product.productDescription}</p>
+          <p><b>Liko galioti: </b> {daysLeft(product)} dienos</p>
+          <div>{renderEditComponent(product)}&nbsp;{tableButton(product)}</div>
+    </Card>
+      ))}
       </div>
     </div>
   );
