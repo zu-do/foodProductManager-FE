@@ -8,12 +8,16 @@ import "../Styles/styleCreate.css";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../Utils/category-axios-utils";
 import { addProduct } from "../Utils/product-axios-utils";
+import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { Dialog } from "primereact/dialog";
+import { User } from "../User/User";
 
 export default function ProductCreate({ visible, onHide}) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
+  const [shelfOptions, setShelfOptions] = useState([]);
   const [productName, setName] = useState("");
   const [productCategory, setCategory] = useState("");
+  const [productShelf, setProductShelf] = useState("");
   const [productDescription, setDescription] = useState("");
   const [expirationTime, setDate] = useState(null);
   const navigator = useNavigate();
@@ -24,6 +28,17 @@ export default function ProductCreate({ visible, onHide}) {
         data.map((item) => ({
           value: item,
           label: item.categoryName,
+        }))
+     );
+    });
+  }, []);
+
+  useEffect(() => {
+    getUserShelves(sessionStorage.getItem(User.userEmail)).then((data) => {
+      setShelfOptions(
+        data.map((item) => ({
+          value: item,
+          label: item.name,
         }))
       );
     });
@@ -39,7 +54,8 @@ export default function ProductCreate({ visible, onHide}) {
       expirationtime,
     };
 
-    const response = addProduct(product, productCategory.categoryName);
+    const response = addProduct(product, productCategory.categoryName, productShelf.id);
+
     response.then((result) => {
       if (result === true) {
         window.location.reload();
@@ -73,6 +89,16 @@ export default function ProductCreate({ visible, onHide}) {
           style={{width:"100%"}}
           editable
           placeholder="Select a Category"
+        />
+
+         <h5> Pasirinkite lentyną:</h5>
+        <Dropdown
+          value={productShelf}
+          onChange={(e) => setProductShelf(e.value)}
+          options={shelfOptions}
+          style={{width:"100%"}}
+          editable
+          placeholder="Select shelf"
         />
         <h5>Įveskite produkto aprašymą:</h5>
         <InputTextarea

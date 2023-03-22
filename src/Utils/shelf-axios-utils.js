@@ -13,3 +13,13 @@ const client = axios.create({
       return [];
     }
   };
+
+  export const getUserShelves = async (email) => {
+    try {
+      const response = await client.get(`/getAll/${email}`);
+      return response.data;
+    } catch (err) {
+      console.error(err.message);
+      return [];
+    }
+  };

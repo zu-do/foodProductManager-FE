@@ -11,9 +11,13 @@ import ProductCreate from "./Views/ProductCreate";
 import { Tag } from "primereact/tag";
 import EditProduct from "./Views/EditProduct";
 import { getProducts } from "./Utils/product-axios-utils";
-import { getShelves } from "./Utils/shelf-axios-utils";
+import { getUserShelves } from "./Utils/shelf-axios-utils";
+import { User } from "./User/User";
 
 export default function Main() {
+
+  const UserEmail = sessionStorage.getItem(User.userEmail)
+
   const toast = useRef(null);
   const [products, setProducts] = useState([]);
   const [flag, setFlag] = useState(false);
@@ -42,10 +46,11 @@ export default function Main() {
   };
 
   useEffect(() => {
-    getProducts().then((data) => {
+    getProducts(UserEmail).then((data) => {
       setProducts(data);
+      console.log(products)
     });
-    getShelves().then((data) => {
+    getUserShelves(UserEmail).then((data) => {
       setShelves(data);
     });
   }, []);
