@@ -26,7 +26,7 @@ const client = axios.create({
   
   export const editProduct = async (body, index) => {
     try {
-      await client.put(`/update?id=${index}`, body);
+      await client.put(`/update?id=${index}`, {...body});
       return true;
     } catch (err) {
       console.log(err.response.data);

@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
+import { Dropdown } from "primereact/dropdown";
 import { editProduct } from "../Utils/product-axios-utils";
+import { getUserShelves } from "../Utils/shelf-axios-utils";
+import { User } from "../User/User";
 
 const EditProduct = ({ visible, onHide, rowData }) => {
+
   const [productId, setProductId] = useState(rowData?.id);
+  const [shelves, setShelves] = useState([]);
+  const [productShelf, setProductShelf] = useState("");
+  const [shelfOptions, setShelfOptions] = useState([]);
   const initialFormValues = {
     productName: rowData?.productName,
     categoryName: rowData?.categoryName,
@@ -25,6 +32,20 @@ const EditProduct = ({ visible, onHide, rowData }) => {
     }));
   };
 
+  useEffect(() => {
+    getUserShelves(sessionStorage.getItem(User.userEmail)).then((data) => {
+      setShelfOptions(
+        data.map((item) => ({
+          value: item,
+          label: item.name,
+        }))
+      );
+      setShelves(data)
+    });
+  }, []);
+console.log(shelves)
+
+
   const handleDateInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({
@@ -33,10 +54,15 @@ const EditProduct = ({ visible, onHide, rowData }) => {
     }));
   };
 
+  const handleShelfInputChange = (e) => {
+    const { name, value } = e.target;
+    setProductShelf(value)
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    editProduct(formValues, productId)
+    editProduct({...formValues, shelfId: productShelf.id}, productId)
       .then((response) => {
         if (response === true) {
           onHide();
@@ -94,6 +120,16 @@ const EditProduct = ({ visible, onHide, rowData }) => {
                   />
                 </span>
               </div>
+              <h5> Pasirinkite lentyną:</h5>
+                <Dropdown
+                  value={productShelf}
+                  onChange={handleShelfInputChange}
+                  options={shelfOptions}
+                  style={{width:"100%"}}
+                  editable
+                  placeholder="Select shelf"
+                  required
+                />
               <div className="p-field">
                 <h5 className="text-center">Galioja iki:</h5>
                 <span className="p-float-label">
