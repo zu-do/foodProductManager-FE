@@ -21,6 +21,7 @@ import AdminLogin from "./Pages/AdminLogin";
 
 import {User} from "./User/User"
 import { ProtectedRouteAdmin, ProtectedRoute, ProtectedFromAdmin } from "./Utils/ProtectedRoute";
+import AddAddress from "./Views/AddAddress";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/login" element={<ProtectedFromAdmin> <Login /> </ProtectedFromAdmin>}></Route>
         <Route path="/product/create" element={<ProtectedRoute> <ProductCreate /> </ProtectedRoute>}></Route>
         <Route path="/statistics" element={<Statistics />}></Route>
+        <Route path="/profile/address" element={<AddAddress />}></Route>
         <Route path="/admin/login" element={<AdminLogin/>}></Route>
         <Route path="/admin/categories" element={
           <ProtectedRouteAdmin> <Categories/></ProtectedRouteAdmin>
