@@ -64,15 +64,12 @@ export default function ProductCreate({ visible, onHide}) {
     });
   };
 
-  return (<Dialog
+  return (<Dialog className="Dialog1"
     header="Pridėti naują produktą"
     visible={visible}
-    style={{ width: "30%" }}
+    style={{ width: "35%" }}
     onHide={onHide}
   >
-    <div id="outer">
-
-      <div id="inner">
       <h5 className="text-center">Įveskite produkto pavadinimą</h5>
         <InputText
           placeholder="Pvz.: Pienas"
@@ -117,8 +114,6 @@ export default function ProductCreate({ visible, onHide}) {
         />
         <br/><br/>
         <Button onClick={onSubmit} severity="info" label="Įkelti" icon="pi pi-check" />
-      </div>
-    </div>
     </Dialog>
   );
 }

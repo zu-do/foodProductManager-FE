@@ -23,3 +23,12 @@ const client = axios.create({
       return [];
     }
   };
+  export const addShelf = async (shelfName, userID) => {
+    try {
+      await client.post(`/create/${shelfName}/${userID}`);
+      return true;
+    } catch (err) {
+      console.log(err.response);
+      return err.response.data.errors;
+    }
+  };
