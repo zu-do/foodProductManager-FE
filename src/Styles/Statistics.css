@@ -1,4 +1,4 @@
-.smallCard111 {
+.small-statistic-card {
   padding: 4rem;
   background-color: white;
   border-radius: 4px;
@@ -9,7 +9,7 @@
   justify-content: center;
   margin-bottom: 2rem;
 }
-.card111 {
+.statistic-card {
   padding: 4rem;
   background-color: white;
   border-radius: 4px;

@@ -64,7 +64,6 @@ export default function Main() {
     getUserShelves(UserEmail).then((data) => {
       setShelves(data);
     });
-    getShelf()
   }, []);
 
   const navigateToProductCreate = () => {
