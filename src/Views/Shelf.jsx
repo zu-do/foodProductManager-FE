@@ -108,7 +108,7 @@ function Shelf({shelf}) {
         )}
       <ConfirmPopup />
       <Toast ref={toast} />
-      <Container style={{width:"50%"}}>
+      <Container id="shelf-container" >
       <h1 style={{float:'left'}}>{shelf.name}</h1>
       <span style={{float:'right'}}><Button variant="contained">Add</Button></span>
    <Grid  container spacing={2}>

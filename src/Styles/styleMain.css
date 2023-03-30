@@ -57,6 +57,10 @@
 text-align: left;
 }
 
+#shelf-container{
+  width: 50%;
+}
+
 @media (max-width: 1500px) {
   #shelf-box{
   float: none;
@@ -81,9 +85,12 @@ text-align: left;
   }
 }
 
-@media (max-width:1000px){
+@media (max-width:1024px){
   .product-card{
     grid-template-columns: auto auto;
+  }
+  #shelf-container{
+    width: 75%;
   }
 }
 
@@ -91,4 +98,9 @@ text-align: left;
   .product-card{
     grid-template-columns: auto;
   }
+}
+@media (max-width:400px){
+#shelf-container{
+  width: 100%;
+}
 }
