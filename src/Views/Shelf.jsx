@@ -10,12 +10,25 @@ import { Container } from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AddIcon from '@mui/icons-material/Add';
+import ProductCreate from "../Views/ProductCreate";
 
 function Shelf({shelf}) {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedRowData, setSelectedRowData] = useState(null);
+    const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
+
     const toast = useRef(null);
   
+    const showCreateDialog = () => {
+      setCreateDialogVisible(true);
+    };
+  
+    const hideCreateDialog = () => {
+      setCreateDialogVisible(false);
+    };
+
+
     const hideDialog = () => {
       setSelectedRowData(null);
       setDialogVisible(false);
@@ -99,6 +112,10 @@ function Shelf({shelf}) {
       };
 
     return ( <>
+        <ProductCreate
+          visible={dialogCreateVisible}
+          onHide={hideCreateDialog}
+         /> 
        {selectedRowData && (
           <EditProduct
             visible={dialogVisible}
@@ -110,10 +127,18 @@ function Shelf({shelf}) {
       <Toast ref={toast} />
       <Container id="shelf-container" >
       <h1 style={{float:'left'}}>{shelf.name}</h1>
-      <span style={{float:'right'}}><Button variant="contained">Add</Button></span>
-   <Grid  container spacing={2}>
-      {shelf.products.map(product => (
-        <Grid item xs={12} sm={6} md={4} key={product.id}>
+      <span style={{float:'right'}}>
+        <Button 
+        onClick={showCreateDialog} 
+        variant="contained"
+        startIcon={<AddIcon/>}
+        >
+        Pridėti produktą
+        </Button>
+        </span>
+      <Grid  container spacing={2}>
+        {shelf.products.map(product => (
+          <Grid item xs={12} sm={6} md={4} key={product.id}>
            <Paper style={{ minHeight: '200px', maxHeight:'400px', height:'100%' }}>
             <Box position="relative">
             <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.dribbble.com%2Fusers%2F1348951%2Fscreenshots%2F3167282%2Fmilk.gif&f=1&nofb=1&ipt=bf339ff6a7d652d88b6fd76d117218df612320d7f359476b7e97cd3b65bab1fc&ipo=images" style={{ width: '100%', height: 'auto' }} />
@@ -125,8 +150,8 @@ function Shelf({shelf}) {
             {renderEditComponent(product)}
             {renderDeleteComponent(product)}
             </Stack>
-          </Paper>
-        </Grid>
+           </Paper>
+          </Grid>
       ))}
     </Grid>
     </Container>
