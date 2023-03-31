@@ -100,7 +100,7 @@ export default function Statistics() {
 
   return (
     <>
-      <div className="card">
+      <div className="statistic-card">
         <Chart type="line" data={lineChartData} options={lineChartOptions} />
       </div>
       <div
@@ -111,7 +111,7 @@ export default function Statistics() {
         }}
       >
         <div
-          className="smallCard"
+          className="small-statistic-card"
           style={{
             width: "30%",
           }}
@@ -123,13 +123,13 @@ export default function Statistics() {
             className="w-full md:w-30rem"
           />
         </div>
-        <div className="smallCard">
+        <div className="small-statistic-card">
           <p style={{ fontSize: "xx-large", marginBottom: "2rem" }}>
             Naudotojo Jonas Balionas statistika
           </p>
           <i style={{ fontSize: "6rem" }} className="pi pi-chart-bar"></i>
         </div>
-        <div className="smallCard">
+        <div className="small-statistic-card">
           <p style={{ fontSize: "xx-large" }}>
             Išsaugotas maistas per šią savaitę
           </p>

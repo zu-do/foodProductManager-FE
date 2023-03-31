@@ -23,7 +23,10 @@ function Login() {
         response.then((result) => {
             if (result !== null){
                 sessionStorage.setItem(User.userEmail, email);
+                sessionStorage.setItem(User.userID, result.id);
+                //console.log(result);
                 navigateToMain();
+                
             }
             else{
                 window.alert("Nepavyko prisijungti")
