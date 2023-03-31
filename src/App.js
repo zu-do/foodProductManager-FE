@@ -25,8 +25,6 @@ import { ProtectedRouteAdmin, ProtectedRoute, ProtectedFromAdmin } from "./Utils
 
 
 function App() {
-  
-  console.log(sessionStorage.getItem(User.userType));
   return (
     <BrowserRouter>
       <AppBar />

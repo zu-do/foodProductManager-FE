@@ -59,7 +59,6 @@ export default function Main() {
   useEffect(() => {
     getProducts(UserEmail).then((data) => {
       setProducts(data);
-      console.log(products)
     });
     getUserShelves(UserEmail).then((data) => {
       setShelves(data);
