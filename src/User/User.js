@@ -1,4 +1,5 @@
 export const User = {
     userType : "UserType",
-    userEmail : "UserEmail"
+    userEmail : "UserEmail",
+    userID: "UserID"
 }

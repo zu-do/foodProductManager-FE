@@ -5,6 +5,7 @@ import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
 
 import ProductCreate from "./Views/ProductCreate";
+import AddShelf from "./Views/AddShelf";
 import EditProduct from "./Views/EditProduct";
 import { getProducts } from "./Utils/product-axios-utils";
 import { getUserShelves } from "./Utils/shelf-axios-utils";
@@ -16,12 +17,15 @@ import Shelf from "./Views/Shelf";
 export default function Main() {
 
   const UserEmail = sessionStorage.getItem(User.userEmail)
+  //const UserID = sessionStorage.getItem(User.getId())
 
   const [flag, setFlag] = useState(false);
   const [shelves, setShelves] = useState([]);
   const [selectedShelf, setSelectedShelf] = useState();
+  const [shelf, getShelf] = useState([]);
 
   const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
+  const [dialogCreateShelfVisible, setCreateShelfDialogVisible] = useState(false);
 
   const showCreateDialog = (rowData) => {
     setCreateDialogVisible(true);
@@ -30,8 +34,18 @@ export default function Main() {
   const hideCreateDialog = () => {
     setCreateDialogVisible(false);
   };
+  const showCreateShelfDialog = (rowData) => {
+    setCreateShelfDialogVisible(true);
+  };
+
+  const hideCreateShelfDialog = () => {
+    setCreateShelfDialogVisible(false);
+  };
 
   useEffect(() => {
+    getProducts(UserEmail).then((data) => {
+      setProducts(data);
+    });
     getUserShelves(UserEmail).then((data) => {
       setSelectedShelf(data.at(0))
       setShelves(data);
@@ -41,6 +55,7 @@ export default function Main() {
   const openList = () => {
     setFlag(!flag);
   };
+  
 
   return (
     <div style={{ textAlign: "center", marginTop:'2rem' }}>
@@ -51,6 +66,14 @@ export default function Main() {
       
       <div id="button-container">
         <div className="buttons">
+        <Button
+            onClick={showCreateShelfDialog}
+            label="Pridėti lentyną"
+            icon="pi pi-plus"
+            severity="info"
+            rounded
+            style={{ width: "100%", marginBottom: "1rem" }}
+          />
           <Button
             onClick={showCreateDialog}
             label="Pridėti produktą"
