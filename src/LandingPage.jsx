@@ -6,9 +6,17 @@ import photo3 from "./Pictures/b.jpg";
 import photo4 from "./Pictures/c.jpg";
 import photo5 from'./Pictures/p.jpg';
 import photo6 from "./Pictures/s.jpg";
-import { Card } from "primereact/card";
+
 import { useNavigate } from "react-router-dom";
 import "primereact/resources/themes/lara-light-purple/theme.css";
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { red } from "@mui/material/colors";
 
 function LandingPage() {
   const navigator = useNavigate();
@@ -21,16 +29,38 @@ function LandingPage() {
   const header3 = <img className="image" alt="cherry" src={photo4} />;
   const header4 = <img className="image" alt="tomato" src={photo5} />;
   const header5 = <img className="image" alt="suchi" src={photo6} />;
+  
+  const card = (
+    <React.Fragment>
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Word of the Day
+        </Typography>
+        
+        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          adjective
+        </Typography>
+        <Typography variant="body2">
+          well meaning and kindly.
+          <br />
+          {'"a benevolent smile"'}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small">Learn More</Button>
+      </CardActions>
+    </React.Fragment>
+  );
   return (
-    <div className="grid-container1">
-      <Card title="Produktų prenumerata" header={header} className="md:w-25rem"></Card>
-      <Card title="Receptų pasiūlymai" header={header5} className="md:w-25rem"></Card>
-      <Card title="Produktų galiojimo priminimai" header={header3} className="md:w-25rem"></Card>
-      <Card title="Tvarumas" header={header2} className="md:w-25rem"></Card>
-      <Card title="Atiduotuvė" header={header4} className="md:w-25rem"></Card>
-      <Card title="Statistika" header={header1} className="md:w-25rem" onClick={navigateToStatistics}></Card>
+    <Container maxWidth="sm">
+      <Container maxWidth="sm">
+        <Box sx={{ minWidth: 275 }}>
+          <Card classname ="primary-card" variant="outlined">{card}</Card>
+        </Box>
       
-    </div>
+      </Container>
+    </Container>
+
   );
 }
 export default LandingPage;
