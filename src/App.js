@@ -19,14 +19,13 @@ import Categories from "./Pages/Categories";
 import UserOverview from "./Pages/UserOverview";
 import AdminLogin from "./Pages/AdminLogin";
 
+
 import {User} from "./User/User"
 import { ProtectedRouteAdmin, ProtectedRoute, ProtectedFromAdmin } from "./Utils/ProtectedRoute";
 import AddAddress from "./Views/AddAddress";
 
 
 function App() {
-  
-  console.log(sessionStorage.getItem(User.userType));
   return (
     <BrowserRouter>
       <AppBar />

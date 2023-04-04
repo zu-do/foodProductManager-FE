@@ -1,164 +1,47 @@
-import React, { useState, useRef, useEffect } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import "./Styles/styleMain.css";
-import { useNavigate } from "react-router-dom";
-import { ConfirmPopup } from "primereact/confirmpopup";
-import { confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
-import ProductCreate from "./Views/ProductCreate";
-import { Tag } from "primereact/tag";
-import EditProduct from "./Views/EditProduct";
-import { getProducts } from "./Utils/product-axios-utils";
+import AddShelf from "./Views/AddShelf";
 import { getUserShelves } from "./Utils/shelf-axios-utils";
 import { User } from "./User/User";
+import Shelf from "./Views/Shelf";
 
 export default function Main() {
+  const UserEmail = sessionStorage.getItem(User.userEmail);
+  //const UserID = sessionStorage.getItem(User.getId())
 
-  const UserEmail = sessionStorage.getItem(User.userEmail)
-
-  const toast = useRef(null);
-  const [products, setProducts] = useState([]);
   const [flag, setFlag] = useState(false);
   const [shelves, setShelves] = useState([]);
-  const navigator = useNavigate();
+  const [selectedShelf, setSelectedShelf] = useState();
+  const [dialogCreateShelfVisible, setCreateShelfDialogVisible] =
+    useState(false);
 
-  const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
-  const [dialogVisible, setDialogVisible] = useState(false);
-  const [selectedRowData, setSelectedRowData] = useState(null);
-
-  const showDialog = (rowData) => {
-    setSelectedRowData(rowData);
-    setDialogVisible(true);
+  const showCreateShelfDialog = () => {
+    setCreateShelfDialogVisible(true);
   };
 
-  const hideDialog = () => {
-    setSelectedRowData(null);
-    setDialogVisible(false);
-  };
-  const showCreateDialog = (rowData) => {
-    setCreateDialogVisible(true);
-  };
-
-  const hideCreateDialog = () => {
-    setCreateDialogVisible(false);
+  const hideCreateShelfDialog = () => {
+    setCreateShelfDialogVisible(false);
   };
 
   useEffect(() => {
-    getProducts(UserEmail).then((data) => {
-      setProducts(data);
-      console.log(products)
-    });
     getUserShelves(UserEmail).then((data) => {
+      setSelectedShelf(data.at(0));
       setShelves(data);
     });
   }, []);
-
-  const navigateToProductCreate = () => {
-    navigator("/product/create");
-  };
-
-  const bodyTemplate = (rowData) => {
-    if (daysLeft(rowData) < 3)
-      return <Tag severity="danger" value="Skubu"></Tag>;
-    else return <Tag severity="success" value="Neskubu"></Tag>;
-  };
-
-  const daysLeft = (rowData) => {
-    var date = new Date();
-    var endDate = new Date(rowData.expirationTime);
-    var timeDiff = endDate.getTime() - date.getTime();
-    return Math.ceil(timeDiff / (1000 * 3600 * 24));
-  };
-
-  const getId = (rowData) => {
-    var id = rowData.id;
-    return id;
-  };
-
-  const tableButton = (rowData) => {
-    return (
-      <Button
-        onClick={(e) => {
-          confirm2(e, rowData);
-        }}
-        severity="danger"
-        icon="pi pi-trash"
-        size="sm"
-      />
-    );
-  };
-
-  const confirm2 = (event, rowData) => {
-    confirmPopup({
-      target: event.currentTarget,
-      message: "Ar norite pašalinti šį maisto produkto įrašą?",
-      icon: "pi pi-info-circle",
-      acceptClassName: "p-button-danger",
-      acceptLabel: "Taip",
-      rejectLabel: "Ne",
-      accept: () => handleDeleteProduct(rowData.id),
-      reject,
-    });
-  };
-
-  const handleDeleteProduct = async (id) => {
-    try {
-      const response = await fetch("https://localhost:7258/Product/delete", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(id),
-      });
-      if (!response.ok) {
-        throw new Error("Nepavyko ištrinti produkto.");
-      }
-      toast.current.show({
-        severity: "info",
-        summary: "Patvirtinta",
-        detail: "Sėkmingai pašalinote maisto produktą",
-        life: 3000,
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      toast.current.show({
-        severity: "error",
-        summary: "Klaida",
-        detail: "Nepavyko pašalinti maisto produkto",
-        life: 3000,
-      });
-    }
-  };
-
-  const renderEditComponent = (rowData) => {
-    return (
-      <Button
-        label="Redaguoti"
-        style={{ background: "#3B82F6" }}
-        icon="pi pi-external-link"
-        onClick={() => showDialog(rowData)}
-      />
-    );
-  };
-
-  const reject = () => {};
 
   const openList = () => {
     setFlag(!flag);
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <ConfirmPopup />
-      <Toast ref={toast} />
+    <div style={{ textAlign: "center", marginTop: "2rem" }}>
       <div id="button-container">
         <div className="buttons">
           <Button
-            onClick={showCreateDialog}
-            label="Pridėti produktą"
+            onClick={showCreateShelfDialog}
+            label="Pridėti lentyną"
             icon="pi pi-plus"
             severity="info"
             rounded
@@ -210,7 +93,8 @@ export default function Main() {
                 id="shelf-list-button"
                 key={shelf.id}
                 icon="pi pi-folder"
-                label={shelf.name}
+                label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
+                onClick={() => setSelectedShelf(shelf)}
                 rounded
               />
               <br />
@@ -218,40 +102,11 @@ export default function Main() {
             </>
           ))}
       </div>
-
-      <div id="fridge">
-        <div id="upper-section">
-          <div id="handle"></div>
-        </div>
-        <DataTable
-          rowClassName="custom-row"
-          value={products}
-          tableStyle={{
-            width: "100%",
-            marginBottom: "20px",
-            borderRadius: "25px",
-          }}
-        >
-          <Column field="productName" header="Produktas"></Column>
-          <Column field="categoryName" header="Kategorija"></Column>
-          <Column field="productDescription" header="Aprašymas"></Column>
-          <Column field={daysLeft} header="Liko galioti dienų"></Column>
-          <Column body={bodyTemplate}></Column>
-          <Column body={renderEditComponent}></Column>
-          <Column body={tableButton}></Column>
-        </DataTable>
-        <ProductCreate
-        visible={dialogCreateVisible}
-        onHide={hideCreateDialog}
-         />
-        {selectedRowData && (
-          <EditProduct
-            visible={dialogVisible}
-            onHide={hideDialog}
-            rowData={selectedRowData}
-          />
-        )}
-      </div>
+      <AddShelf
+        visible={dialogCreateShelfVisible}
+        onHide={hideCreateShelfDialog}
+      />
+      {selectedShelf && <Shelf shelf={selectedShelf} />}
     </div>
   );
 }
