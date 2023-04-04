@@ -1,12 +1,7 @@
 import React from "react";
 import "./Styles/LandingPage.css";
-import photo1 from "./Pictures/a.jpg";
-import photo2 from "./Pictures/av.jpg";
-import photo3 from "./Pictures/b.jpg";
-import photo4 from "./Pictures/c.jpg";
-import photo5 from'./Pictures/p.jpg';
-import photo6 from "./Pictures/s.jpg";
-
+import gif from "./Pictures/Groceryshopping.gif";
+import gif1 from "./Pictures/Grocery_shopping1.gif";
 import { useNavigate } from "react-router-dom";
 import "primereact/resources/themes/lara-light-purple/theme.css";
 import Box from '@mui/material/Box';
@@ -17,49 +12,79 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { red } from "@mui/material/colors";
+import CardMedia from '@mui/material/CardMedia';
+import { purple } from '@mui/material/colors';
+import { styled } from '@mui//material/styles';
+import Grid from '@mui/material/Grid';
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+
+
+
+
 
 function LandingPage() {
   const navigator = useNavigate();
   const navigateToStatistics = () => {
     navigator("/statistics");
   };
-  const header = <img className="image" alt="apple" src={photo1} />;
-  const header1 = <img className="image" alt="avocado" src={photo2} />;
-  const header2 = <img className="image" alt="banana" src={photo3} />;
-  const header3 = <img className="image" alt="cherry" src={photo4} />;
-  const header4 = <img className="image" alt="tomato" src={photo5} />;
-  const header5 = <img className="image" alt="suchi" src={photo6} />;
-  
+
+
+  const color = red[400];
+
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: color,
+    '&:hover': {
+      backgroundColor: red[900],
+    },
+  }));
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
   const card = (
     <React.Fragment>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
+        <Typography variant="h2" sx={{ fontStyle: 'bold', fontWeight: 700
+        }} color="text.primary" gutterBottom>
+        Registruok savo maisto produktus lengvai
         </Typography>
         
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
+          Užsiregistruok jau dabar
         </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
+        <CardActions>
+        <ColorButton variant="contained" size="small">Užsiregistruok</ColorButton>
+          
+          <Button  color="secondary" variant="outlined" size="small">Prisijunk</Button>
+        </CardActions>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
     </React.Fragment>
   );
   return (
-    <Container maxWidth="sm">
-      <Container maxWidth="sm">
-        <Box sx={{ minWidth: 275 }}>
-          <Card classname ="primary-card" variant="outlined">{card}</Card>
-        </Box>
-      
-      </Container>
-    </Container>
+    <div>
+      <div className="grid-container">
+     
+            <Card sx={{ height: 540,
+              fontStyle: 'bold',
+              maxWidth: 400,border: "none", boxShadow: "none" }}  >{card}</Card>
+            <Card sx={{ maxWidth: 700,border: "none", boxShadow: "none" }}>
+              <CardMedia
+                component="img"
+                height="80%"
+                image={gif}
+                alt="Your image title"
+              />
+            </Card>
+            
+            
+        </div>
+    </div>
+
 
   );
 }
