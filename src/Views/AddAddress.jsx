@@ -1,23 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { InputText } from 'primereact/inputtext';
-import { Button } from "primereact/button";
-import { InputTextarea } from "primereact/inputtextarea";
-        
+import Button from '@mui/material/Button';
+import { addAddress } from "../Utils/address-axios-utils copy";   
+import { getAddress } from "../Utils/address-axios-utils copy";
+import { User } from "../User/User";    
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import { IconButton, Paper, TextField } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { deleteAddress } from "../Utils/address-axios-utils copy";
+import AddIcon from '@mui/icons-material/Add';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+
 function AddAddress() {
 
     const [address, setAddress] = useState("");
     const [comment, setComment] = useState("");
-    const [latitude, setLatitude] = useState("");
-    const [longitude, setLongitude] = useState("");
+    const [initialAddress, setInitialAddress] = useState([]);
+    const [showAdd, setShowAdd] = useState(true);
+    const [open, setOpen] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+
+    const handleClickOpen = (id) => {
+      setDeleteId(id);
+      setOpen(true);
+    };
   
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    const style = {
+      width: '100%',
+      maxWidth: 500,
+    };
+
+    useEffect(() => {
+      getAddress(sessionStorage.getItem(User.userID))
+      .then((response) => setInitialAddress(response))
+      .catch((error) => console.log(error))
+    }, [])
+
     const handleAddressChange = (event) => {
       setAddress(event.target.value);
     };
+    
+    const onDelete = () => {
+      deleteAddress(deleteId)
+      .then(() => window.location.reload())
+      .catch((error) => console.log(error))
+    }
   
     const handleFormSubmit = async (event) => {
       event.preventDefault();
-  
       try {
         const url = `https://nominatim.openstreetmap.org/search?q=${address}&format=json&limit=1`;
   
@@ -27,32 +67,87 @@ function AddAddress() {
   
         const { lat, lon } = result[0];
   
-        setLatitude(lat);
-        setLongitude(lon);
+        const userAddress = {
+          "Name":address,
+          "Longitude":lon,
+          "Latitude":lat,
+          "Comment":comment,
+          "userId":sessionStorage.getItem(User.userID)
+      }
+
+      addAddress(userAddress)
+      .then(() => window.location.reload())
+      .catch((error) => console.log(error))
       } catch (error) {
         console.error(error);
       }
     }
     return ( <>
-    <div style={{display:'flex', justifyContent:'center', alignItems:'center', marginTop:'4rem'}}>
-        <div style={{backgroundColor:'white', borderRadius:'4px', boxShadow:'0 0 4px black', padding:'1rem 2rem'}}>
-            <h2>Pridėti adresą</h2>
-            <hr/>
-     <form onSubmit={handleFormSubmit}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Ar tikrai norite pašalinti šį adresą?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button sx={{color:'gray'}} onClick={handleClose}>Ne</Button>
+          <Button color="error" onClick={onDelete} autoFocus>
+            Taip
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+    <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+        <List sx={style} component="nav">
+      {initialAddress && ( 
+        initialAddress.map((add) => (
+          <>
+      <ListItem >
+        <ListItemText primary={add.name}/>
+        <IconButton onClick={() => handleClickOpen(add.id)} aria-label="delete">
+          <DeleteIcon sx={{color:'red'}} />
+        </IconButton>
+        <IconButton  aria-label="edit">
+          <EditIcon sx={{color:'blue'}} />
+        </IconButton>
+      </ListItem>
+      <Divider />
+      </>
+      )))}
+      <ListItem >
+      {showAdd &&  <Button onClick={() => setShowAdd(false)} sx={{width:'100%'}} variant="contained" endIcon={<AddIcon/>}>
+          Pridėti
+        </Button>
+      } 
+      </ListItem>
+          </List> 
+          
+      {!showAdd &&   <Paper elevation={0} sx={{width: '100%', maxWidth:500, marginTop:'3rem'}}>
+    <form onSubmit={handleFormSubmit}>
         <h5>Adresas</h5>
-        <InputText value={address} onChange={handleAddressChange} />
+        <TextField 
+        fullWidth={true} 
+        value={address} 
+        onChange={handleAddressChange}
+        placeholder="pvz.: Kauneckio g. 45, Kaunas"
+        />
         <h5>Komentaras</h5> 
-        <InputTextarea style={{width:'100%'}} value={comment} onChange={(e) => setComment(e.target.value)} />
-        <br/><br/>
-      <Button label="Pridėti" severity="primary" />
-      {latitude && longitude && (
-        <p>
-          Latitude: {latitude}, Longitude: {longitude}
-        </p>
-      )}
+        <TextField
+        sx={{marginBottom:'1rem'}} 
+        multiline 
+        fullWidth={true} 
+        value={comment} 
+        onChange={(e) => setComment(e.target.value)} 
+        />
+        <Button type="submit" color="success" sx={{marginRight:'1rem'}} variant="contained">Patvirtinti</Button>
+        <Button onClick={() => setShowAdd(true)} color="error"  variant="contained">Atšaukti</Button>
     </form>
-    </div>
-    </div>
+    </Paper>
+    }
+      </div>
     </> );
 }
 
