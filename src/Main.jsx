@@ -5,18 +5,17 @@ import AddShelf from "./Views/AddShelf";
 import { getUserShelves } from "./Utils/shelf-axios-utils";
 import { User } from "./User/User";
 import Shelf from "./Views/Shelf";
-        
-export default function Main() {
 
-  const UserEmail = sessionStorage.getItem(User.userEmail)
+export default function Main() {
+  const UserEmail = sessionStorage.getItem(User.userEmail);
   //const UserID = sessionStorage.getItem(User.getId())
 
   const [flag, setFlag] = useState(false);
   const [shelves, setShelves] = useState([]);
   const [selectedShelf, setSelectedShelf] = useState();
-  const [dialogCreateShelfVisible, setCreateShelfDialogVisible] = useState(false);
+  const [dialogCreateShelfVisible, setCreateShelfDialogVisible] =
+    useState(false);
 
- 
   const showCreateShelfDialog = () => {
     setCreateShelfDialogVisible(true);
   };
@@ -27,7 +26,7 @@ export default function Main() {
 
   useEffect(() => {
     getUserShelves(UserEmail).then((data) => {
-      setSelectedShelf(data.at(0))
+      setSelectedShelf(data.at(0));
       setShelves(data);
     });
   }, []);
@@ -35,13 +34,12 @@ export default function Main() {
   const openList = () => {
     setFlag(!flag);
   };
-  
 
   return (
-    <div style={{ textAlign: "center", marginTop:'2rem' }}>     
+    <div style={{ textAlign: "center", marginTop: "2rem" }}>
       <div id="button-container">
         <div className="buttons">
-        <Button
+          <Button
             onClick={showCreateShelfDialog}
             label="Pridėti lentyną"
             icon="pi pi-plus"
@@ -78,7 +76,7 @@ export default function Main() {
             style={{ width: "100%", marginBottom: "1rem" }}
           />
         </div>
-      </div> 
+      </div>
       <div id="shelf-box">
         <Button
           severity="info"
@@ -95,7 +93,7 @@ export default function Main() {
                 id="shelf-list-button"
                 key={shelf.id}
                 icon="pi pi-folder"
-                label={shelf.name}
+                label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
                 onClick={() => setSelectedShelf(shelf)}
                 rounded
               />
@@ -107,8 +105,8 @@ export default function Main() {
       <AddShelf
         visible={dialogCreateShelfVisible}
         onHide={hideCreateShelfDialog}
-         />
-    { selectedShelf && <Shelf shelf={selectedShelf}/>}
+      />
+      {selectedShelf && <Shelf shelf={selectedShelf} />}
     </div>
   );
 }

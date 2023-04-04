@@ -1,19 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
+import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import { editProduct } from "../Utils/product-axios-utils";
+import { getUserShelves } from "../Utils/shelf-axios-utils";
+import { User } from "../User/User";
 
 const EditProduct = ({ visible, onHide, rowData }) => {
   const [productId, setProductId] = useState(rowData?.id);
+  const [shelfOptions, setShelfOptions] = useState([]);
   const initialFormValues = {
     productName: rowData?.productName,
     categoryName: rowData?.categoryName,
     productDescription: rowData?.productDescription,
     expirationTime: new Date(rowData?.expirationTime),
+    shelfId: rowData?.shelfId,
   };
+
+  useEffect(() => {
+    getUserShelves(sessionStorage.getItem(User.userEmail)).then((data) => {
+      setShelfOptions(
+        data.map((item) => ({
+          value: item.id,
+          label: item.name,
+        }))
+      );
+    });
+  }, []);
 
   const [formValues, setFormValues] = useState(initialFormValues);
 
@@ -35,7 +51,7 @@ const EditProduct = ({ visible, onHide, rowData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(formValues);
     editProduct(formValues, productId)
       .then((response) => {
         if (response === true) {
@@ -48,13 +64,29 @@ const EditProduct = ({ visible, onHide, rowData }) => {
       });
   };
 
+  // const footerContent = (
+  //   <div>
+  //     <Button
+  //       label="Patvirtinti"
+  //       type="submit"
+  //       //severity="info"
+  //       // style={{
+  //       //   background: "#3B82F6",
+  //       //   float: "right",
+  //       // }}
+  //       icon="pi pi-check"
+  //     />
+  //   </div>
+  // );
+
   return (
     <div className="card flex justify-content-center">
       <Dialog
         header="Redaguoti produkto informaciją"
         visible={visible}
-        style={{ width: "30%" }}
+        style={{ width: "35%" }}
         onHide={onHide}
+        // footer={footerContent}
       >
         <div className="flex justify-content-center">
           <div className="card">
@@ -82,7 +114,18 @@ const EditProduct = ({ visible, onHide, rowData }) => {
                   />
                 </span>
               </div>
-
+              <div className="p-field">
+                <h5 className="text-center">Pasirinkti lentyną</h5>
+                <span className="p-float-label">
+                  <Dropdown
+                    id="shelfId"
+                    name="shelfId"
+                    value={formValues.shelfId}
+                    onChange={handleInputChange}
+                    options={shelfOptions}
+                  />
+                </span>
+              </div>
               <div className="p-field">
                 <h5 className="text-center">Aprašymas</h5>
                 <span className="p-float-label">
@@ -105,28 +148,17 @@ const EditProduct = ({ visible, onHide, rowData }) => {
                   />
                 </span>
               </div>
-              <div>
-                <span className="p-float-label">
-                  <h5 className="text-center"></h5>
-                  <Button
-                    label="Patvirtinti"
-                    type="submit"
-                    style={{
-                      background: "#3B82F6",
-                      width: "30%",
-                      float: "right",
-                    }}
-                    icon="pi pi-check"
-                    autoFocus
-                  />
-                  <Button
-                    label="Atšaukti"
-                    icon="pi pi-times"
-                    style={{ width: "30%", float: "right" }}
-                    onClick={onHide}
-                    className="p-button-text"
-                  />
-                </span>
+              <div className="p-dialog-footer" style={{ marginTop: "5%" }}>
+                <Button
+                  label="Patvirtinti"
+                  type="submit"
+                  severity="info"
+                  style={{
+                    background: "#3B82F6",
+                    float: "right",
+                  }}
+                  icon="pi pi-check"
+                />
               </div>
             </form>
           </div>
