@@ -64,21 +64,6 @@ const EditProduct = ({ visible, onHide, rowData }) => {
       });
   };
 
-  // const footerContent = (
-  //   <div>
-  //     <Button
-  //       label="Patvirtinti"
-  //       type="submit"
-  //       //severity="info"
-  //       // style={{
-  //       //   background: "#3B82F6",
-  //       //   float: "right",
-  //       // }}
-  //       icon="pi pi-check"
-  //     />
-  //   </div>
-  // );
-
   return (
     <div className="card flex justify-content-center">
       <Dialog
@@ -86,7 +71,6 @@ const EditProduct = ({ visible, onHide, rowData }) => {
         visible={visible}
         style={{ width: "35%" }}
         onHide={onHide}
-        // footer={footerContent}
       >
         <div className="flex justify-content-center">
           <div className="card">
