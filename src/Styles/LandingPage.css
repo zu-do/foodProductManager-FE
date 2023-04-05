@@ -83,4 +83,13 @@
     grid-template-columns: repeat(2, minmax(300px, 1fr));
    
   }
+ 
+
+}
+@media  ( max-width: 400px)  {
+
+  .p-card{
+    width: 20px;
+  }
+
 }

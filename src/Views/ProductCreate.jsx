@@ -11,6 +11,7 @@ import { addProduct } from "../Utils/product-axios-utils";
 import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { Dialog } from "primereact/dialog";
 import { User } from "../User/User";
+import BarcodeScanner from "./Barcode";
 
 export default function ProductCreate({ visible, onHide }) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -22,6 +23,12 @@ export default function ProductCreate({ visible, onHide }) {
   const [expirationTime, setDate] = useState(null);
   const navigator = useNavigate();
 
+  const [scannedData, setScannedData] = useState('');
+
+  const handleScan = (data) => {
+    setScannedData(data);
+  };
+  
   useEffect(() => {
     getCategories().then((data) => {
       setCategoriesOptions(
@@ -75,6 +82,7 @@ export default function ProductCreate({ visible, onHide }) {
       style={{ width: "35%" }}
       onHide={onHide}
     >
+      <BarcodeScanner onScan={handleScan}/>
       <h5 className="text-center">Įveskite produkto pavadinimą</h5>
       <InputText
         placeholder="Pvz.: Pienas"
