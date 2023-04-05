@@ -36,7 +36,7 @@ function App() {
         <Route path="/login" element={<ProtectedFromAdmin> <Login /> </ProtectedFromAdmin>}></Route>
         <Route path="/product/create" element={<ProtectedRoute> <ProductCreate /> </ProtectedRoute>}></Route>
         <Route path="/statistics" element={<Statistics />}></Route>
-        <Route path="/profile" element={<AddAddress />}></Route>
+        <Route path="/profile" element={<ProtectedRoute><AddAddress /></ProtectedRoute>}></Route>
         <Route path="/admin/login" element={<AdminLogin/>}></Route>
         <Route path="/admin/categories" element={
           <ProtectedRouteAdmin> <Categories/></ProtectedRouteAdmin>

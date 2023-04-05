@@ -8,7 +8,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import { IconButton, Paper, TextField } from "@mui/material";
+import { IconButton, Paper, TextField, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { deleteAddress } from "../Utils/address-axios-utils";
@@ -27,6 +27,7 @@ function AddAddress() {
   const [deleteId, setDeleteId] = useState(null);
   const [addressData, setAddressData] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [addressError, setAddressError] = useState(false);
 
   const style = {
     width: "100%",
@@ -52,7 +53,8 @@ function AddAddress() {
     setAddress(event.target.value);
   };
 
-  const handleOpenDialog = () => {
+  const handleOpenDialog = (add) => {
+    setAddressData(add);
     setOpenDialog(true);
   };
 
@@ -65,6 +67,13 @@ function AddAddress() {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
+      if (address.trim() === "") {
+        setAddressError(true);
+        return;
+      } else {
+        setAddressError(false);
+      }
+
       const url = `https://nominatim.openstreetmap.org/search?q=${address}&format=json&limit=1`;
 
       const response = await axios.get(url);
@@ -112,7 +121,10 @@ function AddAddress() {
         <EditAddress
           addressData={addressData}
           open={openDialog}
-          onClose={() => setOpenDialog(false)}
+          onClose={() => {
+            setOpenDialog(false);
+            setAddressData(null);
+          }}
         />
       )}
       <div
@@ -136,10 +148,7 @@ function AddAddress() {
                     <DeleteIcon color="error" />
                   </IconButton>
                   <IconButton
-                    onClick={() => {
-                      setAddressData(add);
-                      handleOpenDialog();
-                    }}
+                    onClick={() => handleOpenDialog(add)}
                     aria-label="edit"
                   >
                     <EditIcon color="primary" />
@@ -171,6 +180,8 @@ function AddAddress() {
                 value={address}
                 onChange={handleAddressChange}
                 placeholder="pvz.: Kauneckio g. 45, Kaunas"
+                error={addressError}
+                helperText={addressError ? "Laukas negali būti tuščias" : ""}
               />
               <h5>Komentaras</h5>
               <TextField

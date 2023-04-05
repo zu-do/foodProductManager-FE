@@ -33,3 +33,13 @@ export const deleteAddress = async (id) => {
     return null;
   }
 };
+
+export const updateAddress = async (body, id) => {
+  try {
+    const response = await client.put(`update?id=${id}`, body);
+    return response.data;
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+};
