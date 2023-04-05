@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Button from '@mui/material/Button';
-import { addAddress } from "../Utils/address-axios-utils copy";   
-import { getAddress } from "../Utils/address-axios-utils copy";
+import { addAddress } from "../Utils/address-axios-utils";   
+import { getAddress } from "../Utils/address-axios-utils";
 import { User } from "../User/User";    
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -11,11 +11,12 @@ import Divider from '@mui/material/Divider';
 import { IconButton, Paper, TextField } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteAddress } from "../Utils/address-axios-utils copy";
+import { deleteAddress } from "../Utils/address-axios-utils";
 import AddIcon from '@mui/icons-material/Add';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
+import EditAddress from "./EditAddress";
 
 function AddAddress() {
 
@@ -25,15 +26,8 @@ function AddAddress() {
     const [showAdd, setShowAdd] = useState(true);
     const [open, setOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
-
-    const handleClickOpen = (id) => {
-      setDeleteId(id);
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
+    const [addressData, setAddressData] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const style = {
       width: '100%',
@@ -46,9 +40,22 @@ function AddAddress() {
       .catch((error) => console.log(error))
     }, [])
 
+    const handleClickOpen = (id) => {
+      setDeleteId(id);
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     const handleAddressChange = (event) => {
       setAddress(event.target.value);
     };
+
+    const handleOpenDialog = () => {
+      setOpenDialog(true);
+  }
     
     const onDelete = () => {
       deleteAddress(deleteId)
@@ -100,6 +107,8 @@ function AddAddress() {
         </DialogActions>
       </Dialog>
 
+      <EditAddress addressData={addressData} open={openDialog} onClose={() => setOpenDialog(false)}/>
+
     <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
         <List sx={style} component="nav">
       {initialAddress && ( 
@@ -108,10 +117,10 @@ function AddAddress() {
       <ListItem >
         <ListItemText primary={add.name}/>
         <IconButton onClick={() => handleClickOpen(add.id)} aria-label="delete">
-          <DeleteIcon sx={{color:'red'}} />
+          <DeleteIcon color="error" />
         </IconButton>
-        <IconButton  aria-label="edit">
-          <EditIcon sx={{color:'blue'}} />
+        <IconButton onClick={() => {setAddressData(add);handleOpenDialog()}}  aria-label="edit">
+          <EditIcon color="primary" />
         </IconButton>
       </ListItem>
       <Divider />
@@ -125,7 +134,7 @@ function AddAddress() {
       </ListItem>
           </List> 
           
-      {!showAdd &&   <Paper elevation={0} sx={{width: '100%', maxWidth:500, marginTop:'3rem'}}>
+      {!showAdd &&   <Paper elevation={0} sx={{width: '100%', maxWidth:500}}>
     <form onSubmit={handleFormSubmit}>
         <h5>Adresas</h5>
         <TextField 
