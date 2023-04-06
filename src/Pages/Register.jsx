@@ -80,7 +80,7 @@ function Register() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: '#E6E6E6' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#29B61D' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -117,7 +117,6 @@ function Register() {
                 label="Pavardė"
                 name="surname"
                 autoComplete="name"
-                autoFocus
                 onChange={(e) => setLastName(e.target.value)}
               />
               <TextField
@@ -144,7 +143,7 @@ function Register() {
               <Button
                 type="submit"
                 fullWidth
-                style={{backgroundColor:'#575A89'}}
+                style={{backgroundColor:'#29B61D'}}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
