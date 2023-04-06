@@ -11,6 +11,7 @@ import { addProduct } from "../Utils/product-axios-utils";
 import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { Dialog } from "primereact/dialog";
 import { User } from "../User/User";
+import { getProductInfo } from "../Utils/scanner-axios-utils";
 import BarcodeScanner from "./Barcode";
 
 export default function ProductCreate({ visible, onHide }) {
@@ -27,6 +28,7 @@ export default function ProductCreate({ visible, onHide }) {
 
   const handleScan = (data) => {
     setScannedData(data);
+    getProductInfo(scannedData)
   };
   
   useEffect(() => {
@@ -79,10 +81,10 @@ export default function ProductCreate({ visible, onHide }) {
       className="Dialog1"
       header="Pridėti naują produktą"
       visible={visible}
-      style={{ width: "35%" }}
       onHide={onHide}
     >
-      <BarcodeScanner onScan={handleScan}/>
+      <p>Skenuokite produkto brūkšninį kodą ir gaukite informaciją apie jį</p>
+      <BarcodeScanner  onScan={handleScan} />
       <h5 className="text-center">Įveskite produkto pavadinimą</h5>
       <InputText
         placeholder="Pvz.: Pienas"

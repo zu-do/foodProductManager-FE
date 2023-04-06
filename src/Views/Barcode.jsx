@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
-import QrReader from 'react-qr-reader';
+import React, { useState, useEffect } from 'react';
+import { Html5QrcodeScanner } from 'html5-qrcode';
+import "../Styles/BarcodeScanner.css"
 
 function BarcodeScanner({ onScan }) {
-  const [result, setResult] = useState('');
+  const [scanner, setScanner] = useState(null);
 
-  const handleScan = (data) => {
-    if (data) {
-      setResult(data);
+  useEffect(() => {
+    const qrcodeScanner = new Html5QrcodeScanner(
+      'reader',
+      { fps: 10, qrbox: 250 },
+      /* verbose= */ false
+    );
+
+    setScanner(qrcodeScanner);
+
+    return () => {
+      qrcodeScanner.clear();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!scanner) return;
+
+    const onScanSuccess = (data) => {
       onScan(data);
-    }
-  };
+    };
 
-  const handleError = (err) => {
-    console.error(err);
-  };
+    scanner.render(onScanSuccess);
 
-  return (
-    <div>
-      <QrReader
-        delay={300}
-        onError={handleError}
-        onScan={handleScan}
-        style={{ width: '100%' }}
-      />
-      <p>{result}</p>
-    </div>
-  );
+    return () => {
+      scanner.clear();
+    };
+  }, [scanner, onScan]);
+
+  return <div id="reader" />;
 }
 
 export default BarcodeScanner;
