@@ -2,8 +2,7 @@ import React from "react";
 import "./Styles/LandingPage.css";
 import gif from "./Pictures/Groceryshopping.gif";
 import gif1 from "./Pictures/Grocery_shopping1.gif";
-import recbook from "./Pictures/Recipe_book.gif";
-import bookloop from "./Pictures/bookloop.gif";
+import book from "./Pictures/book.gif";
 import eco from "./Pictures/eco.gif";
 import { useNavigate } from "react-router-dom";
 import "primereact/resources/themes/lara-light-purple/theme.css";
@@ -198,7 +197,7 @@ function LandingPage() {
               <CardMedia
                 component="img"
                 height="100%"
-                image={bookloop}
+                image={book}
                 alt="Your image title"
               />
             </Card>
