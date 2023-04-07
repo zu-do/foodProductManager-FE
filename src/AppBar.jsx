@@ -11,6 +11,8 @@ import { faPepperHot } from "@fortawesome/free-solid-svg-icons";
 import { faBurger } from "@fortawesome/free-solid-svg-icons";
 import { User } from "./User/User";
 import { Types } from "./Types/Types";
+import vegetable from "./Pictures/vegetable.gif";
+import { faCubesStacked } from "@fortawesome/free-solid-svg-icons";
 
 function AppBar() {
   const navigator = useNavigate();
@@ -113,7 +115,7 @@ function AppBar() {
           command: navigateToRegister,
         },
   ];
-  const start = <h2 className="header">Tavo lentyna</h2>;
+  const start = <h1 className="header">Primad</h1>;
   return (
     <div className="navbar">
       <Menubar

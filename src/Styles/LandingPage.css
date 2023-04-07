@@ -2,9 +2,15 @@
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, minmax(300px, 1fr));
-  grid-gap: -10px;
+  grid-gap: 5rem;
   overflow: hidden;
   flex-wrap: wrap;
+ 
+  margin: 5rem;
+  padding-left: 10rem;
+  
+  
+  
 }
 .grid-container1 {
   display: grid;
@@ -12,17 +18,21 @@
   grid-gap: 40px;
   padding: 3rem 8rem;
 }
-
+.mainCard
+{
+  font-style: bold !important;
+  font-Weight: 1000;
+}
 @media (min-width: 0px) and (max-width: 850px) {
   .grid-container1  {
     grid-template-columns: repeat(1, minmax(300px, 1fr));
   }
 }
 .column {
-  background-position: center;
+ background-position: center;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; 
 }
 .column:hover {
   cursor: pointer;
@@ -83,4 +93,13 @@
     grid-template-columns: repeat(2, minmax(300px, 1fr));
    
   }
+}
+.MuiPaper-root.MuiPaper-outlined.MuiPaper-rounded.MuiCard-root.css-1v5z4dq-MuiPaper-root-MuiCard-root
+{
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10%;
+
 }
