@@ -93,6 +93,15 @@
     grid-template-columns: repeat(2, minmax(300px, 1fr));
    
   }
+ 
+
+}
+@media  ( max-width: 400px)  {
+
+  .p-card{
+    width: 20px;
+  }
+
 }
 .MuiPaper-root.MuiPaper-outlined.MuiPaper-rounded.MuiCard-root.css-1v5z4dq-MuiPaper-root-MuiCard-root
 {

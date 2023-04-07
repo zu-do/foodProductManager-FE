@@ -1,3 +1,4 @@
+import React from 'react'
 import "./Styles/App.css";
 import Home from "./LandingPage";
 import AppBar from "./AppBar";

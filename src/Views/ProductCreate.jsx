@@ -11,6 +11,8 @@ import { addProduct } from "../Utils/product-axios-utils";
 import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { Dialog } from "primereact/dialog";
 import { User } from "../User/User";
+import { getProductInfo } from "../Utils/scanner-axios-utils";
+import BarcodeScanner from "./Barcode";
 
 export default function ProductCreate({ visible, onHide }) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -21,6 +23,33 @@ export default function ProductCreate({ visible, onHide }) {
   const [productDescription, setDescription] = useState("");
   const [expirationTime, setDate] = useState(null);
   const navigator = useNavigate();
+
+  const [scannedData, setScannedData] = useState('');
+
+  const createDescription = (carbo, fats, protein, kcal) =>{
+    if (protein === null || carbo === null || fats === null || kcal === null || protein === undefined || protein === fats || carbo === undefined || kcal === undefined ){
+      var text = "Deja informacijos apie šį produktą neradome.";
+      return text;
+    }
+    var text = `Šio produkto maistingumo vėrtė. 100g produkto ${carbo}g. angliavandenių,  ${fats}g. riebalų,  ${protein}g. baltymų,  ${kcal} kalorijų`;
+    return text;
+  }
+
+  const handleScan = (data) => {
+    if (data !== undefined || data !== null) {
+      setScannedData(data);
+    }
+  };
+  
+  useEffect(() => {
+    // only call getProductInfo if scannedData is not null or undefined
+    if (scannedData) {
+      getProductInfo(scannedData).then((responseData) => {
+        setName(responseData.productName);
+        setDescription(createDescription(responseData.carbohydrates, responseData.fat, responseData.proteins, responseData.kcal));
+      });
+    }
+  }, [scannedData]);
 
   useEffect(() => {
     getCategories().then((data) => {
@@ -72,9 +101,10 @@ export default function ProductCreate({ visible, onHide }) {
       className="Dialog1"
       header="Pridėti naują produktą"
       visible={visible}
-      style={{ width: "35%" }}
       onHide={onHide}
     >
+      <p>Skenuokite produkto brūkšninį kodą ir gaukite informaciją apie jį</p>
+      <BarcodeScanner onScan={handleScan} />
       <h5 className="text-center">Įveskite produkto pavadinimą</h5>
       <InputText
         placeholder="Pvz.: Pienas"
