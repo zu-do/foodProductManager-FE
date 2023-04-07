@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { Menubar } from "primereact/menubar";
 import "primereact/resources/themes/lara-light-purple/theme.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAppleWhole } from "@fortawesome/free-solid-svg-icons";
+import { faAppleWhole, faBowlFood } from "@fortawesome/free-solid-svg-icons";
 import { faCheese } from "@fortawesome/free-solid-svg-icons";
 import { faBreadSlice } from "@fortawesome/free-solid-svg-icons";
 import { faPepperHot } from "@fortawesome/free-solid-svg-icons";
 import { faBurger } from "@fortawesome/free-solid-svg-icons";
 import { User } from "./User/User";
 import { Types } from "./Types/Types";
+import vegetable from "./Pictures/vegetable.gif";
+import { faCubesStacked } from "@fortawesome/free-solid-svg-icons";
 
 function AppBar() {
   const navigator = useNavigate();
@@ -32,6 +34,10 @@ function AppBar() {
 
   const navigateToUsers = () => {
     navigator("admin/users");
+  };
+
+  const navigateToProfile = () => {
+    navigator("/profile");
   };
 
   const adminItems = [
@@ -81,7 +87,17 @@ function AppBar() {
           ),
           command: navigateToLogin,
         },
-
+    sessionStorage.getItem(User.userEmail) !== null
+      ? {
+          label: "Profilis",
+          icon: (
+            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "10px" }} />
+          ),
+          command: navigateToProfile,
+        }
+      : {
+          visible: false,
+        },
     sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Atsijungti",
@@ -99,7 +115,7 @@ function AppBar() {
           command: navigateToRegister,
         },
   ];
-  const start = <h2 className="header">Tavo lentyna</h2>;
+  const start = <h1 className="header">Primad</h1>;
   return (
     <div className="navbar">
       <Menubar
