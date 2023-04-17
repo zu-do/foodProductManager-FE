@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
+import { RadioButton } from "primereact/radiobutton";
 import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import "../Styles/styleCreate.css";
-import { useNavigate } from "react-router-dom";
 import { getCategories } from "../Utils/category-axios-utils";
 import { addProduct } from "../Utils/product-axios-utils";
 import { getUserShelves } from "../Utils/shelf-axios-utils";
@@ -22,31 +23,47 @@ export default function ProductCreate({ visible, onHide }) {
   const [productShelf, setProductShelf] = useState("");
   const [productDescription, setDescription] = useState("");
   const [expirationTime, setDate] = useState(null);
-  const navigator = useNavigate();
+  const [quantity, setQuantity] = useState(10);
+  const [unit, setUnit] = useState("");
+  const [scannedData, setScannedData] = useState("");
 
-  const [scannedData, setScannedData] = useState('');
-
-  const createDescription = (carbo, fats, protein, kcal) =>{
-    if (protein === null || carbo === null || fats === null || kcal === null || protein === undefined || protein === fats || carbo === undefined || kcal === undefined ){
+  const createDescription = (carbo, fats, protein, kcal) => {
+    if (
+      protein === null ||
+      carbo === null ||
+      fats === null ||
+      kcal === null ||
+      protein === undefined ||
+      protein === fats ||
+      carbo === undefined ||
+      kcal === undefined
+    ) {
       var text = "Deja informacijos apie šį produktą neradome.";
       return text;
     }
     var text = `Šio produkto maistingumo vėrtė. 100g produkto ${carbo}g. angliavandenių,  ${fats}g. riebalų,  ${protein}g. baltymų,  ${kcal} kalorijų`;
     return text;
-  }
+  };
 
   const handleScan = (data) => {
     if (data !== undefined || data !== null) {
       setScannedData(data);
     }
   };
-  
+
   useEffect(() => {
     // only call getProductInfo if scannedData is not null or undefined
     if (scannedData) {
       getProductInfo(scannedData).then((responseData) => {
         setName(responseData.productName);
-        setDescription(createDescription(responseData.carbohydrates, responseData.fat, responseData.proteins, responseData.kcal));
+        setDescription(
+          createDescription(
+            responseData.carbohydrates,
+            responseData.fat,
+            responseData.proteins,
+            responseData.kcal
+          )
+        );
       });
     }
   }, [scannedData]);
@@ -112,6 +129,93 @@ export default function ProductCreate({ visible, onHide }) {
         onChange={(e) => setName(e.target.value)}
         style={{ width: "100%" }}
         className="w-full md:w-14rem"
+      />
+      <h5>Įveskite produkto kiekį:</h5>
+      <div className="radio-flexbox">
+        <div>
+          <RadioButton
+            inputId="kg"
+            name="pizza"
+            value="kg"
+            onChange={(e) => setUnit(e.value)}
+            checked={unit === "kg"}
+          />
+          <label htmlFor="ingredient3" className="ml-2">
+            Kilogramai
+          </label>
+        </div>
+        <div>
+          <RadioButton
+            inputId="g"
+            name="pizza"
+            value="g"
+            onChange={(e) => setUnit(e.value)}
+            checked={unit === "g"}
+          />
+          <label htmlFor="ingredient3" className="ml-2">
+            Gramai
+          </label>
+        </div>
+        <div>
+          <RadioButton
+            inputId="l"
+            name="pizza"
+            value="l"
+            onChange={(e) => setUnit(e.value)}
+            checked={unit === "l"}
+          />
+          <label htmlFor="ingredient3" className="ml-2">
+            Litrai
+          </label>
+        </div>
+        <div>
+          <RadioButton
+            inputId="ml"
+            name="pizza"
+            value="ml"
+            onChange={(e) => setUnit(e.value)}
+            checked={unit === "ml"}
+          />
+          <label htmlFor="ingredient3" className="ml-2">
+            Mililitrai
+          </label>
+        </div>
+        <div>
+          <RadioButton
+            inputId="vnt"
+            name="pizza"
+            value="vnt"
+            onChange={(e) => setUnit(e.value)}
+            checked={unit === "vnt"}
+          />
+          <label htmlFor="ingredient3" className="ml-2">
+            Vienetai
+          </label>
+        </div>
+      </div>
+      <br />
+      <InputNumber
+        inputId="horizontal-buttons"
+        style={{ width: "100%" }}
+        value={quantity}
+        onValueChange={(e) => setQuantity(e.value)}
+        showButtons
+        buttonLayout="horizontal"
+        step={
+          unit === "kg" || unit === "l"
+            ? 0.5
+            : unit === "g" || unit === "ml"
+            ? 10
+            : 1
+        }
+        min={1}
+        max={1000}
+        maxLength={5}
+        decrementButtonClassName="p-button-secondary"
+        incrementButtonClassName="p-button-secondary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        mode="decimal"
       />
       <h5> Pasirinkite kategoriją:</h5>
       <Dropdown
