@@ -45,6 +45,7 @@ function Shelf({ shelf }) {
     setDialogVisible(true);
   };
 
+  var displayed = false;
   const daysLeft = (rowData) => {
     var date = new Date();
     var endDate = new Date(rowData.expirationTime);
@@ -154,8 +155,11 @@ function Shelf({ shelf }) {
     return count;
   };
   const displayWarningSnack = (rowData) => {
-    if (daysLeft(rowData) < 3) return true;
-    else return false;
+    if (displayed) return false;
+    if (daysLeft(rowData) < 3) {
+      displayed = true;
+      return true;
+    } else return false;
   };
 
   return (
