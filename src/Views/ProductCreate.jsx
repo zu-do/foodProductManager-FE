@@ -14,6 +14,7 @@ import { Dialog } from "primereact/dialog";
 import { User } from "../User/User";
 import { getProductInfo } from "../Utils/scanner-axios-utils";
 import BarcodeScanner from "./Barcode";
+import { getUnitTypes } from "../Utils/unit-axios-utils";
 
 export default function ProductCreate({ visible, onHide }) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -23,8 +24,9 @@ export default function ProductCreate({ visible, onHide }) {
   const [productShelf, setProductShelf] = useState("");
   const [productDescription, setDescription] = useState("");
   const [expirationTime, setDate] = useState(null);
-  const [quantity, setQuantity] = useState(10);
-  const [unit, setUnit] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [units, setUnits] = useState("");
+  const [unit, setUnit] = useState(null);
   const [scannedData, setScannedData] = useState("");
 
   const createDescription = (carbo, fats, protein, kcal) => {
@@ -85,6 +87,14 @@ export default function ProductCreate({ visible, onHide }) {
         }))
       );
     });
+    getUnitTypes().then((data) => {
+      setUnits(
+        data.map((item) => ({
+          value: item,
+          label: item.name,
+        }))
+      );
+    });
   }, []);
 
   const onSubmit = (event) => {
@@ -98,11 +108,12 @@ export default function ProductCreate({ visible, onHide }) {
       productDescription,
       expirationtime,
     };
-
     const response = addProduct(
       product,
       productCategory.categoryName,
-      productShelf.id
+      productShelf.id,
+      quantity,
+      unit.value.id
     );
 
     response.then((result) => {
@@ -112,7 +123,6 @@ export default function ProductCreate({ visible, onHide }) {
       }
     });
   };
-
   return (
     <Dialog
       className="Dialog1"
@@ -132,66 +142,25 @@ export default function ProductCreate({ visible, onHide }) {
       />
       <h5>Įveskite produkto kiekį:</h5>
       <div className="radio-flexbox">
-        <div>
-          <RadioButton
-            inputId="kg"
-            name="pizza"
-            value="kg"
-            onChange={(e) => setUnit(e.value)}
-            checked={unit === "kg"}
-          />
-          <label htmlFor="ingredient3" className="ml-2">
-            Kilogramai
-          </label>
-        </div>
-        <div>
-          <RadioButton
-            inputId="g"
-            name="pizza"
-            value="g"
-            onChange={(e) => setUnit(e.value)}
-            checked={unit === "g"}
-          />
-          <label htmlFor="ingredient3" className="ml-2">
-            Gramai
-          </label>
-        </div>
-        <div>
-          <RadioButton
-            inputId="l"
-            name="pizza"
-            value="l"
-            onChange={(e) => setUnit(e.value)}
-            checked={unit === "l"}
-          />
-          <label htmlFor="ingredient3" className="ml-2">
-            Litrai
-          </label>
-        </div>
-        <div>
-          <RadioButton
-            inputId="ml"
-            name="pizza"
-            value="ml"
-            onChange={(e) => setUnit(e.value)}
-            checked={unit === "ml"}
-          />
-          <label htmlFor="ingredient3" className="ml-2">
-            Mililitrai
-          </label>
-        </div>
-        <div>
-          <RadioButton
-            inputId="vnt"
-            name="pizza"
-            value="vnt"
-            onChange={(e) => setUnit(e.value)}
-            checked={unit === "vnt"}
-          />
-          <label htmlFor="ingredient3" className="ml-2">
-            Vienetai
-          </label>
-        </div>
+        {units &&
+          units.map((initialUnit) => (
+            <div>
+              <RadioButton
+                inputId={initialUnit.label}
+                name="unitType"
+                value={initialUnit}
+                onChange={(e) => setUnit(e.target.value)}
+                checked={unit === initialUnit}
+              />
+              <label htmlFor={initialUnit.label}>
+                {initialUnit.label === "Kg"
+                  ? "Kilogramai"
+                  : initialUnit.label === "L"
+                  ? "Litrai"
+                  : "Vienetai"}
+              </label>
+            </div>
+          ))}
       </div>
       <br />
       <InputNumber
@@ -201,14 +170,8 @@ export default function ProductCreate({ visible, onHide }) {
         onValueChange={(e) => setQuantity(e.value)}
         showButtons
         buttonLayout="horizontal"
-        step={
-          unit === "kg" || unit === "l"
-            ? 0.5
-            : unit === "g" || unit === "ml"
-            ? 10
-            : 1
-        }
-        min={1}
+        step={unit ? (unit.label === "Kg" || unit.label === "L" ? 0.1 : 1) : 0}
+        min={0}
         max={1000}
         maxLength={5}
         decrementButtonClassName="p-button-secondary"
