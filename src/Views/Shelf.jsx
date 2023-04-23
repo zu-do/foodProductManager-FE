@@ -20,7 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddIcon from "@mui/icons-material/Add";
 import ProductCreate from "../Views/ProductCreate";
-
+import WarningSnackBar from "./WarningSnackBar";
 function Shelf({ shelf }) {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
@@ -45,6 +45,7 @@ function Shelf({ shelf }) {
     setDialogVisible(true);
   };
 
+  var displayed = false;
   const daysLeft = (rowData) => {
     var date = new Date();
     var endDate = new Date(rowData.expirationTime);
@@ -137,6 +138,29 @@ function Shelf({ shelf }) {
       });
     }
   };
+  const countExpiringProducts = (products) => {
+    let count = 0;
+    const today = new Date();
+    const threeDaysFromNow = new Date(today);
+    threeDaysFromNow.setDate(today.getDate() + 3);
+
+    products.forEach((product) => {
+      const expirationDate = new Date(product.expirationTime);
+      const daysLeft = Math.ceil((expirationDate - today) / (1000 * 3600 * 24));
+      if (daysLeft < 3) {
+        count++;
+      }
+    });
+
+    return count;
+  };
+  const displayWarningSnack = (rowData) => {
+    if (displayed) return false;
+    if (daysLeft(rowData) < 3) {
+      displayed = true;
+      return true;
+    } else return false;
+  };
 
   return (
     <>
@@ -193,6 +217,10 @@ function Shelf({ shelf }) {
                   {renderDeleteComponent(product)}
                 </Stack>
               </Paper>
+              <WarningSnackBar
+                triggerOpen={displayWarningSnack(product)}
+                number={countExpiringProducts(shelf.products)}
+              />
             </Grid>
           ))}
         </Grid>
