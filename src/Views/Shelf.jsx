@@ -5,6 +5,7 @@ import { confirmPopup } from "primereact/confirmpopup";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import EditProduct from "../Views/EditProduct";
+import EditShelf from "../Views/EditShelf";
 import {
   Grid,
   Box,
@@ -20,11 +21,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddIcon from "@mui/icons-material/Add";
 import ProductCreate from "../Views/ProductCreate";
+import { User } from "../User/User";
+
 import WarningSnackBar from "./WarningSnackBar";
 function Shelf({ shelf }) {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
+  const [dialogEditVisible, setEditDialogVisible] = useState(false);
+  const [selectedEditRowData, setSelectedEditRowData] = useState(null);
 
   const toast = useRef(null);
 
@@ -35,12 +40,22 @@ function Shelf({ shelf }) {
   const hideCreateDialog = () => {
     setCreateDialogVisible(false);
   };
+  const showEditDialog = (rowData) => {
+    setSelectedEditRowData(rowData);
+    setEditDialogVisible(true);
+  };
+
+  const hideEditDialog = () => {
+    setSelectedEditRowData(null);
+    setEditDialogVisible(false);
+  };
 
   const hideDialog = () => {
     setSelectedRowData(null);
     setDialogVisible(false);
   };
   const showDialog = (rowData) => {
+    console.log(rowData);
     setSelectedRowData(rowData);
     setDialogVisible(true);
   };
@@ -60,7 +75,18 @@ function Shelf({ shelf }) {
         onClick={() => showDialog(rowData)}
         aria-label="Edit"
       >
-        <EditIcon color="primary" />
+        <EditIcon sx={{ color: "green" }} />
+      </IconButton>
+    );
+  };
+  const renderEditShelfComponent = (rowData) => {
+    return (
+      <IconButton
+        style={{ marginLeft: "auto" }}
+        onClick={() => showEditDialog(rowData)}
+        aria-label="Edit"
+      >
+        <EditIcon sx={{ color: "green" }} />
       </IconButton>
     );
   };
@@ -70,6 +96,18 @@ function Shelf({ shelf }) {
       <IconButton
         onClick={(e) => {
           confirm2(e, rowData);
+        }}
+        aria-label="delete"
+      >
+        <DeleteIcon sx={{ color: "red" }} />
+      </IconButton>
+    );
+  };
+  const renderShelfDeleteComponent = (rowData) => {
+    return (
+      <IconButton
+        onClick={(e) => {
+          confirm3(e, rowData);
         }}
         aria-label="delete"
       >
@@ -108,10 +146,22 @@ function Shelf({ shelf }) {
       accept: () => handleDeleteProduct(rowData.id),
     });
   };
+  const confirm3 = (event, rowData) => {
+    confirmPopup({
+      target: event.currentTarget,
+      message: "Ar norite pašalinti šią lentyną?",
+      icon: "pi pi-info-circle",
+      acceptClassName: "p-button-danger",
+      acceptLabel: "Taip",
+      rejectLabel: "Ne",
+      accept: () =>
+        handleDeleteShelf(rowData.id, sessionStorage.getItem(User.userID)),
+    });
+  };
 
   const handleDeleteProduct = async (id) => {
     try {
-      const response = await fetch("https://localhost:7258/Product/delete", {
+      const response = await fetch(`"https://localhost:7258/Shelf/delete"`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -134,6 +184,37 @@ function Shelf({ shelf }) {
         severity: "error",
         summary: "Klaida",
         detail: "Nepavyko pašalinti maisto produkto",
+        life: 3000,
+      });
+    }
+  };
+  const handleDeleteShelf = async (id, userid) => {
+    try {
+      const response = await fetch(
+        `https://localhost:7258/Shelf/delete/${id}/${userid}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Nepavyko ištrinti lentynos.");
+      }
+      toast.current.show({
+        severity: "info",
+        summary: "Patvirtinta",
+        detail: "Sėkmingai pašalinote lentyną",
+        life: 3000,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      toast.current.show({
+        severity: "error",
+        summary: "Klaida",
+        detail: "Nepavyko pašalinti lentynos",
         life: 3000,
       });
     }
@@ -172,24 +253,46 @@ function Shelf({ shelf }) {
           rowData={selectedRowData}
         />
       )}
+
+      {selectedEditRowData && (
+        <EditShelf
+          visible={dialogEditVisible}
+          onHide={hideEditDialog}
+          rowData={selectedEditRowData}
+        />
+      )}
       <ConfirmPopup />
       <Toast ref={toast} />
-      <Container id="shelf-container">
+      <Container id="shelf-container" style={{ float: "left", width:"170%" }}>
+        <div>
         <h1 style={{ float: "left" }}>
-          {shelf.name === "Default" ? "Pagrindinė" : shelf.name}
+          {shelf.name === "Default" ? (
+            "Pagrindinė"
+          ) : (
+            <>
+              <span>{shelf.name}</span>
+              {renderEditShelfComponent(shelf)}
+              {renderShelfDeleteComponent(shelf)}
+            </>
+          )}
         </h1>
-        <span style={{ float: "right" }}>
-          <Button
+        
+          <Button sx={{ backgroundColor: "green", float:"right" }}
             onClick={showCreateDialog}
             variant="contained"
             startIcon={<AddIcon />}
           >
             Pridėti produktą
           </Button>
-        </span>
-        <Grid container spacing={2}>
+        
+        </div>
+        <Grid
+          container 
+          spacing={2}
+         sx={{width: '100%'  }}
+        >
           {shelf.products.map((product) => (
-            <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <Grid item xs={7} sm={10} md={4} lg={3} xl={2}key={product.id} >
               <Paper
                 style={{
                   minHeight: "200px",

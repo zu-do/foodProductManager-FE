@@ -1,5 +1,5 @@
 import React from "react";
-import "./Styles/styleAppBar.css";
+import "../Styles/styleAppBar.css";
 import { useNavigate } from "react-router-dom";
 import { Menubar } from "primereact/menubar";
 import "primereact/resources/themes/lara-light-purple/theme.css";
@@ -9,9 +9,9 @@ import { faCheese } from "@fortawesome/free-solid-svg-icons";
 import { faBreadSlice } from "@fortawesome/free-solid-svg-icons";
 import { faPepperHot } from "@fortawesome/free-solid-svg-icons";
 import { faBurger } from "@fortawesome/free-solid-svg-icons";
-import { User } from "./User/User";
-import { Types } from "./Types/Types";
-import vegetable from "./Pictures/vegetable.gif";
+import { User } from "../User/User";
+import { Types } from "../Types/Types";
+import vegetable from "../Pictures/vegetable.gif";
 import { faCubesStacked } from "@fortawesome/free-solid-svg-icons";
 
 function AppBar() {
@@ -69,21 +69,21 @@ function AppBar() {
   const items = [
     {
       label: "Pagrindinis",
-      icon: <FontAwesomeIcon icon={faCheese} style={{ padding: "10px" }} />,
+      icon: <FontAwesomeIcon icon={faCheese} style={{ padding: "5px" }} />,
       command: navigateToLandingPage,
     },
     sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Lentyna",
           icon: (
-            <FontAwesomeIcon icon={faAppleWhole} style={{ padding: "10px" }} />
+            <FontAwesomeIcon icon={faAppleWhole} style={{ padding: "5px" }} />
           ),
           command: navigateToMain,
         }
       : {
           label: "Prisijungti",
           icon: (
-            <FontAwesomeIcon icon={faBreadSlice} style={{ padding: "10px" }} />
+            <FontAwesomeIcon icon={faBreadSlice} style={{ padding: "5px" }} />
           ),
           command: navigateToLogin,
         },
@@ -91,9 +91,49 @@ function AppBar() {
       ? {
           label: "Profilis",
           icon: (
-            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "10px" }} />
+            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
           ),
           command: navigateToProfile,
+        }
+      : {
+          visible: false,
+        },
+        sessionStorage.getItem(User.userEmail) !== null
+      ? {
+          label: "Siūlomi receptai",
+          icon: (
+            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
+          ),
+        }
+      : {
+          visible: false,
+        },
+        sessionStorage.getItem(User.userEmail) !== null
+      ? {
+          label: "Prenumerata",
+          icon: (
+            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
+          ),
+        }
+      : {
+          visible: false,
+        },
+        sessionStorage.getItem(User.userEmail) !== null
+      ? {
+          label: "Konkursas",
+          icon: (
+            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
+          ),
+        }
+      : {
+          visible: false,
+        },
+        sessionStorage.getItem(User.userEmail) !== null
+      ? {
+          label: "Įvertink naudotoją",
+          icon: (
+            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
+          ),
         }
       : {
           visible: false,
@@ -102,7 +142,7 @@ function AppBar() {
       ? {
           label: "Atsijungti",
           icon: (
-            <FontAwesomeIcon icon={faPepperHot} style={{ padding: "10px" }} />
+            <FontAwesomeIcon icon={faPepperHot} style={{ padding: "5px" }} />
           ),
           command: () => {
             sessionStorage.clear();
@@ -111,7 +151,7 @@ function AppBar() {
         }
       : {
           label: "Registruotis",
-          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "10px" }} />,
+          icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "5px" }} />,
           command: navigateToRegister,
         },
   ];
