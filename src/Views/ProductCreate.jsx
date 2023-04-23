@@ -170,7 +170,7 @@ export default function ProductCreate({ visible, onHide }) {
         onValueChange={(e) => setQuantity(e.value)}
         showButtons
         buttonLayout="horizontal"
-        step={unit ? (unit.label === "Kg" || unit.label === "L" ? 0.1 : 1) : 0}
+        step={unit ? (unit.label === "Vnt" ? 1 : 0.1) : 0}
         min={0}
         max={1000}
         maxLength={5}
