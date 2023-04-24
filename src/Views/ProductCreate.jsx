@@ -13,7 +13,7 @@ import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { Dialog } from "primereact/dialog";
 import { User } from "../User/User";
 import { getProductInfo } from "../Utils/scanner-axios-utils";
-import BarcodeScanner from "./Barcode";
+import BarcodeScanner from "./ScaningPage";
 import { getUnitTypes } from "../Utils/unit-axios-utils";
 
 export default function ProductCreate({ visible, onHide }) {
