@@ -6,6 +6,9 @@ pipelines:
       - step:
           name: "Build"
           script:
+            - echo $AZURE_APP_ID >> my_variables.txt
+            - echo $AZURE_PASSWORD >> my_variables.txt
+            - echo $AZURE_TENANT_ID >> my_variables.txt
             - nvm install 16.14.0
             - npm install
             - unset CI 
