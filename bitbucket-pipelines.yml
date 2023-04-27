@@ -15,7 +15,7 @@ pipelines:
             - example-*.zip
       - step:
           name: "Deploy to Azure"
-          deployment: master
+          deployment: Production
           script:
             - pipe: microsoft/azure-web-apps-deploy:1.0.0
               variables:
