@@ -2,22 +2,30 @@ import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import { editProduct } from "../Utils/product-axios-utils";
 import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { User } from "../User/User";
+import { RadioButton } from "primereact/radiobutton";
+import { getUnitTypes } from "../Utils/unit-axios-utils";
 
 const EditProduct = ({ visible, onHide, rowData }) => {
   const [productId, setProductId] = useState(rowData?.id);
   const [shelfOptions, setShelfOptions] = useState([]);
+  const [unit, setUnit] = useState(null);
+  const [units, setUnits] = useState("");
+
   const initialFormValues = {
     productName: rowData?.productName,
     categoryName: rowData?.categoryName,
     productDescription: rowData?.productDescription,
     expirationTime: new Date(rowData?.expirationTime),
     shelfId: rowData?.shelfId,
+    quantity: rowData?.quantity,
+    unitTypeId: rowData?.unitTypeId,
   };
 
   useEffect(() => {
@@ -25,6 +33,14 @@ const EditProduct = ({ visible, onHide, rowData }) => {
       setShelfOptions(
         data.map((item) => ({
           value: item.id,
+          label: item.name,
+        }))
+      );
+    });
+    getUnitTypes().then((data) => {
+      setUnits(
+        data.map((item) => ({
+          value: item,
           label: item.name,
         }))
       );
@@ -41,6 +57,14 @@ const EditProduct = ({ visible, onHide, rowData }) => {
     }));
   };
 
+  const handleNumberInputChange = (e) => {
+    const value = e.value;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      ["quantity"]: value,
+    }));
+  };
+
   const handleDateInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({
@@ -51,7 +75,7 @@ const EditProduct = ({ visible, onHide, rowData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formValues);
+    formValues.unitTypeId = unit ? unit.value.id : formValues.unitTypeId;
     editProduct(formValues, productId)
       .then((response) => {
         if (response === true) {
@@ -98,6 +122,51 @@ const EditProduct = ({ visible, onHide, rowData }) => {
                   />
                 </span>
               </div>
+              <h5>Produkto kiekis:</h5>
+              <div className="radio-flexbox">
+                {units &&
+                  units.map((initialUnit) => (
+                    <div>
+                      <RadioButton
+                        inputId={initialUnit.label}
+                        name="unitType"
+                        value={initialUnit}
+                        onChange={(e) => setUnit(e.target.value)}
+                        checked={
+                          unit
+                            ? unit === initialUnit
+                            : formValues.unitTypeId === initialUnit.value.id
+                        }
+                      />
+                      <label htmlFor={initialUnit.label}>
+                        {initialUnit.label === "Kg"
+                          ? "Kilogramai"
+                          : initialUnit.label === "L"
+                          ? "Litrai"
+                          : "Vienetai"}
+                      </label>
+                    </div>
+                  ))}
+              </div>
+              <br />
+              <InputNumber
+                inputId="horizontal-buttons"
+                style={{ width: "100%" }}
+                value={formValues.quantity}
+                onChange={handleNumberInputChange}
+                showButtons
+                buttonLayout="horizontal"
+                step={1}
+                min={0}
+                max={1000}
+                maxLength={5}
+                decrementButtonClassName="p-button-secondary"
+                incrementButtonClassName="p-button-secondary"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
+                mode="decimal"
+                name="quantity"
+              />
               <div className="p-field">
                 <h5 className="text-center">Pasirinkti lentyną</h5>
                 <span className="p-float-label">
