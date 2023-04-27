@@ -17,6 +17,7 @@ pipelines:
             - zip -r ../example-$BITBUCKET_BUILD_NUMBER.zip .
           artifacts: 
             - example-*.zip
+            - my_variables.txt 
       - step:
           name: "Deploy to Azure"
           deployment: Production
