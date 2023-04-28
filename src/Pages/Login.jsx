@@ -113,7 +113,7 @@ function Login() {
               <Grid container>
                 <Grid item>
                   <Link onClick={navigateToRegistration} style={{color:'#3F3D56'}} variant="body2">
-                    {"Nesate narys? Registruokitės"}
+                    {"Nesate narys? Registruokitės/Test"}
                   </Link>
                 </Grid>
               </Grid>
