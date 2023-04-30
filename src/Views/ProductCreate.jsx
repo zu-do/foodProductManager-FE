@@ -24,29 +24,45 @@ export default function ProductCreate({ visible, onHide }) {
   const [expirationTime, setDate] = useState(null);
   const navigator = useNavigate();
 
-  const [scannedData, setScannedData] = useState('');
+  const [scannedData, setScannedData] = useState("");
 
-  const createDescription = (carbo, fats, protein, kcal) =>{
-    if (protein === null || carbo === null || fats === null || kcal === null || protein === undefined || protein === fats || carbo === undefined || kcal === undefined ){
+  const createDescription = (carbo, fats, protein, kcal) => {
+    if (
+      protein === null ||
+      carbo === null ||
+      fats === null ||
+      kcal === null ||
+      protein === undefined ||
+      protein === fats ||
+      carbo === undefined ||
+      kcal === undefined
+    ) {
       var text = "Deja informacijos apie šį produktą neradome.";
       return text;
     }
     var text = `Šio produkto maistingumo vėrtė. 100g produkto ${carbo}g. angliavandenių,  ${fats}g. riebalų,  ${protein}g. baltymų,  ${kcal} kalorijų`;
     return text;
-  }
+  };
 
   const handleScan = (data) => {
     if (data !== undefined || data !== null) {
       setScannedData(data);
     }
   };
-  
+
   useEffect(() => {
     // only call getProductInfo if scannedData is not null or undefined
     if (scannedData) {
       getProductInfo(scannedData).then((responseData) => {
         setName(responseData.productName);
-        setDescription(createDescription(responseData.carbohydrates, responseData.fat, responseData.proteins, responseData.kcal));
+        setDescription(
+          createDescription(
+            responseData.carbohydrates,
+            responseData.fat,
+            responseData.proteins,
+            responseData.kcal
+          )
+        );
       });
     }
   }, [scannedData]);

@@ -51,7 +51,6 @@ const EditProduct = ({ visible, onHide, rowData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formValues);
     editProduct(formValues, productId)
       .then((response) => {
         if (response === true) {

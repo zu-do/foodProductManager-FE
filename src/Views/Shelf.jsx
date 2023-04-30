@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
 import "../Styles/styleMain.css";
-import { ConfirmPopup } from "primereact/confirmpopup";
-import { confirmPopup } from "primereact/confirmpopup";
+import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import EditProduct from "../Views/EditProduct";
+import ViewProduct from "./ViewProduct";
 import {
   Grid,
   Box,
@@ -20,11 +20,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddIcon from "@mui/icons-material/Add";
 import ProductCreate from "../Views/ProductCreate";
+import { deleteProduct } from "../Utils/product-axios-utils";
 
 function Shelf({ shelf }) {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
+  const [dialogViewVisible, setDialogViewVisible] = useState(false);
 
   const toast = useRef(null);
 
@@ -34,6 +36,16 @@ function Shelf({ shelf }) {
 
   const hideCreateDialog = () => {
     setCreateDialogVisible(false);
+  };
+
+  const showViewDialog = (rowData) => {
+    setSelectedRowData(rowData);
+    setDialogViewVisible(true);
+  };
+
+  const hideViewDialog = () => {
+    setSelectedRowData(null);
+    setDialogViewVisible(false);
   };
 
   const hideDialog = () => {
@@ -68,7 +80,7 @@ function Shelf({ shelf }) {
     return (
       <IconButton
         onClick={(e) => {
-          confirm2(e, rowData);
+          confirmDelete(e, rowData);
         }}
         aria-label="delete"
       >
@@ -96,7 +108,8 @@ function Shelf({ shelf }) {
       );
   };
 
-  const confirm2 = (event, rowData) => {
+  const confirmDelete = (event, rowData) => {
+    event.preventDefault();
     confirmPopup({
       target: event.currentTarget,
       message: "Ar norite pašalinti šį maisto produkto įrašą?",
@@ -108,34 +121,30 @@ function Shelf({ shelf }) {
     });
   };
 
-  const handleDeleteProduct = async (id) => {
-    try {
-      const response = await fetch("https://localhost:7258/Product/delete", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(id),
+  const handleDeleteProduct = (id) => {
+    deleteProduct(id)
+      .then((response) => {
+        if (response === true) {
+          toast.current.show({
+            severity: "info",
+            summary: "Patvirtinta",
+            detail: "Sėkmingai pašalinote maisto produktą",
+            life: 5000,
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.current.show({
+          severity: "error",
+          summary: "Klaida",
+          detail: "Nepavyko pašalinti maisto produkto",
+          life: 3000,
+        });
       });
-      if (!response.ok) {
-        throw new Error("Nepavyko ištrinti produkto.");
-      }
-      toast.current.show({
-        severity: "info",
-        summary: "Patvirtinta",
-        detail: "Sėkmingai pašalinote maisto produktą",
-        life: 3000,
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      toast.current.show({
-        severity: "error",
-        summary: "Klaida",
-        detail: "Nepavyko pašalinti maisto produkto",
-        life: 3000,
-      });
-    }
   };
 
   return (
@@ -148,6 +157,16 @@ function Shelf({ shelf }) {
           rowData={selectedRowData}
         />
       )}
+      {selectedRowData && (
+        <ViewProduct
+          visible={dialogViewVisible}
+          hide={hideViewDialog}
+          rowData={selectedRowData}
+          onEdit={showDialog}
+          onEditClose={hideDialog}
+        />
+      )}
+
       <ConfirmPopup />
       <Toast ref={toast} />
       <Container id="shelf-container">
@@ -175,6 +194,7 @@ function Shelf({ shelf }) {
               >
                 <Box position="relative">
                   <img
+                    onClick={() => showViewDialog(product)}
                     src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.dribbble.com%2Fusers%2F1348951%2Fscreenshots%2F3167282%2Fmilk.gif&f=1&nofb=1&ipt=bf339ff6a7d652d88b6fd76d117218df612320d7f359476b7e97cd3b65bab1fc&ipo=images"
                     style={{ width: "100%", height: "auto" }}
                   />
