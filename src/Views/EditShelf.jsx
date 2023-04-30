@@ -4,6 +4,8 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { editShelf } from "../Utils/shelf-axios-utils";
 import { User } from "../User/User";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 const EditShelf = ({ visible, onHide, rowData }) => {
   const [shelfId, setProductId] = useState(rowData?.id);
@@ -15,6 +17,7 @@ const EditShelf = ({ visible, onHide, rowData }) => {
   };
 
   const [formValues, setFormValues] = useState(initialFormValues);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({
@@ -36,11 +39,15 @@ const EditShelf = ({ visible, onHide, rowData }) => {
         console.log(error);
       });
   };
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Dialog
       header="Redaguoti lentyną"
       visible={visible}
-      style={{ width: "30%" }}
+      style={{ width: isMobile ? "95%" : "35%" }}
       onHide={onHide}
     >
       <form onSubmit={handleSubmit} className="p-fluid">

@@ -6,6 +6,8 @@ import { Tag } from "primereact/tag";
 import EditProduct from "../Views/EditProduct";
 import EditShelf from "../Views/EditShelf";
 import ViewProduct from "./ViewProduct";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import {
   Grid,
   Box,
@@ -111,7 +113,7 @@ function Shelf({ shelf }) {
         }}
         aria-label="delete"
       >
-        <DeleteIcon sx={{ color: "red" }} />
+        <DeleteIcon sx={{ color: "#F16E5A" }} />
       </IconButton>
     );
   };
@@ -123,7 +125,7 @@ function Shelf({ shelf }) {
         }}
         aria-label="delete"
       >
-        <DeleteIcon sx={{ color: "red" }} />
+        <DeleteIcon sx={{ color: "#F16E5A" }} />
       </IconButton>
     );
   };
@@ -132,7 +134,13 @@ function Shelf({ shelf }) {
     if (daysLeft(rowData) < 3)
       return (
         <Tag
-          style={{ position: "absolute", bottom: 0, right: 0, margin: "16px" }}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            margin: "16px",
+            backgroundColor: "#F16E5A",
+          }}
           severity="danger"
           value="SKUBU"
         ></Tag>
@@ -252,6 +260,8 @@ function Shelf({ shelf }) {
       return true;
     } else return false;
   };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -283,7 +293,11 @@ function Shelf({ shelf }) {
 
       <ConfirmPopup />
       <Toast ref={toast} />
-      <Container id="shelf-container" style={{ float: "left", width: "170%" }}>
+      <Container
+        maxWidth="85%"
+        sx={{ width: "100%" }}
+        style={{ float: "left" }}
+      >
         <div>
           <h1 style={{ float: "left" }}>
             {shelf.name === "Default" ? (
@@ -298,6 +312,7 @@ function Shelf({ shelf }) {
           </h1>
 
           <Button
+            style={{ marginTop: "2rem" }}
             sx={{ backgroundColor: "#29B61D", float: "right" }}
             onClick={showCreateDialog}
             variant="contained"
@@ -308,7 +323,15 @@ function Shelf({ shelf }) {
         </div>
         <Grid container spacing={2} sx={{ width: "100%" }}>
           {shelf.products.map((product) => (
-            <Grid item xs={7} sm={10} md={4} lg={3} xl={2} key={product.id}>
+            <Grid
+              item
+              xs={isMobile ? 13 : 7}
+              sm={10}
+              md={4}
+              lg={3}
+              xl={2}
+              key={product.id}
+            >
               <Paper
                 style={{
                   minHeight: "200px",

@@ -11,6 +11,8 @@ import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { User } from "../User/User";
 import { RadioButton } from "primereact/radiobutton";
 import { getUnitTypes } from "../Utils/unit-axios-utils";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 const EditProduct = ({ visible, onHide, rowData }) => {
   const [productId, setProductId] = useState(rowData?.id);
@@ -88,12 +90,15 @@ const EditProduct = ({ visible, onHide, rowData }) => {
       });
   };
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <div className="card flex justify-content-center">
       <Dialog
         header="Redaguoti produkto informaciją"
         visible={visible}
-        style={{ width: "35%" }}
+        style={{ width: isMobile ? "100%" : "35%" }}
         onHide={onHide}
       >
         <div className="flex justify-content-center">
