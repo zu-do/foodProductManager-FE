@@ -32,3 +32,13 @@ const client = axios.create({
       return err.response.data.errors;
     }
   };
+  export const editShelf = async (body) => {
+    try {
+      await client.put(`/update`, body);
+      return true;
+    } catch (err) {
+      console.log(err.response.data);
+      return err.response.data.errors;
+    }
+  };
+  

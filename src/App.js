@@ -1,9 +1,9 @@
 import React from 'react'
 import "./Styles/App.css";
-import Home from "./LandingPage";
-import AppBar from "./AppBar";
+import Home from "./Views/LandingPage";
+import AppBar from "./Views/AppBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./Main";
+import Main from "./Views/Main";
 ////prime react imports
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -13,11 +13,11 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import ProductCreate from "./Views/ProductCreate";
 // pages
-import Statistics from "./Pages/Statistics";
-import Register from "./Pages/Register";
+import Statistics from "./Pages/StatisticsPage";
+import Register from "./Pages/RegisterPage";
 import Login from "./Pages/Login";
-import Categories from "./Pages/Categories";
-import UserOverview from "./Pages/UserOverview";
+import Categories from "./Pages/CategoryPage";
+import UserOverview from "./Pages/UsersPage";
 import AdminLogin from "./Pages/AdminLogin";
 
 

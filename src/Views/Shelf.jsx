@@ -4,6 +4,7 @@ import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import EditProduct from "../Views/EditProduct";
+import EditShelf from "../Views/EditShelf";
 import ViewProduct from "./ViewProduct";
 import {
   Grid,
@@ -20,12 +21,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddIcon from "@mui/icons-material/Add";
 import ProductCreate from "../Views/ProductCreate";
+import { User } from "../User/User";
 import { deleteProduct } from "../Utils/product-axios-utils";
 
+import WarningSnackBar from "./WarningSnackBar";
 function Shelf({ shelf }) {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
+  const [dialogEditVisible, setEditDialogVisible] = useState(false);
+  const [selectedEditRowData, setSelectedEditRowData] = useState(null);
   const [dialogViewVisible, setDialogViewVisible] = useState(false);
 
   const toast = useRef(null);
@@ -36,6 +41,15 @@ function Shelf({ shelf }) {
 
   const hideCreateDialog = () => {
     setCreateDialogVisible(false);
+  };
+  const showEditDialog = (rowData) => {
+    setSelectedEditRowData(rowData);
+    setEditDialogVisible(true);
+  };
+
+  const hideEditDialog = () => {
+    setSelectedEditRowData(null);
+    setEditDialogVisible(false);
   };
 
   const showViewDialog = (rowData) => {
@@ -53,10 +67,12 @@ function Shelf({ shelf }) {
     setDialogVisible(false);
   };
   const showDialog = (rowData) => {
+    console.log(rowData);
     setSelectedRowData(rowData);
     setDialogVisible(true);
   };
 
+  var displayed = false;
   const daysLeft = (rowData) => {
     var date = new Date();
     var endDate = new Date(rowData.expirationTime);
@@ -71,7 +87,18 @@ function Shelf({ shelf }) {
         onClick={() => showDialog(rowData)}
         aria-label="Edit"
       >
-        <EditIcon color="primary" />
+        <EditIcon sx={{ color: "green" }} />
+      </IconButton>
+    );
+  };
+  const renderEditShelfComponent = (rowData) => {
+    return (
+      <IconButton
+        style={{ marginLeft: "auto" }}
+        onClick={() => showEditDialog(rowData)}
+        aria-label="Edit"
+      >
+        <EditIcon sx={{ color: "green" }} />
       </IconButton>
     );
   };
@@ -81,6 +108,18 @@ function Shelf({ shelf }) {
       <IconButton
         onClick={(e) => {
           confirmDelete(e, rowData);
+        }}
+        aria-label="delete"
+      >
+        <DeleteIcon sx={{ color: "red" }} />
+      </IconButton>
+    );
+  };
+  const renderShelfDeleteComponent = (rowData) => {
+    return (
+      <IconButton
+        onClick={(e) => {
+          confirm3(e, rowData);
         }}
         aria-label="delete"
       >
@@ -121,6 +160,19 @@ function Shelf({ shelf }) {
     });
   };
 
+  const confirm3 = (event, rowData) => {
+    confirmPopup({
+      target: event.currentTarget,
+      message: "Ar norite pašalinti šią lentyną?",
+      icon: "pi pi-info-circle",
+      acceptClassName: "p-button-danger",
+      acceptLabel: "Taip",
+      rejectLabel: "Ne",
+      accept: () =>
+        handleDeleteShelf(rowData.id, sessionStorage.getItem(User.userID)),
+    });
+  };
+
   const handleDeleteProduct = (id) => {
     deleteProduct(id)
       .then((response) => {
@@ -146,6 +198,60 @@ function Shelf({ shelf }) {
         });
       });
   };
+  const handleDeleteShelf = async (id, userid) => {
+    try {
+      const response = await fetch(
+        `https://localhost:7258/Shelf/delete/${id}/${userid}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Nepavyko ištrinti lentynos.");
+      }
+      toast.current.show({
+        severity: "info",
+        summary: "Patvirtinta",
+        detail: "Sėkmingai pašalinote lentyną",
+        life: 3000,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      toast.current.show({
+        severity: "error",
+        summary: "Klaida",
+        detail: "Nepavyko pašalinti lentynos",
+        life: 3000,
+      });
+    }
+  };
+  const countExpiringProducts = (products) => {
+    let count = 0;
+    const today = new Date();
+    const threeDaysFromNow = new Date(today);
+    threeDaysFromNow.setDate(today.getDate() + 3);
+
+    products.forEach((product) => {
+      const expirationDate = new Date(product.expirationTime);
+      const daysLeft = Math.ceil((expirationDate - today) / (1000 * 3600 * 24));
+      if (daysLeft < 3) {
+        count++;
+      }
+    });
+
+    return count;
+  };
+  const displayWarningSnack = (rowData) => {
+    if (displayed) return false;
+    if (daysLeft(rowData) < 3) {
+      displayed = true;
+      return true;
+    } else return false;
+  };
 
   return (
     <>
@@ -155,6 +261,14 @@ function Shelf({ shelf }) {
           visible={dialogVisible}
           onHide={hideDialog}
           rowData={selectedRowData}
+        />
+      )}
+
+      {selectedEditRowData && (
+        <EditShelf
+          visible={dialogEditVisible}
+          onHide={hideEditDialog}
+          rowData={selectedEditRowData}
         />
       )}
       {selectedRowData && (
@@ -169,22 +283,32 @@ function Shelf({ shelf }) {
 
       <ConfirmPopup />
       <Toast ref={toast} />
-      <Container id="shelf-container">
-        <h1 style={{ float: "left" }}>
-          {shelf.name === "Default" ? "Pagrindinė" : shelf.name}
-        </h1>
-        <span style={{ float: "right" }}>
+      <Container id="shelf-container" style={{ float: "left", width: "170%" }}>
+        <div>
+          <h1 style={{ float: "left" }}>
+            {shelf.name === "Default" ? (
+              "Pagrindinė"
+            ) : (
+              <>
+                <span>{shelf.name}</span>
+                {renderEditShelfComponent(shelf)}
+                {renderShelfDeleteComponent(shelf)}
+              </>
+            )}
+          </h1>
+
           <Button
+            sx={{ backgroundColor: "green", float: "right" }}
             onClick={showCreateDialog}
             variant="contained"
             startIcon={<AddIcon />}
           >
             Pridėti produktą
           </Button>
-        </span>
-        <Grid container spacing={2}>
+        </div>
+        <Grid container spacing={2} sx={{ width: "100%" }}>
           {shelf.products.map((product) => (
-            <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <Grid item xs={7} sm={10} md={4} lg={3} xl={2} key={product.id}>
               <Paper
                 style={{
                   minHeight: "200px",
@@ -213,6 +337,10 @@ function Shelf({ shelf }) {
                   {renderDeleteComponent(product)}
                 </Stack>
               </Paper>
+              <WarningSnackBar
+                triggerOpen={displayWarningSnack(product)}
+                number={countExpiringProducts(shelf.products)}
+              />
             </Grid>
           ))}
         </Grid>

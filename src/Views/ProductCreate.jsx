@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
+import { RadioButton } from "primereact/radiobutton";
 import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import "../Styles/styleCreate.css";
-import { useNavigate } from "react-router-dom";
 import { getCategories } from "../Utils/category-axios-utils";
 import { addProduct } from "../Utils/product-axios-utils";
 import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { Dialog } from "primereact/dialog";
 import { User } from "../User/User";
 import { getProductInfo } from "../Utils/scanner-axios-utils";
-import BarcodeScanner from "./Barcode";
+import BarcodeScanner from "./ScaningPage";
+import { getUnitTypes } from "../Utils/unit-axios-utils";
 
 export default function ProductCreate({ visible, onHide }) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -22,8 +24,9 @@ export default function ProductCreate({ visible, onHide }) {
   const [productShelf, setProductShelf] = useState("");
   const [productDescription, setDescription] = useState("");
   const [expirationTime, setDate] = useState(null);
-  const navigator = useNavigate();
-
+  const [quantity, setQuantity] = useState(0);
+  const [units, setUnits] = useState("");
+  const [unit, setUnit] = useState(null);
   const [scannedData, setScannedData] = useState("");
 
   const createDescription = (carbo, fats, protein, kcal) => {
@@ -43,12 +46,14 @@ export default function ProductCreate({ visible, onHide }) {
     var text = `Šio produkto maistingumo vėrtė. 100g produkto ${carbo}g. angliavandenių,  ${fats}g. riebalų,  ${protein}g. baltymų,  ${kcal} kalorijų`;
     return text;
   };
+  };
 
   const handleScan = (data) => {
     if (data !== undefined || data !== null) {
       setScannedData(data);
     }
   };
+
 
   useEffect(() => {
     // only call getProductInfo if scannedData is not null or undefined
@@ -84,6 +89,14 @@ export default function ProductCreate({ visible, onHide }) {
         }))
       );
     });
+    getUnitTypes().then((data) => {
+      setUnits(
+        data.map((item) => ({
+          value: item,
+          label: item.name,
+        }))
+      );
+    });
   }, []);
 
   const onSubmit = (event) => {
@@ -97,11 +110,12 @@ export default function ProductCreate({ visible, onHide }) {
       productDescription,
       expirationtime,
     };
-
     const response = addProduct(
       product,
       productCategory.categoryName,
-      productShelf.id
+      productShelf.id,
+      quantity,
+      unit.value.id
     );
 
     response.then((result) => {
@@ -111,7 +125,6 @@ export default function ProductCreate({ visible, onHide }) {
       }
     });
   };
-
   return (
     <Dialog
       className="Dialog1"
@@ -128,6 +141,46 @@ export default function ProductCreate({ visible, onHide }) {
         onChange={(e) => setName(e.target.value)}
         style={{ width: "100%" }}
         className="w-full md:w-14rem"
+      />
+      <h5>Įveskite produkto kiekį:</h5>
+      <div className="radio-flexbox">
+        {units &&
+          units.map((initialUnit) => (
+            <div>
+              <RadioButton
+                inputId={initialUnit.label}
+                name="unitType"
+                value={initialUnit}
+                onChange={(e) => setUnit(e.target.value)}
+                checked={unit === initialUnit}
+              />
+              <label htmlFor={initialUnit.label}>
+                {initialUnit.label === "Kg"
+                  ? "Kilogramai"
+                  : initialUnit.label === "L"
+                  ? "Litrai"
+                  : "Vienetai"}
+              </label>
+            </div>
+          ))}
+      </div>
+      <br />
+      <InputNumber
+        inputId="horizontal-buttons"
+        style={{ width: "100%" }}
+        value={quantity}
+        onValueChange={(e) => setQuantity(e.value)}
+        showButtons
+        buttonLayout="horizontal"
+        step={unit ? (unit.label === "Vnt" ? 1 : 0.1) : 0}
+        min={0}
+        max={1000}
+        maxLength={5}
+        decrementButtonClassName="p-button-secondary"
+        incrementButtonClassName="p-button-secondary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        mode="decimal"
       />
       <h5> Pasirinkite kategoriją:</h5>
       <Dropdown

@@ -42,6 +42,7 @@ function Register() {
         response.then((result) => {
             if (result !== null){
                 sessionStorage.setItem(User.userEmail, email);
+                sessionStorage.setItem(User.userID, result.id);
                 navigateToMain();
             }
             else{

@@ -3,7 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { getCategories } from "../Utils/category-axios-utils";
 import { Button } from "primereact/button";
-import AddCategory from '../Views/AddCategory'
+import AddCategory from '../Views/CategoryCreate'
 
 
 

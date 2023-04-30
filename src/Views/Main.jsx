@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
-import "./Styles/styleMain.css";
-import AddShelf from "./Views/AddShelf";
-import { getUserShelves } from "./Utils/shelf-axios-utils";
-import { User } from "./User/User";
-import Shelf from "./Views/Shelf";
+import "../Styles/styleMain.css";
+import AddShelf from "./AddShelf";
+import { getUserShelves } from "../Utils/shelf-axios-utils";
+import { User } from "../User/User";
+import Shelf from "./Shelf";
 
 export default function Main() {
   const UserEmail = sessionStorage.getItem(User.userEmail);
@@ -37,68 +37,34 @@ export default function Main() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "2rem" }}>
-      <div id="button-container">
-        <div className="buttons">
-          <Button
+      
+      <div id="shelf-box" style={{display: "flex", flexDirection: "column"}}>
+        <Button
             onClick={showCreateShelfDialog}
             label="Pridėti lentyną"
             icon="pi pi-plus"
             severity="info"
-            rounded
-            style={{ width: "100%", marginBottom: "1rem" }}
+            style={{ width: "12rem", marginBottom: "1rem", backgroundColor:'green' }}
           />
-          <Button
-            label="Siūlomi receptai"
-            icon="pi pi-book"
-            severity="info"
-            rounded
-            style={{ width: "100%", marginBottom: "1rem" }}
-          />
-          <Button
-            label="Prenumerata"
-            icon="pi pi-bell"
-            severity="info"
-            rounded
-            style={{ width: "100%", marginBottom: "1rem" }}
-          />
-          <Button
-            label="Konkursas"
-            icon="pi pi-star"
-            severity="info"
-            rounded
-            style={{ width: "100%", marginBottom: "1rem" }}
-          />
-          <Button
-            label="Įvertink naudotoją"
-            icon="pi pi-comment"
-            severity="info"
-            rounded
-            style={{ width: "100%", marginBottom: "1rem" }}
-          />
-        </div>
-      </div>
-      <div id="shelf-box">
         <Button
           severity="info"
-          style={{ width: "12rem" }}
+          style={{ width: "12rem", backgroundColor:'green' }}
           onClick={openList}
           label="Lentynos"
           icon={flag ? "pi pi-angle-up" : "pi pi-angle-down"}
         />
-        <br /> <br />
         {flag &&
           shelves.map((shelf) => (
             <>
               <Button
                 id="shelf-list-button"
                 key={shelf.id}
+                style={{ marginTop:"1rem", backgroundColor:'green' }}
                 icon="pi pi-folder"
                 label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
                 onClick={() => setSelectedShelf(shelf)}
                 rounded
               />
-              <br />
-              <br />
             </>
           ))}
       </div>
