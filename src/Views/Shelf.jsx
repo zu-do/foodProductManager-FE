@@ -87,7 +87,7 @@ function Shelf({ shelf }) {
         onClick={() => showDialog(rowData)}
         aria-label="Edit"
       >
-        <EditIcon sx={{ color: "green" }} />
+        <EditIcon sx={{ color: "#29B61D" }} />
       </IconButton>
     );
   };
@@ -98,7 +98,7 @@ function Shelf({ shelf }) {
         onClick={() => showEditDialog(rowData)}
         aria-label="Edit"
       >
-        <EditIcon sx={{ color: "green" }} />
+        <EditIcon sx={{ color: "#29B61D" }} />
       </IconButton>
     );
   };
@@ -298,7 +298,7 @@ function Shelf({ shelf }) {
           </h1>
 
           <Button
-            sx={{ backgroundColor: "green", float: "right" }}
+            sx={{ backgroundColor: "#29B61D", float: "right" }}
             onClick={showCreateDialog}
             variant="contained"
             startIcon={<AddIcon />}

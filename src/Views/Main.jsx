@@ -34,21 +34,23 @@ export default function Main() {
   const openList = () => {
     setFlag(!flag);
   };
-
   return (
     <div style={{ textAlign: "center", marginTop: "2rem" }}>
-      
-      <div id="shelf-box" style={{display: "flex", flexDirection: "column"}}>
+      <div id="shelf-box" style={{ display: "flex", flexDirection: "column" }}>
         <Button
-            onClick={showCreateShelfDialog}
-            label="Pridėti lentyną"
-            icon="pi pi-plus"
-            severity="info"
-            style={{ width: "12rem", marginBottom: "1rem", backgroundColor:'green' }}
-          />
+          onClick={showCreateShelfDialog}
+          label="Pridėti lentyną"
+          icon="pi pi-plus"
+          severity="info"
+          style={{
+            width: "12rem",
+            marginBottom: "1rem",
+            backgroundColor: "#29B61D",
+          }}
+        />
         <Button
           severity="info"
-          style={{ width: "12rem", backgroundColor:'green' }}
+          style={{ width: "12rem", backgroundColor: "#29B61D" }}
           onClick={openList}
           label="Lentynos"
           icon={flag ? "pi pi-angle-up" : "pi pi-angle-down"}
@@ -59,7 +61,7 @@ export default function Main() {
               <Button
                 id="shelf-list-button"
                 key={shelf.id}
-                style={{ marginTop:"1rem", backgroundColor:'green' }}
+                style={{ marginTop: "1rem", backgroundColor: "#29B61D" }}
                 icon="pi pi-folder"
                 label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
                 onClick={() => setSelectedShelf(shelf)}

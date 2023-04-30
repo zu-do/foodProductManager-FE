@@ -46,14 +46,12 @@ export default function ProductCreate({ visible, onHide }) {
     var text = `Šio produkto maistingumo vėrtė. 100g produkto ${carbo}g. angliavandenių,  ${fats}g. riebalų,  ${protein}g. baltymų,  ${kcal} kalorijų`;
     return text;
   };
-  };
 
   const handleScan = (data) => {
     if (data !== undefined || data !== null) {
       setScannedData(data);
     }
   };
-
 
   useEffect(() => {
     // only call getProductInfo if scannedData is not null or undefined
@@ -85,7 +83,7 @@ export default function ProductCreate({ visible, onHide }) {
       setShelfOptions(
         data.map((item) => ({
           value: item,
-          label: item.name,
+          label: item.name === "Default" ? "Pagrindinė" : item.name,
         }))
       );
     });
@@ -189,7 +187,7 @@ export default function ProductCreate({ visible, onHide }) {
         options={categoriesOptions}
         style={{ width: "100%" }}
         editable
-        placeholder="Select a Category"
+        placeholder="Kategorija"
       />
 
       <h5> Pasirinkite lentyną:</h5>
@@ -199,7 +197,7 @@ export default function ProductCreate({ visible, onHide }) {
         options={shelfOptions}
         style={{ width: "100%" }}
         editable
-        placeholder="Select shelf"
+        placeholder="Lentyna"
       />
       <h5>Įveskite produkto aprašymą:</h5>
       <InputTextarea
