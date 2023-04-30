@@ -57,17 +57,15 @@ export default function Main() {
         />
         {flag &&
           shelves.map((shelf) => (
-            <>
-              <Button
-                id="shelf-list-button"
-                key={shelf.id}
-                style={{ marginTop: "1rem", backgroundColor: "#29B61D" }}
-                icon="pi pi-folder"
-                label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
-                onClick={() => setSelectedShelf(shelf)}
-                rounded
-              />
-            </>
+            <Button
+              id="shelf-list-button"
+              key={shelf.id}
+              style={{ marginTop: "1rem", backgroundColor: "#29B61D" }}
+              icon="pi pi-folder"
+              label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
+              onClick={() => setSelectedShelf(shelf)}
+              rounded
+            />
           ))}
       </div>
       <AddShelf

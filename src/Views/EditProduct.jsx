@@ -126,7 +126,7 @@ const EditProduct = ({ visible, onHide, rowData }) => {
               <div className="radio-flexbox">
                 {units &&
                   units.map((initialUnit) => (
-                    <div>
+                    <div key={initialUnit.label}>
                       <RadioButton
                         inputId={initialUnit.label}
                         name="unitType"
