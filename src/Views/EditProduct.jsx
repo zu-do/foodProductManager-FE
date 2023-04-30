@@ -57,6 +57,7 @@ const EditProduct = ({ visible, onHide, rowData }) => {
     }));
   };
 
+  console.log(unit);
   const handleNumberInputChange = (e) => {
     const value = e.value;
     setFormValues((prevValues) => ({
@@ -154,9 +155,14 @@ const EditProduct = ({ visible, onHide, rowData }) => {
                 style={{ width: "100%" }}
                 value={formValues.quantity}
                 onChange={handleNumberInputChange}
+                minFractionDigits={2}
                 showButtons
                 buttonLayout="horizontal"
-                step={1}
+                step={
+                  unit?.label === "Vnt" || formValues.unitTypeId === "3"
+                    ? 1
+                    : 0.1
+                }
                 min={0}
                 max={1000}
                 maxLength={5}

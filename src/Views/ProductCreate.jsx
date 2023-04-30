@@ -174,6 +174,7 @@ export default function ProductCreate({ visible, onHide }) {
         min={0}
         max={1000}
         maxLength={5}
+        minFractionDigits={2}
         decrementButtonClassName="p-button-secondary"
         incrementButtonClassName="p-button-secondary"
         incrementButtonIcon="pi pi-plus"
