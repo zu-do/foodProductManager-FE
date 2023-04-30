@@ -57,7 +57,6 @@ const EditProduct = ({ visible, onHide, rowData }) => {
     }));
   };
 
-  console.log(unit);
   const handleNumberInputChange = (e) => {
     const value = e.value;
     setFormValues((prevValues) => ({
