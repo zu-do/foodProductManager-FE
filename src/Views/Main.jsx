@@ -100,48 +100,6 @@ export default function Main() {
             ))}
         </div>
       </Grid>
-      {/* <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <div
-          id="shelf-box"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <Button
-            onClick={showCreateShelfDialog}
-            label="Pridėti lentyną"
-            icon="pi pi-plus"
-            severity="info"
-            style={{
-              width: "12rem",
-              marginBottom: "1rem",
-              backgroundColor: "#29B61D",
-            }}
-          />
-          <Button
-            severity="info"
-            style={{ width: "12rem", backgroundColor: "#29B61D" }}
-            onClick={openList}
-            label="Lentynos"
-            icon={flag ? "pi pi-angle-up" : "pi pi-angle-down"}
-          />
-          {flag &&
-            shelves.map((shelf) => (
-              <Button
-                id="shelf-list-button"
-                key={shelf.id}
-                style={{ marginTop: "1rem", backgroundColor: "#29B61D" }}
-                icon="pi pi-folder"
-                label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
-                onClick={() => setSelectedShelf(shelf)}
-                rounded
-              />
-            ))}
-        </div>
-        <AddShelf
-          visible={dialogCreateShelfVisible}
-          onHide={hideCreateShelfDialog}
-        />
-        {selectedShelf && <Shelf shelf={selectedShelf} />}
-      </div> */}
     </Grid>
   );
 }
