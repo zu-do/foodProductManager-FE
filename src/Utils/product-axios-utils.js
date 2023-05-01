@@ -24,6 +24,18 @@ export const getProduct = async (index) => {
   }
 };
 
+  export const deleteProduct = async (id) => {
+    try {
+      await client.delete(`/delete`,  {headers: {
+        "Content-Type": "application/json",
+      }, data: id} );
+      return true;
+    } catch (err) {
+      console.error(err.message);
+      return false;
+    }
+  };
+
 export const editProduct = async (body, index) => {
   try {
     await client.put(`/update?id=${index}`, body);
@@ -55,3 +67,4 @@ export const addProduct = async (
     return err.response.data.errors;
   }
 };
+

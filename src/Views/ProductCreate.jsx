@@ -83,7 +83,7 @@ export default function ProductCreate({ visible, onHide }) {
       setShelfOptions(
         data.map((item) => ({
           value: item,
-          label: item.name,
+          label: item.name === "Default" ? "Pagrindinė" : item.name,
         }))
       );
     });
@@ -144,7 +144,7 @@ export default function ProductCreate({ visible, onHide }) {
       <div className="radio-flexbox">
         {units &&
           units.map((initialUnit) => (
-            <div>
+            <div key={initialUnit.label}>
               <RadioButton
                 inputId={initialUnit.label}
                 name="unitType"
@@ -174,6 +174,7 @@ export default function ProductCreate({ visible, onHide }) {
         min={0}
         max={1000}
         maxLength={5}
+        minFractionDigits={2}
         decrementButtonClassName="p-button-secondary"
         incrementButtonClassName="p-button-secondary"
         incrementButtonIcon="pi pi-plus"
@@ -187,7 +188,7 @@ export default function ProductCreate({ visible, onHide }) {
         options={categoriesOptions}
         style={{ width: "100%" }}
         editable
-        placeholder="Select a Category"
+        placeholder="Kategorija"
       />
 
       <h5> Pasirinkite lentyną:</h5>
@@ -197,7 +198,7 @@ export default function ProductCreate({ visible, onHide }) {
         options={shelfOptions}
         style={{ width: "100%" }}
         editable
-        placeholder="Select shelf"
+        placeholder="Lentyna"
       />
       <h5>Įveskite produkto aprašymą:</h5>
       <InputTextarea

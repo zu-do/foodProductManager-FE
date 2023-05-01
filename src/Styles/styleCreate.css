@@ -26,7 +26,7 @@ label {
 
 @media (max-width: 500px) {
   .Dialog1 {
-    width: 80%;
+    width: 100%;
   }
 
   element.style {

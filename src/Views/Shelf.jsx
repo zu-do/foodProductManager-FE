@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
 import "../Styles/styleMain.css";
-import { ConfirmPopup } from "primereact/confirmpopup";
-import { confirmPopup } from "primereact/confirmpopup";
+import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import EditProduct from "../Views/EditProduct";
 import EditShelf from "../Views/EditShelf";
+import ViewProduct from "./ViewProduct";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import {
   Grid,
   Box,
@@ -22,6 +24,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddIcon from "@mui/icons-material/Add";
 import ProductCreate from "../Views/ProductCreate";
 import { User } from "../User/User";
+import { deleteProduct } from "../Utils/product-axios-utils";
 
 import WarningSnackBar from "./WarningSnackBar";
 function Shelf({ shelf }) {
@@ -30,6 +33,7 @@ function Shelf({ shelf }) {
   const [dialogCreateVisible, setCreateDialogVisible] = useState(false);
   const [dialogEditVisible, setEditDialogVisible] = useState(false);
   const [selectedEditRowData, setSelectedEditRowData] = useState(null);
+  const [dialogViewVisible, setDialogViewVisible] = useState(false);
 
   const toast = useRef(null);
 
@@ -48,6 +52,16 @@ function Shelf({ shelf }) {
   const hideEditDialog = () => {
     setSelectedEditRowData(null);
     setEditDialogVisible(false);
+  };
+
+  const showViewDialog = (rowData) => {
+    setSelectedRowData(rowData);
+    setDialogViewVisible(true);
+  };
+
+  const hideViewDialog = () => {
+    setSelectedRowData(null);
+    setDialogViewVisible(false);
   };
 
   const hideDialog = () => {
@@ -75,7 +89,7 @@ function Shelf({ shelf }) {
         onClick={() => showDialog(rowData)}
         aria-label="Edit"
       >
-        <EditIcon sx={{ color: "green" }} />
+        <EditIcon sx={{ color: "#29B61D" }} />
       </IconButton>
     );
   };
@@ -86,7 +100,7 @@ function Shelf({ shelf }) {
         onClick={() => showEditDialog(rowData)}
         aria-label="Edit"
       >
-        <EditIcon sx={{ color: "green" }} />
+        <EditIcon sx={{ color: "#29B61D" }} />
       </IconButton>
     );
   };
@@ -95,11 +109,11 @@ function Shelf({ shelf }) {
     return (
       <IconButton
         onClick={(e) => {
-          confirm2(e, rowData);
+          confirmDelete(e, rowData);
         }}
         aria-label="delete"
       >
-        <DeleteIcon sx={{ color: "red" }} />
+        <DeleteIcon sx={{ color: "#F16E5A" }} />
       </IconButton>
     );
   };
@@ -111,7 +125,7 @@ function Shelf({ shelf }) {
         }}
         aria-label="delete"
       >
-        <DeleteIcon sx={{ color: "red" }} />
+        <DeleteIcon sx={{ color: "#F16E5A" }} />
       </IconButton>
     );
   };
@@ -120,7 +134,13 @@ function Shelf({ shelf }) {
     if (daysLeft(rowData) < 3)
       return (
         <Tag
-          style={{ position: "absolute", bottom: 0, right: 0, margin: "16px" }}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            margin: "16px",
+            backgroundColor: "#F16E5A",
+          }}
           severity="danger"
           value="SKUBU"
         ></Tag>
@@ -135,7 +155,8 @@ function Shelf({ shelf }) {
       );
   };
 
-  const confirm2 = (event, rowData) => {
+  const confirmDelete = (event, rowData) => {
+    event.preventDefault();
     confirmPopup({
       target: event.currentTarget,
       message: "Ar norite pašalinti šį maisto produkto įrašą?",
@@ -146,6 +167,7 @@ function Shelf({ shelf }) {
       accept: () => handleDeleteProduct(rowData.id),
     });
   };
+
   const confirm3 = (event, rowData) => {
     confirmPopup({
       target: event.currentTarget,
@@ -159,34 +181,30 @@ function Shelf({ shelf }) {
     });
   };
 
-  const handleDeleteProduct = async (id) => {
-    try {
-      const response = await fetch(`"https://localhost:7258/Shelf/delete"`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(id),
+  const handleDeleteProduct = (id) => {
+    deleteProduct(id)
+      .then((response) => {
+        if (response === true) {
+          toast.current.show({
+            severity: "info",
+            summary: "Patvirtinta",
+            detail: "Sėkmingai pašalinote maisto produktą",
+            life: 5000,
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.current.show({
+          severity: "error",
+          summary: "Klaida",
+          detail: "Nepavyko pašalinti maisto produkto",
+          life: 3000,
+        });
       });
-      if (!response.ok) {
-        throw new Error("Nepavyko ištrinti produkto.");
-      }
-      toast.current.show({
-        severity: "info",
-        summary: "Patvirtinta",
-        detail: "Sėkmingai pašalinote maisto produktą",
-        life: 3000,
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      toast.current.show({
-        severity: "error",
-        summary: "Klaida",
-        detail: "Nepavyko pašalinti maisto produkto",
-        life: 3000,
-      });
-    }
   };
   const handleDeleteShelf = async (id, userid) => {
     try {
@@ -242,6 +260,8 @@ function Shelf({ shelf }) {
       return true;
     } else return false;
   };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -261,38 +281,57 @@ function Shelf({ shelf }) {
           rowData={selectedEditRowData}
         />
       )}
+      {selectedRowData && (
+        <ViewProduct
+          visible={dialogViewVisible}
+          hide={hideViewDialog}
+          rowData={selectedRowData}
+          onEdit={showDialog}
+          onEditClose={hideDialog}
+        />
+      )}
+
       <ConfirmPopup />
       <Toast ref={toast} />
-      <Container id="shelf-container" style={{ float: "left", width:"170%" }}>
+      <Container
+        maxWidth="85%"
+        sx={{ width: "100%" }}
+        style={{ float: "left" }}
+      >
         <div>
-        <h1 style={{ float: "left" }}>
-          {shelf.name === "Default" ? (
-            "Pagrindinė"
-          ) : (
-            <>
-              <span>{shelf.name}</span>
-              {renderEditShelfComponent(shelf)}
-              {renderShelfDeleteComponent(shelf)}
-            </>
-          )}
-        </h1>
-        
-          <Button sx={{ backgroundColor: "green", float:"right" }}
+          <h1 style={{ float: "left" }}>
+            {shelf.name === "Default" ? (
+              "Pagrindinė"
+            ) : (
+              <>
+                <span>{shelf.name}</span>
+                {renderEditShelfComponent(shelf)}
+                {renderShelfDeleteComponent(shelf)}
+              </>
+            )}
+          </h1>
+
+          <Button
+            style={{ marginTop: "2rem" }}
+            sx={{ backgroundColor: "#29B61D", float: "right" }}
             onClick={showCreateDialog}
             variant="contained"
             startIcon={<AddIcon />}
           >
             Pridėti produktą
           </Button>
-        
         </div>
-        <Grid
-          container 
-          spacing={2}
-         sx={{width: '100%'  }}
-        >
+        <Grid container spacing={2} sx={{ width: "100%" }}>
           {shelf.products.map((product) => (
-            <Grid item xs={7} sm={10} md={4} lg={3} xl={2}key={product.id} >
+            <Grid
+              item
+              xs={isMobile ? 13 : 7}
+              sm={10}
+              md={4}
+              lg={3}
+              xl={2}
+              key={product.id}
+            >
               <Paper
                 style={{
                   minHeight: "200px",
@@ -302,12 +341,16 @@ function Shelf({ shelf }) {
               >
                 <Box position="relative">
                   <img
+                    id="product-image"
+                    onClick={() => showViewDialog(product)}
                     src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.dribbble.com%2Fusers%2F1348951%2Fscreenshots%2F3167282%2Fmilk.gif&f=1&nofb=1&ipt=bf339ff6a7d652d88b6fd76d117218df612320d7f359476b7e97cd3b65bab1fc&ipo=images"
                     style={{ width: "100%", height: "auto" }}
                   />
                   {bodyTemplate(product)}
                 </Box>
-                <Typography variant="h5">{product.productName}</Typography>
+                <Typography variant="h5" style={{ textAlign: "center" }}>
+                  {product.productName}
+                </Typography>
                 <Stack direction="row">
                   <Typography
                     style={{ display: "flex", alignItems: "center" }}
