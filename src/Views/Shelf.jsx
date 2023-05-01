@@ -348,7 +348,9 @@ function Shelf({ shelf }) {
                   />
                   {bodyTemplate(product)}
                 </Box>
-                <Typography variant="h5">{product.productName}</Typography>
+                <Typography variant="h5" style={{ textAlign: "center" }}>
+                  {product.productName}
+                </Typography>
                 <Stack direction="row">
                   <Typography
                     style={{ display: "flex", alignItems: "center" }}
