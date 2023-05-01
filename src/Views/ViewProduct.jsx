@@ -87,7 +87,9 @@ export default function ViewProduct({
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title" fontWeight={"bold"}>
-          <div style={{ float: "left", marginLeft: "auto" }}>
+          <div
+            style={{ float: "left", marginLeft: "auto", marginRight: "1.5rem" }}
+          >
             {rowData.productName}{" "}
           </div>
           <IconButton
@@ -95,8 +97,7 @@ export default function ViewProduct({
             onClick={hide}
             sx={{
               position: "absolute",
-              right: 2,
-              letf: 40,
+              right: 8,
               top: 8,
               color: (theme) => theme.palette.grey[500],
             }}
