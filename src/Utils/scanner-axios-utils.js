@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-    baseURL: 'https://localhost:7258/Scanner/barcode',
+    baseURL: `${process.env.REACT_APP_BASE_URL}/Scanner/barcode`
   });
 
   export const getProductInfo = async (barcode) => {
