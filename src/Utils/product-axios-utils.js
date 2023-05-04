@@ -1,12 +1,25 @@
 import axios from "axios";
-
+import { getUnitTypes } from "./unit-axios-utils";
 const client = axios.create({
   baseURL: "https://localhost:7258/Product",
 });
 
+export const getAllProducts = async () => {
+  try {
+    const response = await client.get("/getAll");
+    return response.data;
+  } catch (err) {
+    console.error(err.message);
+    return [];
+  }
+};
+
 export const getProducts = async (email, shelfId) => {
   try {
-    const response = await client.post(`user-products`, { email: email });
+    const response = await client.post("/user-products", {
+      email: email,
+      shelf: shelfId,
+    });
     return response.data;
   } catch (err) {
     console.error(err.message);
@@ -24,17 +37,20 @@ export const getProduct = async (index) => {
   }
 };
 
-  export const deleteProduct = async (id) => {
-    try {
-      await client.delete(`/delete`,  {headers: {
+export const deleteProduct = async (id) => {
+  try {
+    await client.delete("/delete", {
+      headers: {
         "Content-Type": "application/json",
-      }, data: id} );
-      return true;
-    } catch (err) {
-      console.error(err.message);
-      return false;
-    }
-  };
+      },
+      data: id,
+    });
+    return true;
+  } catch (err) {
+    console.error(err.message);
+    return false;
+  }
+};
 
 export const editProduct = async (body, index) => {
   try {
@@ -54,7 +70,7 @@ export const addProduct = async (
   unitId
 ) => {
   try {
-    await client.post(`/create`, {
+    await client.post("/create", {
       ...body,
       categoryName: categoryName,
       shelfId: shelfId,
@@ -67,4 +83,3 @@ export const addProduct = async (
     return err.response.data.errors;
   }
 };
-

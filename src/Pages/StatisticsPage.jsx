@@ -1,43 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
 import StatisticsCSS from "../Styles/Statistics.css";
+import { getUsers } from "../Utils/user-axios-utils";
+import { getAllProducts } from "../Utils/product-axios-utils";
+import { getUnitTypes } from "../Utils/unit-axios-utils";
 export default function Statistics() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
+  const [userCount, setUserCount] = useState(0);
+  const [foodSaved, setFoodSaved] = useState(0);
+
+  const fetchUsers = () => {
+    getUsers()
+      .then((users) => {
+        const filteredUsers = users.filter((user) => user.role !== "admin");
+        setUserCount(filteredUsers.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const fetchProducts = () => {
+    getAllProducts()
+      .then((products) => {
+        const filteredProducts = products.filter(
+          (product) => product.unitTypeId === 1
+        );
+        const totalQuantity = filteredProducts.reduce(
+          (sum, product) => sum + product.quantity,
+          0
+        );
+        setFoodSaved(totalQuantity);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const data = {
-      labels: [
-        "Jūsų išsaugotas maistas, kg",
-        "Kitų naudotojų išsaugotas maistas, kg",
-      ],
-      datasets: [
-        {
-          data: [300, 50],
-          backgroundColor: [
-            documentStyle.getPropertyValue("--blue-500"),
-            documentStyle.getPropertyValue("--green-500"),
-          ],
-          hoverBackgroundColor: [
-            documentStyle.getPropertyValue("--blue-400"),
-            documentStyle.getPropertyValue("--green-400"),
-          ],
-        },
-      ],
-    };
-    const options = {
-      cutout: "60%",
-    };
+    fetchUsers();
+    fetchProducts();
 
-    setChartData(data);
-    setChartOptions(options);
-  }, []);
-
-  const [lineChartData, setLineChartData] = useState({});
-  const [lineChartOptions, setLineChartOptions] = useState({});
-
-  useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue("--text-color");
     const textColorSecondary = documentStyle.getPropertyValue(
@@ -53,11 +57,16 @@ export default function Statistics() {
         "Gegužė",
         "Birželis",
         "Liepa",
+        "Rugpjūtis",
+        "Rugsėjis",
+        "Spalis",
+        "Lapkritis",
+        "Gruodis",
       ],
       datasets: [
         {
-          label: "Jūsų išsaugotas maistas, kg",
-          data: [65, 59, 80, 81, 56, 55, 40],
+          label: "Naudotojų atiduoti produktai, vnt",
+          data: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
           fill: false,
           borderColor: documentStyle.getPropertyValue("--blue-500"),
           tension: 0.4,
@@ -94,14 +103,14 @@ export default function Statistics() {
       },
     };
 
-    setLineChartData(data);
-    setLineChartOptions(options);
+    setChartData(data);
+    setChartOptions(options);
   }, []);
 
   return (
     <>
       <div className="statistic-card">
-        <Chart type="line" data={lineChartData} options={lineChartOptions} />
+        <Chart type="line" data={chartData} options={chartOptions} />
       </div>
       <div
         style={{
@@ -110,30 +119,19 @@ export default function Statistics() {
           margin: "2rem 8rem",
         }}
       >
-        <div
-          className="small-statistic-card"
-          style={{
-            width: "30%",
-          }}
-        >
-          <Chart
-            type="doughnut"
-            data={chartData}
-            options={chartOptions}
-            className="w-full md:w-30rem"
-          />
-        </div>
         <div className="small-statistic-card">
-          <p style={{ fontSize: "xx-large", marginBottom: "2rem" }}>
-            Naudotojo Jonas Balionas statistika
+          <p style={{ fontSize: "xx-large" }}>Prisiregistravusių naudotojų:</p>
+          <p style={{ fontSize: "xxx-large", fontWeight: "bold" }}>
+            {userCount}
           </p>
-          <i style={{ fontSize: "6rem" }} className="pi pi-chart-bar"></i>
         </div>
         <div className="small-statistic-card">
           <p style={{ fontSize: "xx-large" }}>
-            Išsaugotas maistas per šią savaitę
+            Sistemoje registruotas maisto kiekis:
           </p>
-          <p style={{ fontSize: "xxx-large", fontWeight: "bold" }}>300 Kg</p>
+          <p style={{ fontSize: "xxx-large", fontWeight: "bold" }}>
+            {foodSaved} Kg
+          </p>
         </div>
       </div>
     </>
