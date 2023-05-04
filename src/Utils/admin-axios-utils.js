@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}/Admin`,
+  baseURL: `${process.env.REACT_APP_BASE_URL}Admin`,
   });
 
   export const loginAdmin = async (email, password) => {

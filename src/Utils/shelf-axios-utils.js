@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-    baseURL: `${process.env.REACT_APP_BASE_URL}/Shelf`
+    baseURL: `${process.env.REACT_APP_BASE_URL}Shelf`
   });
 
   export const getShelves = async () => {
