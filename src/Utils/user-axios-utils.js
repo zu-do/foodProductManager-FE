@@ -4,6 +4,7 @@ var baseURL = '';
 
 if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
   baseURL = "https://localhost:7258/";
+  console.log(process.env.NODE_ENV);
 }
 else{
   baseURL = "https://pvp-api.azurewebsites.net/";
