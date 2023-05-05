@@ -1,7 +1,15 @@
 import axios from "axios";
 
+var baseURL = '';
+
+if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
+  baseURL = "https://localhost:7258/";
+}
+else{
+  baseURL = "https://pvp-api.azurewebsites.net/";
+}
 const client = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}User`
+  baseURL: `${baseURL}User`
 });
 
 export const loginUser = async (email, password) => {
