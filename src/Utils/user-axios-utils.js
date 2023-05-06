@@ -1,14 +1,11 @@
 import axios from "axios";
 
-var baseURL = '';
+const url = window.location.href;
+const isAzure = url.includes('azurewebsites.net');
+const baseURL = isAzure ? 'https://pvp-api.azurewebsites.net/' : 'https://localhost:7258/';
 
-if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
-  baseURL = "https://localhost:7258/";
-  console.log(process.env.NODE_ENV);
-}
-else{
-  baseURL = "https://pvp-api.azurewebsites.net/";
-}
+console.log(process.env.NODE_ENV);
+
 const client = axios.create({
   baseURL: `${baseURL}User`
 });
