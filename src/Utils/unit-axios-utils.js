@@ -1,7 +1,8 @@
 import axios from "axios";
+import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}UnitType`,
+  baseURL: `${baseUrl}UnitType`
 });
 
 export const getUnitTypes = async () => {

@@ -1,13 +1,8 @@
 import axios from "axios";
-
-const url = window.location.href;
-const isAzure = url.includes('azurewebsites.net');
-const baseURL = isAzure ? 'https://pvp-api.azurewebsites.net/' : 'https://localhost:7258/';
-
-console.log(process.env.NODE_ENV);
+import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: `${baseURL}User`
+  baseURL: `${baseUrl}User`
 });
 
 export const loginUser = async (email, password) => {

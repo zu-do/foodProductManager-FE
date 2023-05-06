@@ -1,7 +1,8 @@
 import axios from "axios";
+import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}Address`,
+  baseURL: `${baseUrl}Address`,
 });
 
 export const addAddress = async (body) => {
