@@ -2,7 +2,7 @@ import axios from 'axios';
 import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-    baseURL: `${baseUrl}Category`
+    baseURL: `${baseUrl()}Category`
   });
 
   export const getCategories = async () => {

@@ -2,7 +2,7 @@ import axios from "axios";
 import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: `${baseUrl}User`
+  baseURL: `${baseUrl()}User`
 });
 
 export const loginUser = async (email, password) => {
