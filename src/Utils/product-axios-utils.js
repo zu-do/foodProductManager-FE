@@ -2,7 +2,7 @@ import axios from "axios";
 import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: `${baseUrl}Product`
+  baseURL: `${baseUrl()}Product`
 });
 
 export const getProducts = async (email, shelfId) => {
