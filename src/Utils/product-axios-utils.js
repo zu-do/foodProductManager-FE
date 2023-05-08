@@ -68,4 +68,15 @@ export const addProduct = async (
     return err.response.data.errors;
   }
 };
+export const getSuggestedDate = async (product, category) => {
+  try {
+    const response = await client.get(`/${product}/${category}`);
+    return response.data;
+   
+  } catch (err) {
+    console.log(err.response.data);
+    console.error(err.message);
+    return [];
+  }
+};
 
