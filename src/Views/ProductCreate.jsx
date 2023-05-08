@@ -98,7 +98,7 @@ export default function ProductCreate({ visible, onHide }) {
     });
   }, []);
   useEffect(() => {
-    fetchData();
+    fetchDate();
   }, [productName, productCategory]);
 
   const onSubmit = (event) => {
@@ -127,7 +127,7 @@ export default function ProductCreate({ visible, onHide }) {
       }
     });
   };
-  const fetchData = () => {
+  const fetchDate = () => {
     // Check if the first two fields are filled
     if (productName && productCategory) {
       getSuggestedDate(productName, productCategory.categoryName)
@@ -154,7 +154,7 @@ export default function ProductCreate({ visible, onHide }) {
         onChange={(e) => setName(e.target.value)}
         style={{ width: "100%" }}
         className="w-full md:w-14rem"
-        onBlur={fetchData}
+        onBlur={fetchDate}
         required
       />
       <h5>Įveskite produkto kiekį:</h5>
@@ -208,7 +208,7 @@ export default function ProductCreate({ visible, onHide }) {
         style={{ width: "100%" }}
         editable
         placeholder="Kategorija"
-        onBlur={fetchData}
+        onBlur={fetchDate}
         required
       />
 

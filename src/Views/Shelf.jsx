@@ -193,7 +193,7 @@ function Shelf({ shelf }) {
           });
           setTimeout(() => {
             window.location.reload();
-          }, 800);
+          }, 600);
         }
       })
       .catch((error) => {
