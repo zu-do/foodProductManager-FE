@@ -1,7 +1,7 @@
 import React from "react";
+import { Fragment } from "react";
 import "../Styles/LandingPage.css";
 import gif from "../Pictures/Groceryshopping.gif";
-import gif1 from "../Pictures/Grocery_shopping1.gif";
 import book from "../Pictures/book.gif";
 import eco from "../Pictures/eco.gif";
 import { useNavigate } from "react-router-dom";
@@ -19,10 +19,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function LandingPage() {
   const navigator = useNavigate();
-  const navigateToStatistics = () => {
-    navigator("/statistics");
+  const navigateToLogin = () => {
+    navigator("/login");
   };
-  const colorr = red[400];
+  const navigateToRegister = () => {
+    navigator("/register");
+  };
+
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText(red[400]),
     backgroundColor: red[400],
@@ -57,10 +60,10 @@ function LandingPage() {
           know and love about food.
         </Typography>
         <CardActions>
-          <ColorButton variant="contained" size="medium">
+          <ColorButton variant="contained" size="medium" onClick={()=> navigateToRegister()}>
             Užsiregistruok
           </ColorButton>
-          <Button color="error" variant="outlined" size="medium">
+          <Button color="error" variant="outlined" size="medium" onClick={()=> navigateToLogin()}>
             Prisijunk
           </Button>
         </CardActions>
@@ -68,7 +71,7 @@ function LandingPage() {
     </React.Fragment>
   );
   const secondcard = (
-    <React.Fragment>
+    <Fragment>
       <CardContent
         sx={{
           display: "flex",
@@ -93,10 +96,10 @@ function LandingPage() {
           social and cultural experiences.
         </Typography>
       </CardContent>
-    </React.Fragment>
+    </Fragment>
   );
   const thirdcard = (
-    <React.Fragment>
+    <Fragment>
       <CardContent
         sx={{
           display: "flex",
@@ -123,7 +126,7 @@ function LandingPage() {
           world.
         </Typography>
       </CardContent>
-    </React.Fragment>
+    </Fragment>
   );
 
   return (
