@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Chart } from "primereact/chart";
+import React, { useState, useEffect, useRef } from "react";
+import Card from "@mui/material/Card";
+import ApexCharts from "apexcharts";
 import StatisticsCSS from "../Styles/Statistics.css";
 import { getUsers } from "../Utils/user-axios-utils";
 import { getAllProducts } from "../Utils/product-axios-utils";
-import { getUnitTypes } from "../Utils/unit-axios-utils";
+
 export default function Statistics() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
   const [userCount, setUserCount] = useState(0);
-  const [foodSaved, setFoodSaved] = useState(0);
   const [kgSaved, setKgSaved] = useState(0);
   const [lSaved, setLSaved] = useState(0);
   const [unitSaved, setUnitsSaved] = useState(0);
+  const chartRef = useRef(null);
 
   const fetchUsers = () => {
     getUsers()
@@ -79,7 +80,7 @@ export default function Statistics() {
           (sum, product) => sum + product.quantity,
           0
         );
-        setKgSaved(totalQuantityKg);
+        setKgSaved(totalQuantityKg.toFixed(1));
 
         const filteredProductsL = products.filter(
           (product) => product.unitTypeId === 2
@@ -88,7 +89,8 @@ export default function Statistics() {
           (sum, product) => sum + product.quantity,
           0
         );
-        setLSaved(totalQuantityL);
+
+        setLSaved(totalQuantityL.toFixed(1));
 
         const filteredProductsUnits = products.filter(
           (product) => product.unitTypeId === 3
@@ -98,8 +100,58 @@ export default function Statistics() {
           0
         );
         setUnitsSaved(totalQuantityUnits);
-        console.log("CIAAAAAAAAA");
-        console.log(countCategories(products));
+
+        const categories = countCategories(products);
+
+        Object.keys(categories).forEach((key) => {
+          switch (key) {
+            case "Darzoves":
+              categories["Daržovės"] = categories[key];
+              delete categories[key];
+              break;
+            case "Gerimai":
+              categories["Gėrimai"] = categories[key];
+              delete categories[key];
+              break;
+            case "Mesa":
+              categories["Mėsa"] = categories[key];
+              delete categories[key];
+              break;
+            case "PienoProduktai":
+              categories["Pieno produktai"] = categories[key];
+              delete categories[key];
+              break;
+
+            default:
+              break;
+          }
+        });
+
+        const data = generateChartData(categories);
+
+        setChartData(data);
+
+        const options = {
+          chart: {
+            type: "bar",
+            height: 400,
+          },
+          title: {
+            text: "TOP 3 produktų kategorijos sistemoje",
+          },
+          series: [
+            {
+              name: "Produktų kiekis sistemoje",
+              data: data.values,
+              color: "#F16E5A",
+            },
+          ],
+          xaxis: {
+            categories: data.categories,
+          },
+        };
+
+        setChartOptions(options);
       })
       .catch((error) => {
         console.log(error);
@@ -109,77 +161,35 @@ export default function Statistics() {
   useEffect(() => {
     fetchUsers();
     fetchProducts();
-
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue("--text-color");
-    const textColorSecondary = documentStyle.getPropertyValue(
-      "--text-color-secondary"
-    );
-    const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
-    const data = {
-      labels: [
-        "Sausis",
-        "Vasaris",
-        "Kovas",
-        "Balandis",
-        "Gegužė",
-        "Birželis",
-        "Liepa",
-        "Rugpjūtis",
-        "Rugsėjis",
-        "Spalis",
-        "Lapkritis",
-        "Gruodis",
-      ],
-      datasets: [
-        {
-          label: "Naudotojų atiduoti produktai, vnt",
-          data: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
-          fill: false,
-          borderColor: documentStyle.getPropertyValue("--blue-500"),
-          tension: 0.4,
-        },
-      ],
-    };
-    const options = {
-      maintainAspectRatio: false,
-      aspectRatio: 0.6,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor,
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-          },
-        },
-        y: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-          },
-        },
-      },
-    };
-
-    setChartData(data);
-    setChartOptions(options);
   }, []);
+
+  const generateChartData = (categories) => {
+    const chartCategories = Object.keys(categories);
+    const chartData = Object.values(categories);
+
+    return {
+      categories: chartCategories,
+      values: chartData,
+    };
+  };
+
+  useEffect(() => {
+    if (
+      chartRef.current &&
+      chartData.categories &&
+      Object.keys(chartOptions).length > 0
+    ) {
+      const chart = new ApexCharts(chartRef.current, chartOptions);
+      chart.render();
+
+      return () => {
+        chart.destroy();
+      };
+    }
+  }, [chartData.categories, chartOptions]);
 
   return (
     <>
-      <div className="statistic-card">
-        <Chart type="line" data={chartData} options={chartOptions} />
-      </div>
       <div
         style={{
           display: "flex",
@@ -187,21 +197,59 @@ export default function Statistics() {
           margin: "2rem 8rem",
         }}
       >
-        <div className="small-statistic-card">
-          <p style={{ fontSize: "xx-large" }}>Prisiregistravusių naudotojų:</p>
-          <p style={{ fontSize: "xxx-large", fontWeight: "bold" }}>
-            {userCount}
-          </p>
-        </div>
-        <div className="small-statistic-card">
+        <Card
+          raised={true}
+          sx={{ padding: "2rem", height: "fit-content", marginBottom: "2rem" }}
+        >
+          <div>
+            <p style={{ fontSize: "xx-large" }}>
+              Prisiregistravusių naudotojų:
+            </p>
+            <div
+              style={{
+                fontSize: "xxx-large",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              {userCount}
+            </div>
+          </div>
+        </Card>
+        <Card
+          sx={{ padding: "2rem", height: "fit-content", marginBottom: "2rem" }}
+          raised={true}
+        >
           <p style={{ fontSize: "xx-large" }}>
             Sistemoje registruotas maisto kiekis:
           </p>
-          <p style={{ fontSize: "xxx-large", fontWeight: "bold" }}>
-            {foodSaved} Kg
-          </p>
-        </div>
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <div style={{ fontSize: "xxx-large" }}>
+              <b>{lSaved}&nbsp;L</b>&nbsp;|&nbsp;
+            </div>
+            <div style={{ fontSize: "xxx-large" }}>
+              <b>{kgSaved}&nbsp;Kg</b>&nbsp;|&nbsp;
+            </div>
+            <div style={{ fontSize: "xxx-large" }}>
+              <b>{unitSaved}&nbsp;Vnt</b>
+            </div>
+          </div>
+        </Card>
       </div>
+      {chartData.categories && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "2rem",
+          }}
+        >
+          <div
+            ref={chartRef}
+            style={{ width: "100%", maxWidth: "800px", margin: "0 auto" }}
+          />
+        </div>
+      )}
     </>
   );
 }
