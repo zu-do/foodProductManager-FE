@@ -9,6 +9,9 @@ export default function Statistics() {
   const [chartOptions, setChartOptions] = useState({});
   const [userCount, setUserCount] = useState(0);
   const [foodSaved, setFoodSaved] = useState(0);
+  const [kgSaved, setKgSaved] = useState(0);
+  const [lSaved, setLSaved] = useState(0);
+  const [unitSaved, setUnitsSaved] = useState(0);
 
   const fetchUsers = () => {
     getUsers()
@@ -21,17 +24,82 @@ export default function Statistics() {
       });
   };
 
+  const countCategories = (products) => {
+    const categories = {
+      Darzoves: 0,
+      Gerimai: 0,
+      Mesa: 0,
+      PienoProduktai: 0,
+      Vaisiai: 0,
+    };
+
+    products.forEach((product) => {
+      switch (product.categoryName) {
+        case "Daržovės":
+          categories.Darzoves++;
+          break;
+        case "Gėrimai":
+          categories.Gerimai++;
+          break;
+        case "Mėsa":
+          categories.Mesa++;
+          break;
+        case "Pieno produktai":
+          categories.PienoProduktai++;
+          break;
+        case "Vaisiai":
+          categories.Vaisiai++;
+          break;
+        default:
+          break;
+      }
+    });
+
+    const sortedCategories = Object.entries(categories).sort(
+      (a, b) => b[1] - a[1]
+    );
+
+    const top3Categories = sortedCategories
+      .slice(0, 3)
+      .reduce((obj, [key, value]) => {
+        obj[key] = value;
+        return obj;
+      }, {});
+
+    return top3Categories;
+  };
+
   const fetchProducts = () => {
     getAllProducts()
       .then((products) => {
-        const filteredProducts = products.filter(
+        const filteredProductsKg = products.filter(
           (product) => product.unitTypeId === 1
         );
-        const totalQuantity = filteredProducts.reduce(
+        const totalQuantityKg = filteredProductsKg.reduce(
           (sum, product) => sum + product.quantity,
           0
         );
-        setFoodSaved(totalQuantity);
+        setKgSaved(totalQuantityKg);
+
+        const filteredProductsL = products.filter(
+          (product) => product.unitTypeId === 2
+        );
+        const totalQuantityL = filteredProductsL.reduce(
+          (sum, product) => sum + product.quantity,
+          0
+        );
+        setLSaved(totalQuantityL);
+
+        const filteredProductsUnits = products.filter(
+          (product) => product.unitTypeId === 3
+        );
+        const totalQuantityUnits = filteredProductsUnits.reduce(
+          (sum, product) => sum + product.quantity,
+          0
+        );
+        setUnitsSaved(totalQuantityUnits);
+        console.log("CIAAAAAAAAA");
+        console.log(countCategories(products));
       })
       .catch((error) => {
         console.log(error);
