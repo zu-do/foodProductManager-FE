@@ -4,7 +4,11 @@ import ApexCharts from "apexcharts";
 import StatisticsCSS from "../Styles/Statistics.css";
 import { getUsers } from "../Utils/user-axios-utils";
 import { getAllProducts } from "../Utils/product-axios-utils";
-
+import ScaleIcon from "@mui/icons-material/Scale";
+import WaterDropIcon from "@mui/icons-material/WaterDrop";
+import LooksOneIcon from "@mui/icons-material/LooksOne";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import DvrIcon from "@mui/icons-material/Dvr";
 export default function Statistics() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
@@ -190,6 +194,17 @@ export default function Statistics() {
 
   return (
     <>
+      {chartData.categories && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "2rem",
+          }}
+        >
+          <div ref={chartRef} style={{ width: "87%", margin: "0 auto" }} />
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -199,57 +214,97 @@ export default function Statistics() {
       >
         <Card
           raised={true}
-          sx={{ padding: "2rem", height: "fit-content", marginBottom: "2rem" }}
+          sx={{
+            padding: "2rem",
+            height: "fit-content",
+            marginBottom: "2rem",
+            minHeight: "20rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <div>
-            <p style={{ fontSize: "xx-large" }}>
-              Prisiregistravusių naudotojų:
-            </p>
-            <div
-              style={{
-                fontSize: "xxx-large",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              {userCount}
-            </div>
+          <AccountBoxIcon sx={{ fontSize: "5rem" }} />
+          <p
+            style={{
+              fontSize: "xx-large",
+              marginTop: "1rem",
+              textAlign: "center",
+            }}
+          >
+            Sistemoje prisiregistravusių naudotojų:
+          </p>
+          <div
+            style={{
+              fontSize: "xxx-large",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            {userCount}
           </div>
         </Card>
+
         <Card
-          sx={{ padding: "2rem", height: "fit-content", marginBottom: "2rem" }}
           raised={true}
+          sx={{
+            padding: "2rem",
+            height: "fit-content",
+            marginBottom: "2rem",
+            minHeight: "20rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <p style={{ fontSize: "xx-large" }}>
+          <DvrIcon sx={{ fontSize: "5rem" }} />
+          <p
+            style={{
+              fontSize: "xx-large",
+              marginBottom: "1rem",
+              textAlign: "center",
+            }}
+          >
             Sistemoje registruotas maisto kiekis:
           </p>
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <div style={{ fontSize: "xxx-large" }}>
-              <b>{lSaved}&nbsp;L</b>&nbsp;|&nbsp;
+            <div
+              style={{
+                fontSize: "xxx-large",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <WaterDropIcon sx={{ fontSize: "3rem", color: "blue" }} />
+              <b>{lSaved}&nbsp;L</b>
             </div>
-            <div style={{ fontSize: "xxx-large" }}>
-              <b>{kgSaved}&nbsp;Kg</b>&nbsp;|&nbsp;
+            <div
+              style={{
+                fontSize: "xxx-large",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: "0 0.5rem" }}>&nbsp;|&nbsp;</span>
+              <ScaleIcon sx={{ fontSize: "3rem", color: "#F16E5A" }} />
+              <b>{kgSaved}&nbsp;Kg</b>
             </div>
-            <div style={{ fontSize: "xxx-large" }}>
+            <div
+              style={{
+                fontSize: "xxx-large",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: "0 0.5rem" }}>&nbsp;|&nbsp;</span>
+              <LooksOneIcon sx={{ fontSize: "3rem", color: "#29B61D" }} />
               <b>{unitSaved}&nbsp;Vnt</b>
             </div>
           </div>
         </Card>
       </div>
-      {chartData.categories && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "2rem",
-          }}
-        >
-          <div
-            ref={chartRef}
-            style={{ width: "100%", maxWidth: "800px", margin: "0 auto" }}
-          />
-        </div>
-      )}
     </>
   );
 }
