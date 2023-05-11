@@ -35,7 +35,7 @@ const EditProduct = ({ visible, onHide, rowData }) => {
       setShelfOptions(
         data.map((item) => ({
           value: item.id,
-          label: item.name,
+          label: item.name === "Default" ? "Pagrindinė" : item.name
         }))
       );
     });
