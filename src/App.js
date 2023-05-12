@@ -19,9 +19,8 @@ import Login from "./Pages/Login";
 import Categories from "./Pages/CategoryPage";
 import UserOverview from "./Pages/UsersPage";
 import AdminLogin from "./Pages/AdminLogin";
+import Recipes from "./Pages/RecipesPage"
 
-
-import {User} from "./User/User"
 import { ProtectedRouteAdmin, ProtectedRoute, ProtectedFromAdmin } from "./Utils/ProtectedRoute";
 import Map from "./Pages/Map";
 import AddAddress from "./Views/AddAddress";
@@ -38,6 +37,7 @@ function App() {
         <Route path="/login" element={<ProtectedFromAdmin> <Login /> </ProtectedFromAdmin>}></Route>
         <Route path="/product/create" element={<ProtectedRoute> <ProductCreate /> </ProtectedRoute>}></Route>
         <Route path="/statistics" element={<Statistics />}></Route>
+        <Route path="/recipes" element={<Recipes />}></Route>
         <Route path="/map" element={<Map />}></Route>
         <Route path="/profile" element={<ProtectedRoute><AddAddress /></ProtectedRoute>}></Route>
         <Route path="/admin/login" element={<AdminLogin/>}></Route>

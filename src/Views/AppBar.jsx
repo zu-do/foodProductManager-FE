@@ -39,6 +39,9 @@ function AppBar() {
   const navigateToProfile = () => {
     navigator("/profile");
   };
+  const navigateToRecipes = () => {
+    navigator("/recipes");
+  };
 
   const adminItems = [
     {
@@ -104,36 +107,7 @@ function AppBar() {
           icon: (
             <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
           ),
-        }
-      : {
-          visible: false,
-        },
-        sessionStorage.getItem(User.userEmail) !== null
-      ? {
-          label: "Prenumerata",
-          icon: (
-            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
-          ),
-        }
-      : {
-          visible: false,
-        },
-        sessionStorage.getItem(User.userEmail) !== null
-      ? {
-          label: "Konkursas",
-          icon: (
-            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
-          ),
-        }
-      : {
-          visible: false,
-        },
-        sessionStorage.getItem(User.userEmail) !== null
-      ? {
-          label: "Įvertink naudotoją",
-          icon: (
-            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
-          ),
+          command: navigateToRecipes,
         }
       : {
           visible: false,
