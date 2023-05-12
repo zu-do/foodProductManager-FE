@@ -286,6 +286,7 @@ export default function Statistics() {
                 fontSize: "xxx-large",
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <WaterDropIcon sx={{ fontSize: "3rem", color: "blue" }} />
@@ -296,6 +297,7 @@ export default function Statistics() {
                 fontSize: "xxx-large",
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <span style={{ margin: "0 0.5rem" }}>&nbsp;|&nbsp;</span>
@@ -307,10 +309,11 @@ export default function Statistics() {
                 fontSize: "xxx-large",
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <span style={{ margin: "0 0.5rem" }}>&nbsp;|&nbsp;</span>
-              <EggIcon sx={{ fontSize: "3rem", color: "#ffa631" }} />
+              <EggIcon sx={{ fontSize: "3.5rem", color: "#ffa631" }} />
               <b>{unitSaved}&nbsp;Vnt</b>
             </div>
           </div>
