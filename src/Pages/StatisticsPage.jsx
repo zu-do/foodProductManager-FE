@@ -6,9 +6,10 @@ import { getUsers } from "../Utils/user-axios-utils";
 import { getAllProducts } from "../Utils/product-axios-utils";
 import ScaleIcon from "@mui/icons-material/Scale";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
-import LooksOneIcon from "@mui/icons-material/LooksOne";
+import EggIcon from "@mui/icons-material/Egg";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import DvrIcon from "@mui/icons-material/Dvr";
+import { Egg } from "@mui/icons-material";
 export default function Statistics() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
@@ -60,18 +61,7 @@ export default function Statistics() {
       }
     });
 
-    const sortedCategories = Object.entries(categories).sort(
-      (a, b) => b[1] - a[1]
-    );
-
-    const top3Categories = sortedCategories
-      .slice(0, 3)
-      .reduce((obj, [key, value]) => {
-        obj[key] = value;
-        return obj;
-      }, {});
-
-    return top3Categories;
+    return categories;
   };
 
   const fetchProducts = () => {
@@ -141,7 +131,7 @@ export default function Statistics() {
             height: 400,
           },
           title: {
-            text: "TOP 3 produktų kategorijos sistemoje",
+            text: "Produktų kiekis pagal kategorijas",
           },
           series: [
             {
@@ -152,6 +142,27 @@ export default function Statistics() {
           ],
           xaxis: {
             categories: data.categories,
+            labels: {
+              style: {
+                fontSize: "16px",
+              },
+            },
+          },
+          yaxis: {
+            labels: {
+              style: {
+                fontSize: "16px",
+              },
+            },
+          },
+          plotOptions: {
+            bar: {
+              dataLabels: {
+                style: {
+                  fontSize: "16px",
+                },
+              },
+            },
           },
         };
 
@@ -299,7 +310,7 @@ export default function Statistics() {
               }}
             >
               <span style={{ margin: "0 0.5rem" }}>&nbsp;|&nbsp;</span>
-              <LooksOneIcon sx={{ fontSize: "3rem", color: "#29B61D" }} />
+              <EggIcon sx={{ fontSize: "3rem", color: "#ffa631" }} />
               <b>{unitSaved}&nbsp;Vnt</b>
             </div>
           </div>
