@@ -15,6 +15,7 @@ import { User } from "../User/User";
 import { getProductInfo } from "../Utils/scanner-axios-utils";
 import BarcodeScanner from "./ScaningPage";
 import { getUnitTypes } from "../Utils/unit-axios-utils";
+import { getSuggestedDate } from "../Utils/product-axios-utils";
 
 export default function ProductCreate({ visible, onHide }) {
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -23,7 +24,7 @@ export default function ProductCreate({ visible, onHide }) {
   const [productCategory, setCategory] = useState("");
   const [productShelf, setProductShelf] = useState("");
   const [productDescription, setDescription] = useState("");
-  const [expirationTime, setDate] = useState(null);
+  const [expirationTime, setDate] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [units, setUnits] = useState("");
   const [unit, setUnit] = useState(null);
@@ -96,6 +97,9 @@ export default function ProductCreate({ visible, onHide }) {
       );
     });
   }, []);
+  useEffect(() => {
+    fetchDate();
+  }, [productName, productCategory]);
 
   const onSubmit = (event) => {
     event.preventDefault(); // prevent default form submit behavior
@@ -123,6 +127,16 @@ export default function ProductCreate({ visible, onHide }) {
       }
     });
   };
+  const fetchDate = () => {
+    // Check if the first two fields are filled
+    if (productName && productCategory) {
+      getSuggestedDate(productName, productCategory.categoryName)
+        .then((response) => setDate(new Date(response)))
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
+  };
   return (
     <Dialog
       className="Dialog1"
@@ -130,6 +144,7 @@ export default function ProductCreate({ visible, onHide }) {
       visible={visible}
       onHide={onHide}
     >
+      <form onSubmit={onSubmit} className="p-fluid">
       <p>Skenuokite produkto brūkšninį kodą ir gaukite informaciją apie jį</p>
       <BarcodeScanner onScan={handleScan} />
       <h5 className="text-center">Įveskite produkto pavadinimą</h5>
@@ -139,6 +154,8 @@ export default function ProductCreate({ visible, onHide }) {
         onChange={(e) => setName(e.target.value)}
         style={{ width: "100%" }}
         className="w-full md:w-14rem"
+        onBlur={fetchDate}
+        required
       />
       <h5>Įveskite produkto kiekį:</h5>
       <div className="radio-flexbox">
@@ -151,6 +168,7 @@ export default function ProductCreate({ visible, onHide }) {
                 value={initialUnit}
                 onChange={(e) => setUnit(e.target.value)}
                 checked={unit === initialUnit}
+                required
               />
               <label htmlFor={initialUnit.label}>
                 {initialUnit.label === "Kg"
@@ -180,6 +198,7 @@ export default function ProductCreate({ visible, onHide }) {
         incrementButtonIcon="pi pi-plus"
         decrementButtonIcon="pi pi-minus"
         mode="decimal"
+        required
       />
       <h5> Pasirinkite kategoriją:</h5>
       <Dropdown
@@ -189,6 +208,8 @@ export default function ProductCreate({ visible, onHide }) {
         style={{ width: "100%" }}
         editable
         placeholder="Kategorija"
+        onBlur={fetchDate}
+        required
       />
 
       <h5> Pasirinkite lentyną:</h5>
@@ -199,6 +220,7 @@ export default function ProductCreate({ visible, onHide }) {
         style={{ width: "100%" }}
         editable
         placeholder="Lentyna"
+        required
       />
       <h5>Įveskite produkto aprašymą:</h5>
       <InputTextarea
@@ -208,21 +230,23 @@ export default function ProductCreate({ visible, onHide }) {
         onChange={(e) => setDescription(e.target.value)}
       />
       <h5>Pasirinkite iki kada galioja produktas:</h5>
+
       <Calendar
         placeholder="Pvz.: 02/26/2023"
         value={expirationTime}
         style={{ width: "100%" }}
         onChange={(e) => setDate(e.target.value)}
         showIcon
+        required
       />
-      <br />
-      <br />
+      
       <Button
-        onClick={onSubmit}
+        style={{ marginTop: "1rem" }}
         severity="info"
         label="Įkelti"
         icon="pi pi-check"
       />
+      </form>
     </Dialog>
   );
 }
