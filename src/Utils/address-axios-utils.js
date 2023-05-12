@@ -1,7 +1,8 @@
 import axios from "axios";
+import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: "https://localhost:7258/Address",
+  baseURL: `${baseUrl()}Address`,
 });
 
 export const addAddress = async (body) => {

@@ -1,7 +1,8 @@
 import axios from "axios";
-import { getUnitTypes } from "./unit-axios-utils";
+import { baseUrl } from "./baseUrl";
+
 const client = axios.create({
-  baseURL: "https://localhost:7258/Product",
+  baseURL: `${baseUrl()}Product`,
 });
 
 export const getAllProducts = async () => {

@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-    baseURL: 'https://localhost:7258/Scanner/barcode',
+    baseURL: `${baseUrl()}Scanner/barcode`
   });
 
   export const getProductInfo = async (barcode) => {
