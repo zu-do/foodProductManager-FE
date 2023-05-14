@@ -216,9 +216,11 @@ export default function Statistics() {
           <div ref={chartRef} style={{ width: "87%", margin: "0 auto" }} />
         </div>
       )}
+
       <div
         style={{
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-between",
           margin: "2rem 8rem",
         }}
@@ -226,20 +228,21 @@ export default function Statistics() {
         <Card
           raised={true}
           sx={{
-            padding: "2rem",
+            padding: "1.5rem",
             height: "fit-content",
             marginBottom: "2rem",
-            minHeight: "20rem",
+            minHeight: "18rem",
+            flex: "0 0 calc(40% - 1rem)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <AccountBoxIcon sx={{ fontSize: "5rem" }} />
+          <AccountBoxIcon sx={{ fontSize: "4rem" }} />
           <p
             style={{
-              fontSize: "xx-large",
+              fontSize: "x-large",
               marginTop: "1rem",
               textAlign: "center",
             }}
@@ -248,7 +251,7 @@ export default function Statistics() {
           </p>
           <div
             style={{
-              fontSize: "xxx-large",
+              fontSize: "xx-large",
               fontWeight: "bold",
               textAlign: "center",
             }}
@@ -260,20 +263,21 @@ export default function Statistics() {
         <Card
           raised={true}
           sx={{
-            padding: "2rem",
+            padding: "1.5rem",
             height: "fit-content",
             marginBottom: "2rem",
-            minHeight: "20rem",
+            minHeight: "18rem",
+            flex: "0 0 calc(40% - 1rem)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <DvrIcon sx={{ fontSize: "5rem" }} />
+          <DvrIcon sx={{ fontSize: "4rem" }} />
           <p
             style={{
-              fontSize: "xx-large",
+              fontSize: "x-large",
               marginBottom: "1rem",
               textAlign: "center",
             }}
@@ -283,38 +287,38 @@ export default function Statistics() {
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <div
               style={{
-                fontSize: "xxx-large",
+                fontSize: "xx-large",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <WaterDropIcon sx={{ fontSize: "3rem", color: "blue" }} />
+              <WaterDropIcon sx={{ fontSize: "2.5rem", color: "blue" }} />
               <b>{lSaved}&nbsp;L</b>
             </div>
             <div
               style={{
-                fontSize: "xxx-large",
+                fontSize: "xx-large",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <span style={{ margin: "0 0.5rem" }}>&nbsp;|&nbsp;</span>
-              <ScaleIcon sx={{ fontSize: "3rem", color: "#F16E5A" }} />
+              <ScaleIcon sx={{ fontSize: "2.5rem", color: "#F16E5A" }} />
               <b>{kgSaved}&nbsp;Kg</b>
             </div>
             <div
               style={{
-                fontSize: "xxx-large",
+                fontSize: "xx-large",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <span style={{ margin: "0 0.5rem" }}>&nbsp;|&nbsp;</span>
-              <EggIcon sx={{ fontSize: "3.5rem", color: "#ffa631" }} />
-              <b>{unitSaved}&nbsp;Vnt</b>
+              <EggIcon sx={{ fontSize: "3rem", color: "#ffa631" }} />
+              <b>{unitSaved} Vnt</b>
             </div>
           </div>
         </Card>
