@@ -44,3 +44,12 @@ export const updateAddress = async (body, id) => {
     return null;
   }
 };
+export const getAddressByID = async (Id) => {
+  try {
+    const response = await client.get(`get/${Id}`);
+    return response.data;
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+};

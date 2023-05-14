@@ -39,6 +39,9 @@ function AppBar() {
   const navigateToProfile = () => {
     navigator("/profile");
   };
+  const navigateToGivableProducts = () => {
+    navigator("/product/giveaway");
+  };
 
   const adminItems = [
     {
@@ -110,34 +113,17 @@ function AppBar() {
         },
         sessionStorage.getItem(User.userEmail) !== null
       ? {
-          label: "Prenumerata",
+          label: "Atiduotuvė",
           icon: (
             <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
           ),
+          command :navigateToGivableProducts
         }
       : {
           visible: false,
         },
-        sessionStorage.getItem(User.userEmail) !== null
-      ? {
-          label: "Konkursas",
-          icon: (
-            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
-          ),
-        }
-      : {
-          visible: false,
-        },
-        sessionStorage.getItem(User.userEmail) !== null
-      ? {
-          label: "Įvertink naudotoją",
-          icon: (
-            <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
-          ),
-        }
-      : {
-          visible: false,
-        },
+        
+        
     sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Atsijungti",

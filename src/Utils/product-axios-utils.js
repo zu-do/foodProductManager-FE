@@ -27,7 +27,15 @@ export const getProducts = async (email, shelfId) => {
     return [];
   }
 };
-
+export const getGiveableProducts = async () => {
+  try {
+    const response = await client.get(`getGiveable`);
+    return response.data;
+  } catch (err) {
+    console.error(err.message);
+    return [];
+  }
+};
 export const getProduct = async (index) => {
   try {
     const response = await client.get(`/${index}`);
@@ -82,5 +90,24 @@ export const addProduct = async (
   } catch (err) {
     console.log(err.response);
     return err.response.data.errors;
+  }
+};
+export const getSuggestedDate = async (product, category) => {
+  try {
+    const response = await client.get(`/${product}/${category}`);
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+    console.error(err.message);
+    return [];
+  }
+};
+export const reserveProduct = async (index, userid) => {
+  try {
+    const response = await client.put(`reserve/${index}/${userid}`);
+    return true;
+  } catch (err) {
+    console.error(err.message);
+    return false;
   }
 };
