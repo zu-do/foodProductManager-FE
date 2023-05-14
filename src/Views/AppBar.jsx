@@ -11,6 +11,7 @@ import { faPepperHot } from "@fortawesome/free-solid-svg-icons";
 import { faBurger } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../User/User";
 import { Types } from "../Types/Types";
+import { faChartBar } from "@fortawesome/free-solid-svg-icons";
 import vegetable from "../Pictures/vegetable.gif";
 import { faCubesStacked } from "@fortawesome/free-solid-svg-icons";
 
@@ -38,6 +39,9 @@ function AppBar() {
 
   const navigateToProfile = () => {
     navigator("/profile");
+  };
+  const navigateToStatistics = () => {
+    navigator("/statistics");
   };
   const navigateToGivableProducts = () => {
     navigator("/product/giveaway");
@@ -90,6 +94,7 @@ function AppBar() {
           ),
           command: navigateToLogin,
         },
+
     sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Profilis",
@@ -101,7 +106,7 @@ function AppBar() {
       : {
           visible: false,
         },
-        sessionStorage.getItem(User.userEmail) !== null
+    sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Siūlomi receptai",
           icon: (
@@ -111,19 +116,28 @@ function AppBar() {
       : {
           visible: false,
         },
-        sessionStorage.getItem(User.userEmail) !== null
+    sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Atiduotuvė",
           icon: (
             <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
           ),
-          command :navigateToGivableProducts
+          command: navigateToGivableProducts,
         }
       : {
           visible: false,
         },
-        
-        
+    sessionStorage.getItem(User.userEmail) !== null
+      ? {
+          label: "Statistika",
+          icon: (
+            <FontAwesomeIcon icon={faChartBar} style={{ padding: "5px" }} />
+          ),
+          command: navigateToStatistics,
+        }
+      : {
+          visible: false,
+        },
     sessionStorage.getItem(User.userEmail) !== null
       ? {
           label: "Atsijungti",
@@ -139,6 +153,17 @@ function AppBar() {
           label: "Registruotis",
           icon: <FontAwesomeIcon icon={faBurger} style={{ padding: "5px" }} />,
           command: navigateToRegister,
+        },
+    sessionStorage.getItem(User.userEmail) == null
+      ? {
+          label: "Statistika",
+          icon: (
+            <FontAwesomeIcon icon={faChartBar} style={{ padding: "5px" }} />
+          ),
+          command: navigateToStatistics,
+        }
+      : {
+          visible: false,
         },
   ];
   const start = <h1 className="header">Primad</h1>;
