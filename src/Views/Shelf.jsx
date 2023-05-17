@@ -142,7 +142,7 @@ function Shelf({ shelf }) {
             backgroundColor: "#F16E5A",
           }}
           severity="danger"
-          value="ATIDUODAMAS"
+          value="REZERVUOTAS"
         ></Tag>
       );
     else if (rowData.givable)
