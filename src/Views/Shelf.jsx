@@ -131,7 +131,35 @@ function Shelf({ shelf }) {
   };
 
   const bodyTemplate = (rowData) => {
-    if (daysLeft(rowData) < 3)
+    if (rowData.reserved)
+      return (
+        <Tag
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            margin: "16px",
+            backgroundColor: "#F16E5A",
+          }}
+          severity="danger"
+          value="REZERVUOTAS"
+        ></Tag>
+      );
+    else if (rowData.givable)
+      return (
+        <Tag
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            margin: "16px",
+            backgroundColor: "#F16E5A",
+          }}
+          severity="danger"
+          value="ATIDUODAMAS"
+        ></Tag>
+      );
+    else if (daysLeft(rowData) < 3)
       return (
         <Tag
           style={{
