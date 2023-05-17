@@ -26,6 +26,7 @@ import { ProtectedRouteAdmin, ProtectedRoute, ProtectedFromAdmin } from "./Utils
 import Map from "./Pages/Map";
 import AddAddress from "./Views/AddAddress";
 import ProductGiveaway from './Views/ProductGiveaway';
+import Recipes from './Pages/Recipes';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/statistics" element={<Statistics />}></Route>
         <Route path="/map" element={<Map />}></Route>
         <Route path="/product/giveaway" element={<ProtectedRoute>{" "}<ProductGiveaway />{" "}</ProtectedRoute>}></Route>
+        <Route path="/recipes" element={<ProtectedRoute>{" "}<Recipes/>{" "}</ProtectedRoute>}></Route>
         <Route path="/profile" element={<ProtectedRoute><AddAddress /></ProtectedRoute>}></Route>
         <Route path="/admin/login" element={<AdminLogin/>}></Route>
         <Route path="/admin/categories" element={
