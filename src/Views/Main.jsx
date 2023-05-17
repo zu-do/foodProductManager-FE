@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "primereact/button";
 import "../Styles/styleMain.css";
 import AddShelf from "./AddShelf";
 import { getUserShelves } from "../Utils/shelf-axios-utils";
 import { User } from "../User/User";
 import Shelf from "./Shelf";
 import Grid from "@mui/material/Grid";
-
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import { Button } from "@mui/material";
 
 export default function Main() {
   const UserEmail = sessionStorage.getItem(User.userEmail);
@@ -70,33 +72,37 @@ export default function Main() {
         >
           <Button
             onClick={showCreateShelfDialog}
-            label="Pridėti lentyną"
-            icon="pi pi-plus"
-            severity="info"
+            startIcon={<PostAddIcon />}
             style={{
               width: "12rem",
               marginBottom: "1rem",
               backgroundColor: "#29B61D",
             }}
-          />
+            variant="contained"
+          >
+            Pridėti lentyną
+          </Button>
           <Button
-            severity="info"
             style={{ width: "12rem", backgroundColor: "#29B61D" }}
             onClick={openList}
-            label="Lentynos"
-            icon={flag ? "pi pi-angle-up" : "pi pi-angle-down"}
-          />
+            startIcon={
+              flag ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
+            }
+            variant="contained"
+          >
+            Lentynos
+          </Button>
           {flag &&
             shelves.map((shelf) => (
               <Button
                 id="shelf-list-button"
                 key={shelf.id}
                 style={{ marginTop: "1rem", backgroundColor: "#29B61D" }}
-                icon="pi pi-folder"
-                label={shelf.name === "Default" ? "Pagrindinė" : shelf.name}
                 onClick={() => setSelectedShelf(shelf)}
-                rounded
-              />
+                variant="contained"
+              >
+                {shelf.name === "Default" ? "Pagrindinė" : shelf.name}
+              </Button>
             ))}
         </div>
       </Grid>
