@@ -18,7 +18,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import EditAddress from "./EditAddress";
 
-function AddAddress() {
+const AddAddress = ({ onSelectionChange }) => {
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [initialAddress, setInitialAddress] = useState([]);
@@ -28,6 +28,14 @@ function AddAddress() {
   const [addressData, setAddressData] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [addressError, setAddressError] = useState(false);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleItemClick = (itemId) => {
+    const newSelectedItem = itemId === selectedItem ? null : itemId;
+    setSelectedItem(newSelectedItem);
+    onSelectionChange(newSelectedItem);
+  };
 
   const style = {
     width: "100%",
@@ -139,7 +147,16 @@ function AddAddress() {
           {initialAddress &&
             initialAddress.map((add) => (
               <>
-                <ListItem>
+                <ListItem
+                  key={add.id}
+                  sx={{
+                    ...(add.id === selectedItem && {
+                      backgroundColor: "#ebebeb",
+                      fontWeight: "bold",
+                    }),
+                  }}
+                  onClick={() => handleItemClick(add.id)}
+                >
                   <ListItemText primary={add.name} />
                   <IconButton
                     onClick={() => handleClickOpen(add.id)}
@@ -212,6 +229,6 @@ function AddAddress() {
       </div>
     </>
   );
-}
+};
 
 export default AddAddress;

@@ -111,3 +111,13 @@ export const reserveProduct = async (index, userid) => {
     return false;
   }
 };
+
+export const giveawayProduct = async (index, addressId) => {
+  try {
+    await client.put(`giveaway/${index}/${addressId}`);
+    return true;
+  } catch (err) {
+    console.error(err.message);
+    return false;
+  }
+};
