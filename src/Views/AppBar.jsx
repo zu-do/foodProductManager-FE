@@ -42,7 +42,9 @@ function AppBar() {
   const navigateToGivableProducts = () => {
     navigator("/product/giveaway");
   };
-
+  const navigateToRecipes = () => {
+    navigator("/recipes");
+  };
   const adminItems = [
     {
       label: "Pagrindinis",
@@ -107,6 +109,7 @@ function AppBar() {
           icon: (
             <FontAwesomeIcon icon={faBowlFood} style={{ padding: "5px" }} />
           ),
+          command: navigateToRecipes,
         }
       : {
           visible: false,
