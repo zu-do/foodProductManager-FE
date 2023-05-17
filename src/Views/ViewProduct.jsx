@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -15,6 +15,8 @@ import EditProduct from "../Views/EditProduct";
 import { deleteProduct } from "../Utils/product-axios-utils";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { Toast } from "primereact/toast";
+import AddAddress from "./AddAddress";
+import { giveawayProduct } from "../Utils/product-axios-utils";
 
 export default function ViewProduct({
   visible,
@@ -23,11 +25,20 @@ export default function ViewProduct({
   onEdit,
   onEditClose,
 }) {
+  const [showAdditionalFields, setShowAdditionalFields] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showGiveAway, setShowGiveAway] = useState(!rowData.givable);
   const [dialogVisible, setDialogVisible] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const toast = useRef(null);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleChildSelectionChange = (selectedId) => {
+    setSelectedItem(selectedId);
+  };
 
   const daysLeft = () => {
     var date = new Date();
@@ -47,6 +58,18 @@ export default function ViewProduct({
       rejectLabel: "Ne",
       accept: () => handleDelete(rowData.id),
     });
+  };
+
+  const handleGiveAway = () => {
+    setShowAdditionalFields(true);
+    setShowConfirm(true);
+    setShowGiveAway(false);
+  };
+
+  const handleConfirm = () => {
+    giveawayProduct(rowData.id, selectedItem);
+    hide();
+    window.location.reload();
   };
 
   const handleDelete = (id) => {
@@ -113,6 +136,22 @@ export default function ViewProduct({
             {" d."}
           </DialogContentText>
         </DialogContent>
+        {showAdditionalFields && (
+          <DialogContent>
+            <DialogContentText className="text-center">
+              Pasirinkite atidavimo vietos adresą:
+            </DialogContentText>
+            {selectedItem ? null : (
+              <DialogContentText
+                className="text-center"
+                style={{ color: "#F16E5A", fontSize: "0.8em" }}
+              >
+                *adresas privalomas
+              </DialogContentText>
+            )}
+            <AddAddress onSelectionChange={handleChildSelectionChange} />
+          </DialogContent>
+        )}
         <DialogActions>
           <div style={{ float: "left" }}>
             <IconButton
@@ -132,9 +171,22 @@ export default function ViewProduct({
               <DeleteIcon sx={{ color: "#F16E5A" }} />
             </IconButton>
           </div>
-          <Button onClick={hide} style={{ color: "#29B61D" }}>
-            Atiduoti
-          </Button>
+          {showGiveAway && (
+            <Button onClick={handleGiveAway} style={{ color: "#29B61D" }}>
+              Atiduoti
+            </Button>
+          )}
+          {showConfirm && (
+            <div>
+              <Button
+                onClick={handleConfirm}
+                style={{ color: "#29B61D" }}
+                disabled={!selectedItem}
+              >
+                PATVIRTINTI
+              </Button>
+            </div>
+          )}
         </DialogActions>
       </Dialog>
       <EditProduct

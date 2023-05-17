@@ -145,6 +145,20 @@ function Shelf({ shelf }) {
           value="SKUBU"
         ></Tag>
       );
+    else if (rowData.givable)
+      return (
+        <Tag
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            margin: "16px",
+            backgroundColor: "#F16E5A",
+          }}
+          severity="danger"
+          value="ATIDUODAMAS"
+        ></Tag>
+      );
     else
       return (
         <Tag
