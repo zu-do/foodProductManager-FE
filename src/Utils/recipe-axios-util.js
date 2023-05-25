@@ -2,7 +2,7 @@ import axios from "axios";
 import { baseUrl } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: `${baseUrl()}Recipes`
+  baseURL: `${baseUrl()}Recipes/v2`
 });
 
 export const getRecipes = async (email) => {

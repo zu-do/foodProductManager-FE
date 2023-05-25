@@ -50,20 +50,29 @@ function LandingPage() {
       <CardContent>
         <ThemeProvider theme={theme}>
           <Typography Wrap variant="h2" color="text.primary" gutterBottom>
-            Registruok savo maisto produktus lengvai
+            Suvartok arba atiduok - keiskim įpročius kartu!
           </Typography>
         </ThemeProvider>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          Užsiregistruok jau dabar. Food can also be a source of creativity and
-          innovation, with chefs and home cooks alike experimenting with new
-          flavors, techniques, and ingredients to push the boundaries of what we
-          know and love about food.
+          Mūsų tikslas - ne tik pasiūlyti būdą, ką daryti su maistu, kurio
+          nepavyksta suvartoti, bet ir stengtis užkirsti kelią tokio maisto
+          atsiradimui formuojant vartojimo įpročius, taip prisidedant prie
+          maisto švaistymo problemos sprendimo.
         </Typography>
         <CardActions>
-          <ColorButton variant="contained" size="medium" onClick={()=> navigateToRegister()}>
+          <ColorButton
+            variant="contained"
+            size="medium"
+            onClick={() => navigateToRegister()}
+          >
             Užsiregistruok
           </ColorButton>
-          <Button color="error" variant="outlined" size="medium" onClick={()=> navigateToLogin()}>
+          <Button
+            color="error"
+            variant="outlined"
+            size="medium"
+            onClick={() => navigateToLogin()}
+          >
             Prisijunk
           </Button>
         </CardActions>
@@ -89,12 +98,7 @@ function LandingPage() {
         >
           Gauk receptų pasiūlymus
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          Food is an essential part of our daily lives, providing us with the
-          nutrients and energy we need to function and thrive. Not only does
-          food nourish our bodies, but it also plays an important role in our
-          social and cultural experiences.
-        </Typography>
+        <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
       </CardContent>
     </Fragment>
   );
@@ -118,13 +122,7 @@ function LandingPage() {
           Galite atiduoti savo produktus bei taip pat pasiimti kitų atiduodamus
           produktus
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          There is an incredible variety of food available from different
-          cultures and regions, each with their own unique flavors, ingredients,
-          and cooking techniques. Some foods are more popular in certain regions
-          or countries, while others have become beloved staples around the
-          world.
-        </Typography>
+        <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
       </CardContent>
     </Fragment>
   );

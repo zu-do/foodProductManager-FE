@@ -5,28 +5,28 @@ export const RecipeCard = ({ recipe }) => {
       <Card>
         <CardMedia
           component="img"
-          alt={recipe.recipe.name}
+          alt={recipe.name}
           height="200"
-          image={recipe.recipe.imageUrl}
+          image={recipe.imageUrl}
         />
         <CardContent>
           <Typography variant="h5" component="div">
-            {recipe.recipe.name}
+            {recipe.name}
           </Typography>
           <Typography variant="body1" color="text.secondary">
             Ingredientai:
           </Typography>
           <ul>
-            {recipe.recipe.ingredients.map((ingredient, index) => (
+            {recipe.ingredients.map((ingredient, index) => (
               <Typography variant="body2" component="li" key={index}>
                 {ingredient}
               </Typography>
             ))}
           </ul>
           <Typography variant="h6" component="div">
-            <a href={recipe.recipe.recipeUrl} target='_blank' style={{ textDecoration:"underline", color: "inherit" }}> Recepto nuoroda</a>
+            <a href={recipe.recipeUrl} target='_blank' style={{ textDecoration:"underline", color: "inherit" }}> Recepto nuoroda</a>
           </Typography>
-          {recipe.product !== null ? 
+          {/* {recipe.product !== null ? 
           <>
             <Typography variant="h6" component="div">Jums trūksta vieno produkto receptui, tačiau jis yra atiduotuvėje</Typography>
             <Typography variant="body1" component="div">
@@ -36,7 +36,7 @@ export const RecipeCard = ({ recipe }) => {
             Produkto aprašymas: {recipe.product.productDescription}
           </Typography>
           </> : <></>}
-        
+         */}
         </CardContent>
       </Card>
     );
