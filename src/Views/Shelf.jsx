@@ -371,7 +371,17 @@ function Shelf({ shelf }) {
                   <img
                     id="product-image"
                     onClick={() => showViewDialog(product)}
-                    src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.dribbble.com%2Fusers%2F1348951%2Fscreenshots%2F3167282%2Fmilk.gif&f=1&nofb=1&ipt=bf339ff6a7d652d88b6fd76d117218df612320d7f359476b7e97cd3b65bab1fc&ipo=images"
+                    src={
+                      product.categoryName === "Mėsa"
+                        ? "../Pictures/meat.png"
+                        : product.categoryName === "Gėrimai"
+                        ? "../Pictures/drink.png"
+                        : product.categoryName === "Pieno produktai"
+                        ? "../Pictures/dairy.png"
+                        : product.categoryName === "Vaisiai"
+                        ? "../Pictures/fruit.png"
+                        : "../Pictures/vegetable.png"
+                    }
                     style={{ width: "100%", height: "auto" }}
                   />
                   {bodyTemplate(product)}
